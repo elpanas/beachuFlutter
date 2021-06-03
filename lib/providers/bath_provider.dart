@@ -86,7 +86,6 @@ class BathProvider extends ChangeNotifier {
     http.Response res = await http.delete(
       Uri.parse('$url/$bid'),
       headers: {
-        'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: hashAuth,
       },
     );
