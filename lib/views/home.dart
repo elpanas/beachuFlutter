@@ -5,12 +5,18 @@ import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static final String id = 'home_screen';
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
@@ -32,52 +38,56 @@ class HomePage extends StatelessWidget {
                       SimpleButton(
                           title: 'Cerca',
                           onPressed: () async {
-                            Position position = await getPosition();
-                            context.read<BathProvider>().loadBaths(
-                                  position.latitude,
-                                  position.longitude,
-                                );
+                            data.loadBaths();
                             Navigator.pushNamed(context, BathListPage.id);
                           }),
                       SizedBox(height: 10.0),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 30.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(child: LoginButton()),
-                            SizedBox(width: 5.0),
-                            Expanded(
-                              child: GoogleButton(
-                                onPressed: () async {
-                                  bool result = await signInWithGoogle();
-                                  if (result) {
-                                    String uid = await getUserId();
-                                    data.loadManagerBaths(uid);
-                                    Navigator.pushNamed(
-                                        context, BathListPage.id);
-                                  }
-                                },
+                      (_auth.currentUser != null)
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 30.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(child: LoginButton()),
+                                  SizedBox(width: 5.0),
+                                  Expanded(
+                                    child: GoogleButton(
+                                      onPressed: () async {
+                                        bool result = await signInWithGoogle();
+                                        if (result) {
+                                          data.loadManagerBaths(
+                                              _auth.currentUser!.uid);
+                                          Navigator.pushNamed(
+                                              context, BathListPage.id);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 5.0),
+                                  Expanded(
+                                    child: FacebookButton(
+                                      onPressed: () async {
+                                        bool result =
+                                            await signInWithFacebook();
+                                        if (result) {
+                                          data.loadManagerBaths(
+                                              _auth.currentUser!.uid);
+                                          Navigator.pushNamed(
+                                              context, BathListPage.id);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(width: 5.0),
-                            Expanded(
-                              child: FacebookButton(
-                                onPressed: () async {
-                                  bool result = await signInWithFacebook();
-                                  if (result) {
-                                    String uid = await getUserId();
-                                    data.loadManagerBaths(uid);
-                                    Navigator.pushNamed(
-                                        context, BathListPage.id);
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            )
+                          : SimpleButton(
+                              title: 'LogOut',
+                              onPressed: () async {
+                                _auth.signOut();
+                                setState(() {});
+                              }),
                     ],
                   ),
                 )

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // GEOLOCATOR
 Future<Position> getPosition() async {
@@ -40,10 +39,9 @@ Future<bool> signInWithEmail(email, password) async {
       password: password,
     );
 
-    if (userCredential.user != null) {
-      setUserId(userCredential.user!.uid);
+    if (userCredential.user != null)
       return true;
-    } else
+    else
       return false;
   } catch (e) {
     print(e);
@@ -69,10 +67,9 @@ Future<bool> signInWithGoogle() async {
   final UserCredential userCredential =
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-  if (userCredential.user != null) {
-    setUserId(userCredential.user!.uid);
+  if (userCredential.user != null)
     return true;
-  } else
+  else
     return false;
 }
 
@@ -82,19 +79,8 @@ Future<bool> signInWithFacebook() async {
       loginBehavior: LoginBehavior
           .nativeWithFallback); // by default we request the email and the public profile
 
-  if (result.status == LoginStatus.success) {
-    setUserId(result.accessToken!.userId);
+  if (result.status == LoginStatus.success)
     return true;
-  } else
+  else
     return false;
-}
-
-Future<String> getUserId() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('uid') ?? '';
-}
-
-void setUserId(String uid) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('uid', uid);
 }

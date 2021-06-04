@@ -5,9 +5,9 @@ import 'package:beachu/components/new_edit_bathpage/phone_field.dart';
 import 'package:beachu/components/new_edit_bathpage/province_field.dart';
 import 'package:beachu/components/new_edit_bathpage/tot_umbrellas_field.dart';
 import 'package:beachu/components/simple_button.dart';
-import 'package:beachu/functions.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +27,7 @@ class _NewBathState extends State<NewBath> {
       _cityController = TextEditingController(),
       _provinceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +69,8 @@ class _NewBathState extends State<NewBath> {
                         bool _validate = _formKey.currentState!.validate(),
                             _result = false;
                         if (_validate) {
-                          String uid = await getUserId();
                           Bath bath = await data.makeRequest(
-                            uid,
+                            _auth.currentUser!.uid,
                             _nameController.text,
                             int.parse(_avUmbrellasController.text),
                             int.parse(_totUmbrellasController.text),

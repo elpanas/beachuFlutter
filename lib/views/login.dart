@@ -3,6 +3,7 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _mailController = TextEditingController(),
       _pswController = TextEditingController();
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                       _pswController.text,
                     );
                     if (result) {
-                      data.loadManagerBaths(getUserId());
+                      data.loadManagerBaths(_auth.currentUser!.uid);
                       Navigator.pushNamed(context, BathListPage.id);
                     } else
                       ScaffoldMessenger.of(context).showSnackBar(

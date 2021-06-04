@@ -15,8 +15,11 @@ class BathProvider extends ChangeNotifier {
   String _message = 'Loading...';
 
   // GET BATH LIST
-  void loadBaths(lat, long) async {
+  void loadBaths() async {
     setLoading(true);
+    Position position = await getPosition();
+    double lat = position.latitude;
+    double long = position.longitude;
     setMessage('Loading...');
     try {
       http.Response res = await http
