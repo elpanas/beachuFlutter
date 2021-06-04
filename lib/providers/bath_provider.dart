@@ -188,6 +188,10 @@ class BathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String getUserId() {
+    return _uid;
+  }
+
   // VARS GETTERS
   bool isLoading() {
     return _loading;

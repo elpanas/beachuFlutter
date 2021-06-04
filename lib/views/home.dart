@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, BathListPage.id);
                           }),
                       SizedBox(height: 10.0),
-                      (_auth.currentUser == null)
+                      (data.getUserId() == '')
                           ? Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               child: Row(
@@ -86,8 +86,7 @@ class _HomePageState extends State<HomePage> {
                               title: 'LogOut',
                               onPressed: () async {
                                 await _auth.signOut();
-                                print(_auth.currentUser);
-                                setState(() {});
+                                data.setUserId('');
                               }),
                     ],
                   ),
