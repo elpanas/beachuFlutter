@@ -8,9 +8,7 @@ import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -22,14 +20,13 @@ class NewBath extends StatefulWidget {
 }
 
 class _NewBathState extends State<NewBath> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _avUmbrellasController = TextEditingController();
-  TextEditingController _totUmbrellasController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _provinceController = TextEditingController();
+  TextEditingController _nameController = TextEditingController(),
+      _avUmbrellasController = TextEditingController(),
+      _totUmbrellasController = TextEditingController(),
+      _phoneController = TextEditingController(),
+      _cityController = TextEditingController(),
+      _provinceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -68,30 +65,24 @@ class _NewBathState extends State<NewBath> {
                     SimpleButton(
                       title: 'Inserisci',
                       onPressed: () async {
-                        bool _error = false;
-                        if (_formKey.currentState!.validate() &&
-                            _auth.currentUser != null) {
-                          Position position = await getPosition();
-                          Bath bath = Bath(
-                            uid: _auth.currentUser!.uid,
-                            name: _nameController.text,
-                            avUmbrellas: _avUmbrellasController.text,
-                            totUmbrellas: _totUmbrellasController.text,
-                            phone: _phoneController.text,
-                            latitude: position.latitude,
-                            longitude: position.longitude,
-                            city: _cityController.text,
-                            province: _provinceController.text,
+                        bool _validate = _formKey.currentState!.validate(),
+                            _result = false;
+                        if (_validate) {
+                          String uid = await getUserId();
+                          Bath bath = await data.makeRequest(
+                            uid,
+                            _nameController.text,
+                            int.parse(_avUmbrellasController.text),
+                            int.parse(_totUmbrellasController.text),
+                            _phoneController.text,
+                            _cityController.text,
+                            _provinceController.text,
                           );
-                          bool result = await data.postBath(bath);
-                          if (result)
-                            Navigator.pop(context);
-                          else
-                            _error = true;
-                        } else
-                          _error = true;
+                          _result = await data.postBath(bath);
+                          if (_result) Navigator.pop(context);
+                        }
 
-                        if (_error)
+                        if (!_validate || !_result)
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Something went wrong')));
                       },

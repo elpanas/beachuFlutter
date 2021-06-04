@@ -4,7 +4,8 @@ import 'package:maps_launcher/maps_launcher.dart';
 
 class Bath extends ChangeNotifier {
   final String? bid;
-  final String uid, name, avUmbrellas, totUmbrellas, phone, city, province;
+  final String uid, name, phone, city, province;
+  int avUmbrellas, totUmbrellas;
   final double latitude, longitude;
 
   Bath({

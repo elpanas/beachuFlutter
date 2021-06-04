@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:beachu/constants.dart';
+import 'package:beachu/functions.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class BathProvider extends ChangeNotifier {
@@ -12,7 +14,7 @@ class BathProvider extends ChangeNotifier {
   bool _result = false;
   String _message = 'Loading...';
 
-  // GET BATH INFOS FROM THE WEB SERVICE
+  // GET BATH LIST
   void loadBaths(lat, long) async {
     setLoading(true);
     setMessage('Loading...');
@@ -34,6 +36,56 @@ class BathProvider extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  // GET MANAGER BATH LIST
+  void loadManagerBaths(uid) async {
+    setLoading(true);
+    setMessage('Loading...');
+    try {
+      http.Response res = await http.get(
+        Uri.parse('${url}gest'),
+        headers: {
+          HttpHeaders.authorizationHeader: uid,
+        },
+      ).timeout(Duration(seconds: 5));
+
+      setLoading(false);
+
+      if (res.statusCode == 200) {
+        var resJson = jsonDecode(res.body);
+        _bath = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
+      } else
+        setMessage('No Baths');
+    } on TimeoutException catch (_) {
+      setLoading(false);
+      setMessage('No Baths');
+    }
+
+    notifyListeners();
+  }
+
+  Future<Bath> makeRequest(
+    String uid,
+    String name,
+    int avUmbrellas,
+    int totUmbrellas,
+    String phone,
+    String city,
+    String province,
+  ) async {
+    Position position = await getPosition();
+    return Bath(
+      uid: uid,
+      name: name,
+      avUmbrellas: avUmbrellas,
+      totUmbrellas: totUmbrellas,
+      phone: phone,
+      latitude: position.latitude,
+      longitude: position.longitude,
+      city: city,
+      province: province,
+    );
   }
 
   // POST A NEW BATH TO THE WEB SERVICE
@@ -59,10 +111,8 @@ class BathProvider extends ChangeNotifier {
 
   // UPDATE A BATH TO THE WEB SERVICE
   Future<bool> putBath(Bath value, int index) async {
-    setLoading(true);
-
     http.Response res = await http.put(
-      Uri.parse('$url/${value.bid}'),
+      Uri.parse('$url/${_bath[index].bid}'),
       headers: {
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: hashAuth,
@@ -73,6 +123,35 @@ class BathProvider extends ChangeNotifier {
 
     if (res.statusCode == 200) {
       editBathItem(value, index);
+      setResult(true);
+    }
+
+    return _result;
+  }
+
+  // IN/DECREASE NR OF UMBRELLAS
+  Future<bool> updateUmbrellas(bool increase, int index) async {
+    final int newValue = (increase)
+        ? _bath[index].avUmbrellas + 1
+        : _bath[index].avUmbrellas - 1;
+
+    setLoading(true);
+
+    http.Response res = await http.put(
+      Uri.parse('$url/disp/'),
+      headers: {
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: hashAuth,
+      },
+      body: jsonEncode(<String, dynamic>{
+        'bid': _bath[index].bid!,
+        'av_umbrellas': newValue,
+      }),
+    );
+    setLoading(false);
+
+    if (res.statusCode == 200) {
+      setUmbrellas(newValue, index);
       setResult(true);
     }
 
@@ -100,23 +179,9 @@ class BathProvider extends ChangeNotifier {
     return _result;
   }
 
-  // RETURN LOADING VAR STATUS
+  // VARS GETTERS
   bool isLoading() {
     return _loading;
-  }
-
-  // SET RESULT VAR
-  void setResult(value) => _result = value;
-
-  // SET LOADING VAR AND NOTIFIY
-  void setLoading(value) {
-    _loading = value;
-    notifyListeners();
-  }
-
-  void setMessage(value) {
-    _message = value;
-    notifyListeners();
   }
 
   String getMessage() {
@@ -131,6 +196,20 @@ class BathProvider extends ChangeNotifier {
     return _bath[index];
   }
 
+  // VARS SETTERS
+  void setResult(value) => _result = value;
+
+  void setLoading(value) {
+    _loading = value;
+    notifyListeners();
+  }
+
+  void setMessage(value) {
+    _message = value;
+    notifyListeners();
+  }
+
+  // LIST SETTERS
   void addBathItem(value) {
     _bath.add(value);
     notifyListeners();
@@ -143,6 +222,11 @@ class BathProvider extends ChangeNotifier {
 
   void removeBathItem(index) {
     _bath.removeAt(index);
+    notifyListeners();
+  }
+
+  void setUmbrellas(value, index) {
+    _bath[index].avUmbrellas = value;
     notifyListeners();
   }
 }

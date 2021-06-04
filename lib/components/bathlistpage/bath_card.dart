@@ -7,7 +7,7 @@ class BathCard extends StatelessWidget {
     required this.onTap,
   });
   final String title;
-  final String availableUmbrella;
+  final int availableUmbrella;
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class BathCard extends StatelessWidget {
               color: Colors.green,
             ),
             SizedBox(width: 3),
-            Text(availableUmbrella),
+            Text(availableUmbrella.toString()),
           ],
         ),
         trailing: Icon(Icons.arrow_forward_ios),

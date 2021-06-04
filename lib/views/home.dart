@@ -41,16 +41,40 @@ class HomePage extends StatelessWidget {
                           }),
                       SizedBox(height: 10.0),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        padding: EdgeInsets.symmetric(horizontal: 30.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(child: LoginButton()),
                             SizedBox(width: 5.0),
-                            Expanded(child: GoogleButton()),
+                            Expanded(
+                              child: GoogleButton(
+                                onPressed: () async {
+                                  bool result = await signInWithGoogle();
+                                  if (result) {
+                                    String uid = await getUserId();
+                                    data.loadManagerBaths(uid);
+                                    Navigator.pushNamed(
+                                        context, BathListPage.id);
+                                  }
+                                },
+                              ),
+                            ),
                             SizedBox(width: 5.0),
-                            Expanded(child: FacebookButton())
+                            Expanded(
+                              child: FacebookButton(
+                                onPressed: () async {
+                                  bool result = await signInWithFacebook();
+                                  if (result) {
+                                    String uid = await getUserId();
+                                    data.loadManagerBaths(uid);
+                                    Navigator.pushNamed(
+                                        context, BathListPage.id);
+                                  }
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
