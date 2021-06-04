@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pushNamed(context, BathListPage.id);
                           }),
                       SizedBox(height: 10.0),
-                      (_auth.currentUser != null)
+                      (_auth.currentUser == null)
                           ? Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               child: Row(
@@ -54,38 +54,39 @@ class _HomePageState extends State<HomePage> {
                                   Expanded(
                                     child: GoogleButton(
                                       onPressed: () async {
-                                        bool result = await signInWithGoogle();
-                                        if (result) {
-                                          data.loadManagerBaths(
-                                              _auth.currentUser!.uid);
+                                        String userId =
+                                            await signInWithGoogle();
+                                        if (userId != '') {
+                                          data.setUserId(userId);
+                                          data.loadManagerBaths();
                                           Navigator.pushNamed(
                                               context, BathListPage.id);
                                         }
                                       },
                                     ),
                                   ),
-                                  SizedBox(width: 5.0),
+                                  /*SizedBox(width: 5.0),
                                   Expanded(
                                     child: FacebookButton(
                                       onPressed: () async {
-                                        bool result =
+                                        String userId =
                                             await signInWithFacebook();
-                                        if (result) {
-                                          data.loadManagerBaths(
-                                              _auth.currentUser!.uid);
+                                        if (userId != '') {
+                                          data.loadManagerBaths();
                                           Navigator.pushNamed(
                                               context, BathListPage.id);
                                         }
                                       },
                                     ),
-                                  ),
+                                  ),*/
                                 ],
                               ),
                             )
                           : SimpleButton(
                               title: 'LogOut',
                               onPressed: () async {
-                                _auth.signOut();
+                                await _auth.signOut();
+                                print(_auth.currentUser);
                                 setState(() {});
                               }),
                     ],

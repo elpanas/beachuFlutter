@@ -13,6 +13,7 @@ class BathProvider extends ChangeNotifier {
   bool _loading = false;
   bool _result = false;
   String _message = 'Loading...';
+  String _uid = '';
 
   // GET BATH LIST
   void loadBaths() async {
@@ -42,14 +43,14 @@ class BathProvider extends ChangeNotifier {
   }
 
   // GET MANAGER BATH LIST
-  void loadManagerBaths(uid) async {
+  void loadManagerBaths() async {
     setLoading(true);
     setMessage('Loading...');
     try {
       http.Response res = await http.get(
         Uri.parse('${url}gest'),
         headers: {
-          HttpHeaders.authorizationHeader: uid,
+          HttpHeaders.authorizationHeader: _uid,
         },
       ).timeout(Duration(seconds: 5));
 
@@ -180,6 +181,11 @@ class BathProvider extends ChangeNotifier {
     }
 
     return _result;
+  }
+
+  void setUserId(userId) {
+    _uid = userId;
+    notifyListeners();
   }
 
   // VARS GETTERS

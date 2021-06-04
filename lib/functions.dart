@@ -49,7 +49,7 @@ Future<bool> signInWithEmail(email, password) async {
   }
 }
 
-Future<bool> signInWithGoogle() async {
+Future<String> signInWithGoogle() async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -68,19 +68,28 @@ Future<bool> signInWithGoogle() async {
       await FirebaseAuth.instance.signInWithCredential(credential);
 
   if (userCredential.user != null)
-    return true;
+    return userCredential.user!.uid;
   else
-    return false;
+    return '';
 }
 
-Future<bool> signInWithFacebook() async {
+Future<String> signInWithFacebook() async {
   // Trigger the sign-in flow
-  final LoginResult result = await FacebookAuth.instance.login(
-      loginBehavior: LoginBehavior
-          .nativeWithFallback); // by default we request the email and the public profile
+  final LoginResult result = await FacebookAuth.instance.login();
 
-  if (result.status == LoginStatus.success)
-    return true;
-  else
-    return false;
+  // Create a credential from the access token
+  if (result.accessToken != null) {
+    final facebookAuthCredential =
+        FacebookAuthProvider.credential(result.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    final userCredential = await FirebaseAuth.instance
+        .signInWithCredential(facebookAuthCredential);
+
+    if (userCredential.user != null)
+      return userCredential.user!.uid;
+    else
+      return '';
+  } else
+    return '';
 }

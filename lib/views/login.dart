@@ -60,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
                       _pswController.text,
                     );
                     if (result) {
-                      data.loadManagerBaths(_auth.currentUser!.uid);
+                      data.setUserId(_auth.currentUser!.uid);
+                      data.loadManagerBaths();
                       Navigator.pushNamed(context, BathListPage.id);
                     } else
                       ScaffoldMessenger.of(context).showSnackBar(
