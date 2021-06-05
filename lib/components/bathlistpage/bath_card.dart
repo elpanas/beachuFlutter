@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class BathCard extends StatelessWidget {
-  const BathCard({
-    required this.title,
-    required this.availableUmbrella,
-    required this.onTap,
-  });
+  const BathCard(
+      {required this.title,
+      required this.availableUmbrella,
+      required this.onTap,
+      required this.onLongPress});
   final String title;
   final int availableUmbrella;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -34,6 +35,7 @@ class BathCard extends StatelessWidget {
         ),
         trailing: Icon(Icons.arrow_forward_ios),
         onTap: onTap,
+        onLongPress: onLongPress,
       ),
     );
   }

@@ -113,6 +113,7 @@ class BathProvider extends ChangeNotifier {
 
     if (res.statusCode == 200) {
       addBathItem(value);
+      loadManagerBaths();
       _result = true;
     } else
       print(res.body);
@@ -172,6 +173,8 @@ class BathProvider extends ChangeNotifier {
     );
 
     loading = false;
+
+    print(bid);
 
     if (res.statusCode == 200) {
       removeBathItem(index);

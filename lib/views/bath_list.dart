@@ -1,11 +1,11 @@
 import 'package:beachu/components/action_button.dart';
+import 'package:beachu/components/bathlistpage/bath_alert.dart';
 import 'package:beachu/components/bathlistpage/bath_card.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:beachu/views/new_bath.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,6 @@ class BathListPage extends StatefulWidget {
 }
 
 class _BathListPageState extends State<BathListPage> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
@@ -33,7 +32,7 @@ class _BathListPageState extends State<BathListPage> {
                 ),
             ],
           ),
-          floatingActionButton: (_auth.currentUser != null)
+          floatingActionButton: (data.userId != '')
               ? FloatingActionButton(
                   child: Icon(Icons.add),
                   backgroundColor: Colors.orange,
@@ -66,6 +65,21 @@ class _BathListPageState extends State<BathListPage> {
                                     BathPage.id,
                                     arguments: BathIndex(index),
                                   ),
+                                  onLongPress: () {
+                                    showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return DeleteAlert(
+                                          onPressed: () async {
+                                            bool result =
+                                                await data.deleteBath(index);
+                                            if (result) Navigator.pop(context);
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
                                 );
                               },
                             ),

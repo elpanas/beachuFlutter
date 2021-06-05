@@ -38,14 +38,6 @@ class BathPage extends StatelessWidget {
                       );
                     },
                   ),
-                if (data.userId == _bath.uid)
-                  ActionIconButton(
-                    icon: Icons.delete,
-                    onPressed: () async {
-                      bool result = await data.deleteBath(args.index);
-                      if (result) Navigator.pop(context);
-                    },
-                  ),
               ],
             ),
             body: Column(
