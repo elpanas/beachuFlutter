@@ -1,3 +1,4 @@
+import 'package:beachu/components/action_button.dart';
 import 'package:beachu/components/bathlistpage/bath_card.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
@@ -24,6 +25,13 @@ class _BathListPageState extends State<BathListPage> {
         return Scaffold(
           appBar: AppBar(
             title: Text('Available Baths'),
+            actions: [
+              if (data.userId != '')
+                ActionIconButton(
+                  icon: Icons.umbrella,
+                  onPressed: () => data.loadManagerBaths(),
+                ),
+            ],
           ),
           floatingActionButton: (_auth.currentUser != null)
               ? FloatingActionButton(
