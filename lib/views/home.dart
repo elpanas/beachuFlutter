@@ -1,5 +1,6 @@
 import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
+import 'package:beachu/components/logout_button.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
@@ -46,56 +47,51 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(child: LoginButton()),
+                                  LoginButton(),
                                   SizedBox(width: 5.0),
-                                  Expanded(
-                                    child: GoogleButton(
-                                      onPressed: () async {
-                                        String userId =
-                                            await signInWithGoogle();
-                                        if (userId != '') {
-                                          data.userId = userId;
-                                          data.loadManagerBaths();
-                                          Navigator.pushNamed(
-                                              context, BathListPage.id);
-                                        } else {
-                                          SnackBar(
-                                            content: Text(
-                                              'Something went wrong',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            backgroundColor: Colors.orange,
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 5.0),
-                                          );
-                                        }
-                                      },
-                                    ),
+                                  GoogleButton(
+                                    onPressed: () async {
+                                      String userId = await signInWithGoogle();
+                                      if (userId != '') {
+                                        data.userId = userId;
+                                        data.loadManagerBaths();
+                                        Navigator.pushNamed(
+                                            context, BathListPage.id);
+                                      } else {
+                                        SnackBar(
+                                          content: Text(
+                                            'Something went wrong',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          backgroundColor: Colors.orange,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 5.0),
+                                        );
+                                      }
+                                    },
                                   ),
                                   /*SizedBox(width: 5.0),
-                                  Expanded(
-                                    child: FacebookButton(
-                                      onPressed: () async {
-                                        String userId =
-                                            await signInWithFacebook();
-                                        if (userId != '') {
-                                          data.loadManagerBaths();
-                                          Navigator.pushNamed(
-                                              context, BathListPage.id);
-                                        }
-                                      },
-                                    ),
+                                  FacebookButton(
+                                    onPressed: () async {
+                                      String userId =
+                                          await signInWithFacebook();
+                                      if (userId != '') {
+                                        data.loadManagerBaths();
+                                        Navigator.pushNamed(
+                                            context, BathListPage.id);
+                                      }
+                                    },
                                   ),*/
                                 ],
                               ),
                             )
-                          : SimpleButton(
-                              title: 'Logout',
+                          : LogoutButton(
                               onPressed: () async {
                                 await _auth.signOut();
                                 data.userId = '';
-                              }),
+                              },
+                            ),
                     ],
                   ),
                 )

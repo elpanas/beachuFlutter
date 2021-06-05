@@ -42,8 +42,6 @@ class BathProvider extends ChangeNotifier {
   Future<bool> putHandler(int index, int newValue) async {
     loading = true;
 
-    print(hashAuth);
-
     http.Response res = await http.put(
       Uri.parse('$url/disp/'),
       headers: {
@@ -103,7 +101,6 @@ class BathProvider extends ChangeNotifier {
   // POST A NEW BATH TO THE WEB SERVICE
   Future<bool> postBath(Bath value) async {
     loading = true;
-    print(jsonEncode(value));
     http.Response res = await http.post(
       Uri.parse(url),
       headers: {
@@ -126,20 +123,24 @@ class BathProvider extends ChangeNotifier {
   // UPDATE A BATH TO THE WEB SERVICE
   Future<bool> putBath(Bath value, int index) async {
     loading = true;
-    http.Response res = await http.put(
-      Uri.parse('$url/${_bath[index].bid}'),
-      headers: {
-        'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: hashAuth,
-      },
-      body: jsonEncode(value),
-    );
-    loading = false;
 
-    if (res.statusCode == 200) {
-      editBathItem(value, index);
-      _result = true;
-    }
+    if (value.avUmbrellas <= value.totUmbrellas) {
+      http.Response res = await http.put(
+        Uri.parse('$url/${_bath[index].bid}'),
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: hashAuth,
+        },
+        body: jsonEncode(value),
+      );
+      loading = false;
+
+      if (res.statusCode == 200) {
+        editBathItem(value, index);
+        _result = true;
+      }
+    } else
+      _result = false;
 
     return _result;
   }

@@ -8,12 +8,14 @@ class GoogleButton extends StatelessWidget {
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      child: Icon(FontAwesomeIcons.google),
-      style: kButtonStyle.copyWith(
-        foregroundColor: MaterialStateProperty.all(Colors.red),
+    return Expanded(
+      child: OutlinedButton(
+        child: Icon(FontAwesomeIcons.google),
+        style: kButtonStyle.copyWith(
+          foregroundColor: MaterialStateProperty.all(Colors.red),
+        ),
+        onPressed: onPressed,
       ),
-      onPressed: onPressed,
     );
   }
 }

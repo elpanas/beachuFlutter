@@ -28,7 +28,7 @@ class _BathListPageState extends State<BathListPage> {
             actions: [
               if (data.userId != '')
                 ActionIconButton(
-                  icon: Icons.umbrella,
+                  icon: Icons.admin_panel_settings,
                   onPressed: () => data.loadManagerBaths(),
                 ),
             ],

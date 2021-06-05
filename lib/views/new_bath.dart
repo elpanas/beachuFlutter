@@ -16,7 +16,6 @@ class NewBath extends StatefulWidget {
 
 class _NewBathState extends State<NewBath> {
   TextEditingController _nameController = TextEditingController(),
-      _avUmbrellasController = TextEditingController(),
       _totUmbrellasController = TextEditingController(),
       _phoneController = TextEditingController(),
       _cityController = TextEditingController(),
@@ -48,18 +47,10 @@ class _NewBathState extends State<NewBath> {
                           controller: _nameController,
                           labelText: 'Type the name of the bath',
                         ),
-                        Row(
-                          children: [
-                            BathField(
-                              controller: _avUmbrellasController,
-                              labelText: 'Av. Umbrellas',
-                            ),
-                            SizedBox(width: 20.0),
-                            BathField(
-                              controller: _totUmbrellasController,
-                              labelText: 'Tot. Umbrellas',
-                            ),
-                          ],
+                        SizedBox(width: 10.0),
+                        BathField(
+                          controller: _totUmbrellasController,
+                          labelText: 'Tot. Umbrellas',
                         ),
                         BathField(
                           controller: _phoneController,
@@ -89,7 +80,7 @@ class _NewBathState extends State<NewBath> {
                               Bath bath = await data.makeRequest(
                                 _auth.currentUser!.uid,
                                 _nameController.text,
-                                int.parse(_avUmbrellasController.text),
+                                int.parse(_totUmbrellasController.text),
                                 int.parse(_totUmbrellasController.text),
                                 _phoneController.text,
                                 _cityController.text,

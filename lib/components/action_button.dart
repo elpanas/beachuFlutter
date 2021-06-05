@@ -13,7 +13,10 @@ class ActionIconButton extends StatelessWidget {
     return TextButton(
       child: Padding(
         padding: EdgeInsets.only(right: 10.0),
-        child: Icon(icon),
+        child: Icon(
+          icon,
+          color: Colors.orange,
+        ),
       ),
       onPressed: onPressed,
     );

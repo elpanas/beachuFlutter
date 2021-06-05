@@ -8,12 +8,14 @@ class FacebookButton extends StatelessWidget {
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      child: Icon(FontAwesomeIcons.facebook),
-      style: kButtonStyle.copyWith(
-        foregroundColor: MaterialStateProperty.all(Colors.blue),
+    return Expanded(
+      child: OutlinedButton(
+        child: Icon(FontAwesomeIcons.facebook),
+        style: kButtonStyle.copyWith(
+          foregroundColor: MaterialStateProperty.all(Colors.blue),
+        ),
+        onPressed: () {},
       ),
-      onPressed: () {},
     );
   }
 }
