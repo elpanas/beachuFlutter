@@ -21,17 +21,13 @@ class BathPage extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments as BathIndex;
     return Consumer<BathProvider>(
       builder: (context, data, child) {
-        Bath _bath = data.getBathItem(args.index);
+        Bath _bath = data.bath[args.index];
         return ModalProgressHUD(
-          inAsyncCall: data.isLoading(),
+          inAsyncCall: data.loading,
           child: Scaffold(
             appBar: AppBar(
               actions: [
-                ActionIconButton(
-                  icon: Icons.favorite_outline,
-                  onPressed: () {},
-                ),
-                if (_auth.currentUser?.uid == _bath.uid)
+                if (data.userId == _bath.uid)
                   ActionIconButton(
                     icon: Icons.edit,
                     onPressed: () {
@@ -42,15 +38,12 @@ class BathPage extends StatelessWidget {
                       );
                     },
                   ),
-                if (_auth.currentUser?.uid == _bath.uid)
+                if (data.userId == _bath.uid)
                   ActionIconButton(
                     icon: Icons.delete,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        EditBath.id,
-                        arguments: BathIndex(args.index),
-                      );
+                    onPressed: () async {
+                      bool result = await data.deleteBath(args.index);
+                      if (result) Navigator.pop(context);
                     },
                   ),
               ],
@@ -62,19 +55,23 @@ class BathPage extends StatelessWidget {
                 BathSubTitle(),
                 Row(
                   children: [
-                    BathContainer(
-                      title: 'DISPONIBILI',
-                      icon: Icons.beach_access,
-                      colour: Colors.green,
-                      info: _bath.avUmbrellas.toString(),
-                    ),
-                    TextButton(
-                      onPressed: () => _bath.openMap(args.index),
+                    Expanded(
                       child: BathContainer(
-                        title: 'POSIZIONE',
-                        icon: Icons.location_on,
-                        colour: Colors.blue,
-                        info: 'Vai',
+                        title: 'AVAILABLE',
+                        icon: Icons.beach_access,
+                        colour: Colors.green,
+                        info: data.bath[args.index].avUmbrellas.toString(),
+                      ),
+                    ),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () => _bath.openMap(args.index),
+                        child: BathContainer(
+                          title: 'POSITION',
+                          icon: Icons.location_on,
+                          colour: Colors.blue,
+                          info: 'Vai',
+                        ),
                       ),
                     ),
                   ],
@@ -86,17 +83,46 @@ class BathPage extends StatelessWidget {
                         onPressed: () => _bath.callNumber(),
                       )
                     : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           UmbrellasIconButton(
                             icon: Icons.remove,
-                            onPressed: () =>
-                                data.updateUmbrellas(false, args.index),
+                            onPressed: () async {
+                              bool _result =
+                                  await data.decreaseUmbrellas(args.index);
+                              if (!_result)
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Min reached',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    backgroundColor: Colors.orange,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 5.0),
+                                  ),
+                                );
+                            },
                           ),
                           SizedBox(width: 20.0),
                           UmbrellasIconButton(
                             icon: Icons.add,
-                            onPressed: () =>
-                                data.updateUmbrellas(true, args.index),
+                            onPressed: () async {
+                              bool _result =
+                                  await data.increaseUmbrellas(args.index);
+                              if (!_result)
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Max reached',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    backgroundColor: Colors.orange,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 5.0),
+                                  ),
+                                );
+                            },
                           ),
                         ],
                       )

@@ -1,4 +1,3 @@
-import 'package:beachu/components/homepage/facebook_button.dart';
 import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
 import 'package:beachu/components/simple_button.dart';
@@ -17,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
@@ -28,21 +28,18 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 200.0,
-                ),
+                Image.asset('assets/images/logo.png', height: 200.0),
                 Container(
                   child: Column(
                     children: [
                       SimpleButton(
-                          title: 'Cerca',
+                          title: 'Search...',
                           onPressed: () async {
                             data.loadBaths();
                             Navigator.pushNamed(context, BathListPage.id);
                           }),
                       SizedBox(height: 10.0),
-                      (data.getUserId() == '')
+                      (data.userId == '')
                           ? Padding(
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               child: Row(
@@ -57,10 +54,21 @@ class _HomePageState extends State<HomePage> {
                                         String userId =
                                             await signInWithGoogle();
                                         if (userId != '') {
-                                          data.setUserId(userId);
+                                          data.userId = userId;
                                           data.loadManagerBaths();
                                           Navigator.pushNamed(
                                               context, BathListPage.id);
+                                        } else {
+                                          SnackBar(
+                                            content: Text(
+                                              'Something went wrong',
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            backgroundColor: Colors.orange,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5.0),
+                                          );
                                         }
                                       },
                                     ),
@@ -83,10 +91,10 @@ class _HomePageState extends State<HomePage> {
                               ),
                             )
                           : SimpleButton(
-                              title: 'LogOut',
+                              title: 'Logout',
                               onPressed: () async {
                                 await _auth.signOut();
-                                data.setUserId('');
+                                data.userId = '';
                               }),
                     ],
                   ),

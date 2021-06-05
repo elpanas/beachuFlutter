@@ -22,7 +22,13 @@ Future<Position> getPosition() async {
     return Future.error(
         'Location permissions are permanently denied, we cannot request permissions.');
 
-  return await Geolocator.getCurrentPosition();
+  final loc = await Geolocator.getLastKnownPosition();
+
+  if (loc == null)
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium);
+  else
+    return loc;
 }
 
 // TEXTFIELD VALIDATION

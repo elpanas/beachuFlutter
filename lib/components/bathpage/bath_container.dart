@@ -16,31 +16,29 @@ class BathContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: kBathMargin,
-        padding: kBathPadding,
-        decoration: kBathTitleDecoration,
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: colour,
-              size: 30.0,
-            ),
-            SizedBox(height: 20),
-            Text(
-              title,
-              style: kBathOpacTextStyle,
-            ),
-            SizedBox(height: 20),
-            Text(
-              info,
-              style: kBathTextStyle.copyWith(fontSize: 21),
-            ),
-          ],
-        ),
+    return Container(
+      margin: kBathMargin,
+      padding: kBathPadding,
+      decoration: kBathTitleDecoration,
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            color: colour,
+            size: 30.0,
+          ),
+          SizedBox(height: 20),
+          Text(
+            title,
+            style: kBathOpacTextStyle,
+          ),
+          SizedBox(height: 20),
+          Text(
+            info,
+            style: kBathTextStyle.copyWith(fontSize: 21),
+          ),
+        ],
       ),
     );
   }

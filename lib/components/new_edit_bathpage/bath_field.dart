@@ -2,25 +2,29 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:flutter/material.dart';
 
-class CityField extends StatelessWidget {
-  const CityField({
+class BathField extends StatelessWidget {
+  const BathField({
     required this.controller,
+    required this.labelText,
     this.initialValue,
   });
 
   final TextEditingController controller;
+  final String labelText;
   final String? initialValue;
+
+  void checkAndSetInitialValue() {
+    if (initialValue != null) controller.text = initialValue!;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    checkAndSetInitialValue();
+    return Flexible(
       child: TextFormField(
         controller: controller,
-        initialValue: initialValue,
-        keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          icon: Icon(Icons.location_city),
-          labelText: 'City/Town',
+          labelText: labelText,
           labelStyle: kBathOpacTextStyle,
         ),
         validator: validatorCallback,

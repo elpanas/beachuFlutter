@@ -15,58 +15,66 @@ class BathProvider extends ChangeNotifier {
   String _message = 'Loading...';
   String _uid = '';
 
-  // GET BATH LIST
-  void loadBaths() async {
-    setLoading(true);
-    Position position = await getPosition();
-    double lat = position.latitude;
-    double long = position.longitude;
-    setMessage('Loading...');
+  // HANDLERS
+  void getHandler(url) async {
+    loading = true;
+    message = 'Loading...';
     try {
-      http.Response res = await http
-          .get(Uri.parse('${url}disp/coord/$lat/$long'))
-          .timeout(Duration(seconds: 5));
+      http.Response res =
+          await http.get(Uri.parse(url)).timeout(Duration(seconds: 2));
 
-      setLoading(false);
+      loading = false;
 
       if (res.statusCode == 200) {
         var resJson = jsonDecode(res.body);
+        print(resJson);
         _bath = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
+        _result = true;
       } else
-        setMessage('No Baths');
+        message = 'No Baths';
     } on TimeoutException catch (_) {
-      setLoading(false);
-      setMessage('No Baths');
+      message = 'No Baths';
+    } finally {
+      loading = false;
+    }
+  }
+
+  Future<bool> putHandler(int index, int newValue) async {
+    loading = true;
+
+    print(hashAuth);
+
+    http.Response res = await http.put(
+      Uri.parse('$url/disp/'),
+      headers: {
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: hashAuth,
+      },
+      body: jsonEncode(<String, dynamic>{
+        'bid': _bath[index].bid!,
+        'av_umbrellas': newValue,
+      }),
+    );
+    loading = false;
+
+    if (res.statusCode == 200) {
+      setUmbrellas(newValue, index);
+      _result = true;
     }
 
-    notifyListeners();
+    return _result;
+  }
+
+  // GET BATH LIST
+  void loadBaths() async {
+    Position pos = await getPosition();
+    getHandler('${url}disp/coord/${pos.latitude}/${pos.longitude}');
   }
 
   // GET MANAGER BATH LIST
-  void loadManagerBaths() async {
-    setLoading(true);
-    setMessage('Loading...');
-    try {
-      http.Response res = await http.get(
-        Uri.parse('${url}gest'),
-        headers: {
-          HttpHeaders.authorizationHeader: _uid,
-        },
-      ).timeout(Duration(seconds: 5));
-
-      setLoading(false);
-
-      if (res.statusCode == 200) {
-        var resJson = jsonDecode(res.body);
-        _bath = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
-      } else
-        setMessage('No Baths');
-    } on TimeoutException catch (_) {
-      setLoading(false);
-      setMessage('No Baths');
-    }
-
-    notifyListeners();
+  void loadManagerBaths() {
+    print(_uid);
+    getHandler('${url}gest/$_uid');
   }
 
   Future<Bath> makeRequest(
@@ -94,78 +102,67 @@ class BathProvider extends ChangeNotifier {
 
   // POST A NEW BATH TO THE WEB SERVICE
   Future<bool> postBath(Bath value) async {
-    setLoading(true);
+    loading = true;
+    print(jsonEncode(value));
     http.Response res = await http.post(
       Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: hashAuth,
       },
-      body: jsonEncode(_bath),
+      body: jsonEncode(value),
     );
-    setLoading(false);
+    loading = false;
 
     if (res.statusCode == 200) {
       addBathItem(value);
-      setResult(true);
-    }
+      _result = true;
+    } else
+      print(res.body);
 
     return _result;
   }
 
   // UPDATE A BATH TO THE WEB SERVICE
   Future<bool> putBath(Bath value, int index) async {
+    loading = true;
     http.Response res = await http.put(
       Uri.parse('$url/${_bath[index].bid}'),
       headers: {
         'Content-Type': 'application/json',
         HttpHeaders.authorizationHeader: hashAuth,
       },
-      body: jsonEncode(_bath),
+      body: jsonEncode(value),
     );
-    setLoading(false);
+    loading = false;
 
     if (res.statusCode == 200) {
       editBathItem(value, index);
-      setResult(true);
+      _result = true;
     }
 
     return _result;
   }
 
   // IN/DECREASE NR OF UMBRELLAS
-  Future<bool> updateUmbrellas(bool increase, int index) async {
-    final int newValue = (increase)
-        ? _bath[index].avUmbrellas + 1
-        : _bath[index].avUmbrellas - 1;
+  Future<bool> increaseUmbrellas(int index) async {
+    if (_bath[index].avUmbrellas < _bath[index].totUmbrellas)
+      return await putHandler(index, _bath[index].avUmbrellas + 1);
+    else
+      return false;
+  }
 
-    setLoading(true);
-
-    http.Response res = await http.put(
-      Uri.parse('$url/disp/'),
-      headers: {
-        'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: hashAuth,
-      },
-      body: jsonEncode(<String, dynamic>{
-        'bid': _bath[index].bid!,
-        'av_umbrellas': newValue,
-      }),
-    );
-    setLoading(false);
-
-    if (res.statusCode == 200) {
-      setUmbrellas(newValue, index);
-      setResult(true);
-    }
-
-    return _result;
+  Future<bool> decreaseUmbrellas(int index) async {
+    if (_bath[index].avUmbrellas > 0)
+      return await putHandler(index, _bath[index].avUmbrellas - 1);
+    else
+      return false;
   }
 
   // DELETE A BATH
-  Future<bool> deleteBath(String bid, int index) async {
-    setLoading(true);
-
+  Future<bool> deleteBath(int index) async {
+    loading = true;
+    String? bid = _bath[index].bid;
     http.Response res = await http.delete(
       Uri.parse('$url/$bid'),
       headers: {
@@ -173,52 +170,41 @@ class BathProvider extends ChangeNotifier {
       },
     );
 
-    setLoading(false);
+    loading = false;
 
     if (res.statusCode == 200) {
       removeBathItem(index);
-      setResult(true);
+      _result = true;
     }
 
     return _result;
   }
 
-  void setUserId(userId) {
+  // VARS GETTERS
+  get userId => _uid;
+  get loading => _loading;
+  get message => _message;
+  get bathCount => _bath.length;
+  get bath => _bath;
+
+  // VARS SETTERS
+  set userId(userId) {
     _uid = userId;
     notifyListeners();
   }
 
-  String getUserId() {
-    return _uid;
-  }
-
-  // VARS GETTERS
-  bool isLoading() {
-    return _loading;
-  }
-
-  String getMessage() {
-    return _message;
-  }
-
-  int getBathItemCount() {
-    return _bath.length;
-  }
-
-  Bath getBathItem(index) {
-    return _bath[index];
-  }
-
-  // VARS SETTERS
-  void setResult(value) => _result = value;
-
-  void setLoading(value) {
+  set loading(value) {
     _loading = value;
     notifyListeners();
   }
 
-  void setMessage(value) {
+  set message(value) {
     _message = value;
+    notifyListeners();
+  }
+
+  set bath(value) {
+    _bath = value;
     notifyListeners();
   }
 
@@ -235,6 +221,7 @@ class BathProvider extends ChangeNotifier {
 
   void removeBathItem(index) {
     _bath.removeAt(index);
+    if (_bath.length == 0) _message = 'No Baths';
     notifyListeners();
   }
 

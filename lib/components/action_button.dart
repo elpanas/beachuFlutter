@@ -12,7 +12,7 @@ class ActionIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       child: Padding(
-        padding: EdgeInsets.only(right: 20.0),
+        padding: EdgeInsets.only(right: 10.0),
         child: Icon(icon),
       ),
       onPressed: onPressed,

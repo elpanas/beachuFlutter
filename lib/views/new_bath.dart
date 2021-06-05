@@ -1,9 +1,4 @@
-import 'package:beachu/components/new_edit_bathpage/available_umbrella_field.dart';
-import 'package:beachu/components/new_edit_bathpage/city_field.dart';
-import 'package:beachu/components/new_edit_bathpage/name_field.dart';
-import 'package:beachu/components/new_edit_bathpage/phone_field.dart';
-import 'package:beachu/components/new_edit_bathpage/province_field.dart';
-import 'package:beachu/components/new_edit_bathpage/tot_umbrellas_field.dart';
+import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
@@ -34,60 +29,92 @@ class _NewBathState extends State<NewBath> {
     return Consumer<BathProvider>(
       builder: (context, data, child) {
         return Scaffold(
+          appBar: AppBar(
+            title: Text('Add New Bath'),
+          ),
           body: ModalProgressHUD(
-            inAsyncCall: data.isLoading(),
+            inAsyncCall: data.loading,
             child: Form(
               key: _formKey,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    NameField(controller: _nameController),
-                    Row(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        AvailUmbrellasField(controller: _avUmbrellasController),
-                        SizedBox(width: 20.0),
-                        TotalUmbrellasField(
-                            controller: _totUmbrellasController),
-                      ],
-                    ),
-                    PhoneNumberField(controller: _phoneController),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        CityField(controller: _cityController),
-                        SizedBox(width: 20.0),
-                        ProvinceField(controller: _provinceController),
-                      ],
-                    ),
-                    SizedBox(height: 20.0),
-                    SimpleButton(
-                      title: 'Inserisci',
-                      onPressed: () async {
-                        bool _validate = _formKey.currentState!.validate(),
-                            _result = false;
-                        if (_validate) {
-                          Bath bath = await data.makeRequest(
-                            _auth.currentUser!.uid,
-                            _nameController.text,
-                            int.parse(_avUmbrellasController.text),
-                            int.parse(_totUmbrellasController.text),
-                            _phoneController.text,
-                            _cityController.text,
-                            _provinceController.text,
-                          );
-                          _result = await data.postBath(bath);
-                          if (_result) Navigator.pop(context);
-                        }
+                        BathField(
+                          controller: _nameController,
+                          labelText: 'Type the name of the bath',
+                        ),
+                        Row(
+                          children: [
+                            BathField(
+                              controller: _avUmbrellasController,
+                              labelText: 'Av. Umbrellas',
+                            ),
+                            SizedBox(width: 20.0),
+                            BathField(
+                              controller: _totUmbrellasController,
+                              labelText: 'Tot. Umbrellas',
+                            ),
+                          ],
+                        ),
+                        BathField(
+                          controller: _phoneController,
+                          labelText: 'Phone',
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            BathField(
+                              controller: _cityController,
+                              labelText: 'City',
+                            ),
+                            SizedBox(width: 20.0),
+                            BathField(
+                              controller: _provinceController,
+                              labelText: 'Province',
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20.0),
+                        SimpleButton(
+                          title: 'Add',
+                          onPressed: () async {
+                            bool _validate = _formKey.currentState!.validate(),
+                                _result = false;
+                            if (_validate) {
+                              Bath bath = await data.makeRequest(
+                                _auth.currentUser!.uid,
+                                _nameController.text,
+                                int.parse(_avUmbrellasController.text),
+                                int.parse(_totUmbrellasController.text),
+                                _phoneController.text,
+                                _cityController.text,
+                                _provinceController.text,
+                              );
+                              _result = await data.postBath(bath);
+                              if (_result) Navigator.pop(context);
+                            }
 
-                        if (!_validate || !_result)
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Something went wrong')));
-                      },
+                            if (!_validate || !_result)
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Something went wrong',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  backgroundColor: Colors.orange,
+                                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                                ),
+                              );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

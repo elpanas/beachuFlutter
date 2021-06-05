@@ -60,12 +60,20 @@ class _LoginPageState extends State<LoginPage> {
                       _pswController.text,
                     );
                     if (result) {
-                      data.setUserId(_auth.currentUser!.uid);
+                      data.userId = _auth.currentUser!.uid;
                       data.loadManagerBaths();
-                      Navigator.pushNamed(context, BathListPage.id);
+                      Navigator.pushReplacementNamed(context, BathListPage.id);
                     } else
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Something was wrong')));
+                        SnackBar(
+                          content: Text(
+                            'Something went wrong',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          backgroundColor: Colors.orange,
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                        ),
+                      );
                   },
                 ),
               ],
