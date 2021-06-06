@@ -171,15 +171,13 @@ class BathProvider extends ChangeNotifier {
         HttpHeaders.authorizationHeader: hashAuth,
       },
     );
-
     loading = false;
-
-    print(bid);
 
     if (res.statusCode == 200) {
       removeBathItem(index);
       _result = true;
-    }
+    } else
+      _result = false;
 
     return _result;
   }

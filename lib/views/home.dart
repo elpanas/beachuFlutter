@@ -1,3 +1,4 @@
+import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
 import 'package:beachu/components/logout_button.dart';
@@ -56,11 +57,9 @@ class _HomePageState extends State<HomePage> {
                                   data.loadManagerBaths();
                                   Navigator.pushNamed(context, BathListPage.id);
                                 } else {
-                                  SnackBar(
-                                    content: kErrorTextContent,
-                                    backgroundColor: Colors.orange,
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 5.0),
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBarBuilder(
+                                        title: 'Qualcosa è andato storto'),
                                   );
                                 }
                               },

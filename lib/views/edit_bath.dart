@@ -1,3 +1,4 @@
+import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
@@ -112,11 +113,8 @@ class _EditBathState extends State<EditBath> {
 
                             if (!_validate || !_result)
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: kErrorTextContent,
-                                  backgroundColor: Colors.orange,
-                                  padding: EdgeInsets.symmetric(vertical: 5.0),
-                                ),
+                                snackBarBuilder(
+                                    title: 'Qualcosa è andato storto'),
                               );
                           },
                         ),

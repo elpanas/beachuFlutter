@@ -60,7 +60,13 @@ const kBathPadding = EdgeInsets.symmetric(
   vertical: 30.0,
 );
 
-const kErrorTextContent = Text(
-  'Qualcosa è andato storto',
-  style: TextStyle(color: Colors.black),
+// LOGIN PAGE
+const kDecorationMail = InputDecoration(
+  labelText: 'Scrivi la tua email',
+  labelStyle: kBathOpacTextStyle,
+);
+
+const kDecorationPassword = InputDecoration(
+  labelText: 'Scrivi la tua password',
+  labelStyle: kBathOpacTextStyle,
 );

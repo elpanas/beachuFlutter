@@ -1,3 +1,4 @@
+import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
@@ -35,21 +36,16 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextField(
                   controller: _mailController,
-                  decoration: InputDecoration(
-                    labelText: 'Scrivi la tua email',
-                    labelStyle: kBathOpacTextStyle,
-                  ),
+                  decoration: kDecorationMail,
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 20.0),
                 TextField(
                   controller: _pswController,
-                  decoration: InputDecoration(
-                    labelText: 'Scrivi la password',
-                    labelStyle: kBathOpacTextStyle,
-                  ),
+                  decoration: kDecorationPassword,
                   obscureText: true,
+                  keyboardType: TextInputType.visiblePassword,
                 ),
                 SizedBox(height: 20.0),
                 SimpleButton(
@@ -65,12 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushReplacementNamed(context, BathListPage.id);
                     } else
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: kErrorTextContent,
-                          backgroundColor: Colors.orange,
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
-                        ),
-                      );
+                          snackBarBuilder(title: 'Qualcosa è andato storto'));
                   },
                 ),
               ],

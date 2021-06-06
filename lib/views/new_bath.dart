@@ -1,3 +1,4 @@
+import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
@@ -52,10 +53,12 @@ class _NewBathState extends State<NewBath> {
                         BathField(
                           controller: _totUmbrellasController,
                           labelText: 'Tot. Ombrelloni',
+                          inputType: TextInputType.number,
                         ),
                         BathField(
                           controller: _phoneController,
                           labelText: 'Telefono',
+                          inputType: TextInputType.phone,
                         ),
                         SizedBox(height: 10.0),
                         Row(
@@ -93,11 +96,8 @@ class _NewBathState extends State<NewBath> {
 
                             if (!_validate || !_result)
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: kErrorTextContent,
-                                  backgroundColor: Colors.orange,
-                                  padding: EdgeInsets.symmetric(vertical: 5.0),
-                                ),
+                                snackBarBuilder(
+                                    title: 'Qualcosa è andato storto'),
                               );
                           },
                         ),

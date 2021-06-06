@@ -1,6 +1,8 @@
 import 'package:beachu/components/action_button.dart';
 import 'package:beachu/components/bathlistpage/bath_alert.dart';
 import 'package:beachu/components/bathlistpage/bath_card.dart';
+import 'package:beachu/components/snackbar.dart';
+import 'package:beachu/components/floatingadd_button.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
@@ -32,70 +34,70 @@ class _BathListPageState extends State<BathListPage> {
                 ),
             ],
           ),
-          floatingActionButton: (data.userId != '')
-              ? FloatingActionButton(
-                  child: Icon(Icons.add),
-                  backgroundColor: Colors.orange,
-                  onPressed: () => Navigator.pushNamed(context, NewBath.id),
-                )
-              : null,
+          floatingActionButton: (data.userId != '') ? FloatingAdd() : null,
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
             child: Container(
-                width: double.infinity,
-                child: (data.bathCount > 0)
-                    ? Column(
-                        children: [
-                          SizedBox(height: 15),
-                          Text(
-                            data.bath[0].city,
-                            style: kTitleListStyle,
-                          ),
-                          SizedBox(height: 15),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: data.bathCount,
-                              itemBuilder: (context, index) {
-                                return BathCard(
-                                  title: data.bath[index].name,
-                                  availableUmbrella:
-                                      data.bath[index].avUmbrellas,
-                                  onTap: () => Navigator.pushNamed(
+              width: double.infinity,
+              child: (data.bathCount > 0)
+                  ? Column(
+                      children: [
+                        SizedBox(height: 15),
+                        Text(
+                          data.bath[0].city,
+                          style: kTitleListStyle,
+                        ),
+                        SizedBox(height: 15),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: data.bathCount,
+                            itemBuilder: (context, index) {
+                              return BathCard(
+                                title: data.bath[index].name,
+                                availableUmbrella: data.bath[index].avUmbrellas,
+                                onTap: () {
+                                  Navigator.pushNamed(
                                     context,
                                     BathPage.id,
                                     arguments: BathIndex(index),
-                                  ),
-                                  onLongPress: () {
-                                    showDialog<void>(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (BuildContext context) {
-                                        return DeleteAlert(
-                                          onPressed: () async {
-                                            bool result =
-                                                await data.deleteBath(index);
-                                            if (result) Navigator.pop(context);
-                                          },
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                                  );
+                                },
+                                onLongPress: () {
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (BuildContext context) {
+                                      return DeleteAlert(
+                                        onPressed: () async {
+                                          bool result =
+                                              await data.deleteBath(index);
+                                          if (result) {
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              snackBarBuilder(
+                                                  title:
+                                                      'Stabilimento eliminato'),
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
                           ),
-                        ],
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            data.message,
-                            style: kMessageStyle,
-                          )
-                        ],
-                      )),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Text(
+                        data.message,
+                        style: kMessageStyle,
+                      ),
+                    ),
+            ),
           ),
         );
       },

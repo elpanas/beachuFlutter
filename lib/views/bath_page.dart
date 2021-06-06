@@ -3,6 +3,7 @@ import 'package:beachu/components/bathpage/bath_container.dart';
 import 'package:beachu/components/bathpage/bath_subtitle.dart';
 import 'package:beachu/components/bathpage/bath_title.dart';
 import 'package:beachu/components/bathpage/umbrella_button.dart';
+import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/models/bath_model.dart';
@@ -84,15 +85,7 @@ class BathPage extends StatelessWidget {
                                   await data.decreaseUmbrellas(args.index);
                               if (!_result)
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Minimo raggiunto',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    backgroundColor: Colors.orange,
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 5.0),
-                                  ),
+                                  snackBarBuilder(title: 'Minimo raggiunto'),
                                 );
                             },
                           ),
@@ -104,15 +97,7 @@ class BathPage extends StatelessWidget {
                                   await data.increaseUmbrellas(args.index);
                               if (!_result)
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Massimo raggiunto',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    backgroundColor: Colors.orange,
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 5.0),
-                                  ),
+                                  snackBarBuilder(title: 'Massimo raggiunto'),
                                 );
                             },
                           ),
