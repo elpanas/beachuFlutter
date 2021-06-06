@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class BathField extends StatelessWidget {
   const BathField({
     required this.controller,
+    this.inputType,
     required this.labelText,
     this.initialValue,
   });
 
   final TextEditingController controller;
+  final TextInputType? inputType;
   final String labelText;
   final String? initialValue;
 
@@ -23,6 +25,7 @@ class BathField extends StatelessWidget {
     return Flexible(
       child: TextFormField(
         controller: controller,
+        keyboardType: inputType,
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: kBathOpacTextStyle,

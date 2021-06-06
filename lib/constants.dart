@@ -59,3 +59,8 @@ const kBathOpacTextStyle = TextStyle(
 const kBathPadding = EdgeInsets.symmetric(
   vertical: 30.0,
 );
+
+const kErrorTextContent = Text(
+  'Qualcosa è andato storto',
+  style: TextStyle(color: Colors.black),
+);

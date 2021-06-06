@@ -1,5 +1,6 @@
 import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
 import 'package:beachu/components/simple_button.dart';
+import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
@@ -30,7 +31,7 @@ class _EditBathState extends State<EditBath> {
         Bath _bath = data.bath[args.index];
         return Scaffold(
           appBar: AppBar(
-            title: Text('Edit Bath'),
+            title: Text('Modifica Stabilimento'),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
@@ -48,28 +49,31 @@ class _EditBathState extends State<EditBath> {
                         BathField(
                           controller: _nameController,
                           initialValue: _bath.name,
-                          labelText: 'Bath Name',
+                          labelText: 'Nome',
                         ),
                         SizedBox(height: 10.0),
                         Row(
                           children: [
                             BathField(
                               controller: _avUmbrellasController,
+                              inputType: TextInputType.number,
                               initialValue: _bath.avUmbrellas.toString(),
-                              labelText: 'Available Umbrellas',
+                              labelText: 'Disponibili',
                             ),
                             SizedBox(width: 20.0),
                             BathField(
                               controller: _totUmbrellasController,
+                              inputType: TextInputType.number,
                               initialValue: _bath.totUmbrellas.toString(),
-                              labelText: 'Tot Umbrellas',
+                              labelText: 'Totali',
                             ),
                           ],
                         ),
                         BathField(
                           controller: _phoneController,
+                          inputType: TextInputType.phone,
                           initialValue: _bath.phone,
-                          labelText: 'Phone',
+                          labelText: 'Telefono',
                         ),
                         SizedBox(height: 10.0),
                         Row(
@@ -109,10 +113,7 @@ class _EditBathState extends State<EditBath> {
                             if (!_validate || !_result)
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                    'Something went wrong',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                  content: kErrorTextContent,
                                   backgroundColor: Colors.orange,
                                   padding: EdgeInsets.symmetric(vertical: 5.0),
                                 ),

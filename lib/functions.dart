@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -79,7 +78,7 @@ Future<String> signInWithGoogle() async {
     return '';
 }
 
-Future<String> signInWithFacebook() async {
+/* Future<String> signInWithFacebook() async {
   // Trigger the sign-in flow
   final LoginResult result = await FacebookAuth.instance.login();
 
@@ -98,4 +97,4 @@ Future<String> signInWithFacebook() async {
       return '';
   } else
     return '';
-}
+}*/

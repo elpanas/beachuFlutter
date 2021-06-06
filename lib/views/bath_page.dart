@@ -49,7 +49,7 @@ class BathPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: BathContainer(
-                        title: 'AVAILABLE',
+                        title: 'DISPONIBILI',
                         icon: Icons.beach_access,
                         colour: Colors.green,
                         info: data.bath[args.index].avUmbrellas.toString(),
@@ -59,7 +59,7 @@ class BathPage extends StatelessWidget {
                       child: TextButton(
                         onPressed: () => _bath.openMap(args.index),
                         child: BathContainer(
-                          title: 'POSITION',
+                          title: 'POSIZIONE',
                           icon: Icons.location_on,
                           colour: Colors.blue,
                           info: 'Vai',
@@ -86,7 +86,7 @@ class BathPage extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      'Min reached',
+                                      'Minimo raggiunto',
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     backgroundColor: Colors.orange,
@@ -106,7 +106,7 @@ class BathPage extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      'Max reached',
+                                      'Massimo raggiunto',
                                       style: TextStyle(color: Colors.black),
                                     ),
                                     backgroundColor: Colors.orange,

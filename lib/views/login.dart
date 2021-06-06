@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: _mailController,
                   decoration: InputDecoration(
-                    labelText: 'Type your email',
+                    labelText: 'Scrivi la tua email',
                     labelStyle: kBathOpacTextStyle,
                   ),
                   autofocus: true,
@@ -46,14 +46,14 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: _pswController,
                   decoration: InputDecoration(
-                    labelText: 'Type your password',
+                    labelText: 'Scrivi la password',
                     labelStyle: kBathOpacTextStyle,
                   ),
                   obscureText: true,
                 ),
                 SizedBox(height: 20.0),
                 SimpleButton(
-                  title: 'Login',
+                  title: 'Entra',
                   onPressed: () async {
                     bool result = await signInWithEmail(
                       _mailController.text,
@@ -66,10 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(
-                            'Something went wrong',
-                            style: TextStyle(color: Colors.black),
-                          ),
+                          content: kErrorTextContent,
                           backgroundColor: Colors.orange,
                           padding: EdgeInsets.symmetric(vertical: 5.0),
                         ),

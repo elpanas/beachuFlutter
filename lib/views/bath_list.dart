@@ -23,7 +23,7 @@ class _BathListPageState extends State<BathListPage> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Available Baths'),
+            title: Text('Stabilimenti Disponibili'),
             actions: [
               if (data.userId != '')
                 ActionIconButton(

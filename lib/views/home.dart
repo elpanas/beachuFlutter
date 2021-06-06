@@ -2,6 +2,7 @@ import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
 import 'package:beachu/components/logout_button.dart';
 import 'package:beachu/components/simple_button.dart';
+import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: [
                       SimpleButton(
-                          title: 'Search...',
+                          title: 'Cerca...',
                           onPressed: () async {
                             data.loadBaths();
                             Navigator.pushNamed(context, BathListPage.id);
@@ -59,11 +60,7 @@ class _HomePageState extends State<HomePage> {
                                             context, BathListPage.id);
                                       } else {
                                         SnackBar(
-                                          content: Text(
-                                            'Something went wrong',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
+                                          content: kErrorTextContent,
                                           backgroundColor: Colors.orange,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 5.0),

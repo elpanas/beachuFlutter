@@ -1,5 +1,6 @@
 import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
 import 'package:beachu/components/simple_button.dart';
+import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +30,7 @@ class _NewBathState extends State<NewBath> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Add New Bath'),
+            title: Text('Nuovo Stabilimento'),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
@@ -45,34 +46,34 @@ class _NewBathState extends State<NewBath> {
                       children: [
                         BathField(
                           controller: _nameController,
-                          labelText: 'Type the name of the bath',
+                          labelText: 'Nome',
                         ),
                         SizedBox(width: 10.0),
                         BathField(
                           controller: _totUmbrellasController,
-                          labelText: 'Tot. Umbrellas',
+                          labelText: 'Tot. Ombrelloni',
                         ),
                         BathField(
                           controller: _phoneController,
-                          labelText: 'Phone',
+                          labelText: 'Telefono',
                         ),
                         SizedBox(height: 10.0),
                         Row(
                           children: [
                             BathField(
                               controller: _cityController,
-                              labelText: 'City',
+                              labelText: 'Località',
                             ),
                             SizedBox(width: 20.0),
                             BathField(
                               controller: _provinceController,
-                              labelText: 'Province',
+                              labelText: 'Provincia',
                             ),
                           ],
                         ),
                         SizedBox(height: 20.0),
                         SimpleButton(
-                          title: 'Add',
+                          title: 'Aggiungi',
                           onPressed: () async {
                             bool _validate = _formKey.currentState!.validate(),
                                 _result = false;
@@ -93,10 +94,7 @@ class _NewBathState extends State<NewBath> {
                             if (!_validate || !_result)
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                    'Something went wrong',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                                  content: kErrorTextContent,
                                   backgroundColor: Colors.orange,
                                   padding: EdgeInsets.symmetric(vertical: 5.0),
                                 ),
