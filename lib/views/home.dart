@@ -26,73 +26,55 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           body: Container(
             width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/logo.png', height: 200.0),
-                Container(
-                  child: Column(
-                    children: [
-                      SimpleButton(
-                          title: 'Cerca...',
-                          onPressed: () async {
-                            data.loadBaths();
-                            Navigator.pushNamed(context, BathListPage.id);
-                          }),
-                      SizedBox(height: 10.0),
-                      (data.userId == '')
-                          ? Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  LoginButton(),
-                                  SizedBox(width: 5.0),
-                                  GoogleButton(
-                                    onPressed: () async {
-                                      String userId = await signInWithGoogle();
-                                      if (userId != '') {
-                                        data.userId = userId;
-                                        data.loadManagerBaths();
-                                        Navigator.pushNamed(
-                                            context, BathListPage.id);
-                                      } else {
-                                        SnackBar(
-                                          content: kErrorTextContent,
-                                          backgroundColor: Colors.orange,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 5.0),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                  /*SizedBox(width: 5.0),
-                                  FacebookButton(
-                                    onPressed: () async {
-                                      String userId =
-                                          await signInWithFacebook();
-                                      if (userId != '') {
-                                        data.loadManagerBaths();
-                                        Navigator.pushNamed(
-                                            context, BathListPage.id);
-                                      }
-                                    },
-                                  ),*/
-                                ],
-                              ),
-                            )
-                          : LogoutButton(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.asset('assets/images/logo.png', height: 200.0),
+                  SizedBox(height: 50.0),
+                  SimpleButton(
+                      title: 'Cerca...',
+                      onPressed: () async {
+                        data.loadBaths();
+                        Navigator.pushNamed(context, BathListPage.id);
+                      }),
+                  SizedBox(height: 10.0),
+                  (data.userId == '')
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LoginButton(),
+                            SizedBox(width: 5.0),
+                            GoogleButton(
                               onPressed: () async {
-                                await _auth.signOut();
-                                data.userId = '';
+                                String userId = await signInWithGoogle();
+                                if (userId != '') {
+                                  data.userId = userId;
+                                  data.loadManagerBaths();
+                                  Navigator.pushNamed(context, BathListPage.id);
+                                } else {
+                                  SnackBar(
+                                    content: kErrorTextContent,
+                                    backgroundColor: Colors.orange,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 5.0),
+                                  );
+                                }
                               },
                             ),
-                    ],
-                  ),
-                )
-              ],
+                          ],
+                        )
+                      : LogoutButton(
+                          onPressed: () async {
+                            await _auth.signOut();
+                            data.userId = '';
+                          },
+                        )
+                ],
+              ),
             ),
           ),
         );
