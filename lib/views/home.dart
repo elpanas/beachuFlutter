@@ -3,7 +3,6 @@ import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
 import 'package:beachu/components/logout_button.dart';
 import 'package:beachu/components/simple_button.dart';
-import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
@@ -28,27 +27,27 @@ class _HomePageState extends State<HomePage> {
           body: Container(
             width: double.infinity,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Image.asset('assets/images/logo.png', height: 200.0),
-                  SizedBox(height: 50.0),
+                  const SizedBox(height: 50.0),
                   SimpleButton(
                       title: 'Cerca...',
                       onPressed: () async {
                         data.loadBaths();
                         Navigator.pushNamed(context, BathListPage.id);
                       }),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   (data.userId == '')
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             LoginButton(),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             GoogleButton(
                               onPressed: () async {
                                 String userId = await signInWithGoogle();

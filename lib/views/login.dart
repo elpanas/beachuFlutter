@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, data, child) {
         return Scaffold(
           body: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 10.0,
               horizontal: 20.0,
             ),
@@ -40,14 +40,14 @@ class _LoginPageState extends State<LoginPage> {
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextField(
                   controller: _pswController,
                   decoration: kDecorationPassword,
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 SimpleButton(
                   title: 'Entra',
                   onPressed: () async {

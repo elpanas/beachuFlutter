@@ -6,15 +6,15 @@ class DeleteAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('WARNING'),
-      content: Text('Do you want to delete?'),
+      title: const Text('WARNING'),
+      content: const Text('Do you want to delete?'),
       actions: [
         TextButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: Text('OK'),
+          child: const Text('OK'),
           onPressed: onPressed,
         ),
       ],

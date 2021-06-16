@@ -8,10 +8,8 @@ class LoginButton extends StatelessWidget {
     return Expanded(
       child: OutlinedButton(
         onPressed: () => Navigator.pushNamed(context, LoginPage.id),
-        child: Icon(Icons.login_outlined),
-        style: kButtonStyle.copyWith(
-          foregroundColor: MaterialStateProperty.all(Colors.white60),
-        ),
+        child: const Icon(Icons.login_outlined),
+        style: kLogInOutButtonStyle,
       ),
     );
   }

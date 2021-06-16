@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           primaryColor: Colors.orange,
           appBarTheme: AppBarTheme(
-            backgroundColor: Color(0xFF232329),
+            backgroundColor: const Color(0xFF232329),
             foregroundColor: Colors.white60,
           ),
         ),

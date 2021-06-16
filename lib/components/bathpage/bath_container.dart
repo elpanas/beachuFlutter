@@ -28,12 +28,12 @@ class BathContainer extends StatelessWidget {
             color: colour,
             size: 30.0,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             title,
             style: kBathOpacTextStyle,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             info,
             style: kBathTextStyle.copyWith(fontSize: 21),

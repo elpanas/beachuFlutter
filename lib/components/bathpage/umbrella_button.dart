@@ -14,7 +14,7 @@ class UmbrellasIconButton extends StatelessWidget {
     return Ink(
       decoration: ShapeDecoration(
         color: Colors.orange,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
       ),
       child: IconButton(
         icon: Icon(icon),

@@ -1,7 +1,6 @@
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
 import 'package:beachu/components/simple_button.dart';
-import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
@@ -32,7 +31,7 @@ class _EditBathState extends State<EditBath> {
         Bath _bath = data.bath[args.index];
         return Scaffold(
           appBar: AppBar(
-            title: Text('Modifica Stabilimento'),
+            title: const Text('Modifica Stabilimento'),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
@@ -41,18 +40,18 @@ class _EditBathState extends State<EditBath> {
                 child: Form(
                   key: _formKey,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         BathField(
                           controller: _nameController,
                           initialValue: _bath.name,
                           labelText: 'Nome',
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         Row(
                           children: [
                             BathField(
@@ -61,7 +60,7 @@ class _EditBathState extends State<EditBath> {
                               initialValue: _bath.avUmbrellas.toString(),
                               labelText: 'Disponibili',
                             ),
-                            SizedBox(width: 20.0),
+                            const SizedBox(width: 20.0),
                             BathField(
                               controller: _totUmbrellasController,
                               inputType: TextInputType.number,
@@ -76,7 +75,7 @@ class _EditBathState extends State<EditBath> {
                           initialValue: _bath.phone,
                           labelText: 'Telefono',
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         Row(
                           children: [
                             BathField(
@@ -84,7 +83,7 @@ class _EditBathState extends State<EditBath> {
                               initialValue: _bath.city,
                               labelText: 'City',
                             ),
-                            SizedBox(width: 20.0),
+                            const SizedBox(width: 20.0),
                             BathField(
                               controller: _provinceController,
                               initialValue: _bath.province,
@@ -92,7 +91,7 @@ class _EditBathState extends State<EditBath> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         SimpleButton(
                           title: 'Update',
                           onPressed: () async {

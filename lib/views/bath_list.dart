@@ -7,7 +7,6 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_page.dart';
-import 'package:beachu/views/new_bath.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,7 @@ class _BathListPageState extends State<BathListPage> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Stabilimenti Disponibili'),
+            title: const Text('Stabilimenti Disponibili'),
             actions: [
               if (data.userId != '')
                 ActionIconButton(
@@ -42,12 +41,12 @@ class _BathListPageState extends State<BathListPage> {
               child: (data.bathCount > 0)
                   ? Column(
                       children: [
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Text(
                           data.bath[0].city,
                           style: kTitleListStyle,
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Expanded(
                           child: ListView.builder(
                             itemCount: data.bathCount,

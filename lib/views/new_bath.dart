@@ -31,14 +31,14 @@ class _NewBathState extends State<NewBath> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Nuovo Stabilimento'),
+            title: const Text('Nuovo Stabilimento'),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
             child: Form(
               key: _formKey,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: kNewBathPadding,
                 child: Center(
                   child: SingleChildScrollView(
                     child: Column(
@@ -49,7 +49,7 @@ class _NewBathState extends State<NewBath> {
                           controller: _nameController,
                           labelText: 'Nome',
                         ),
-                        SizedBox(width: 10.0),
+                        const SizedBox(width: 10.0),
                         BathField(
                           controller: _totUmbrellasController,
                           labelText: 'Tot. Ombrelloni',
@@ -60,21 +60,21 @@ class _NewBathState extends State<NewBath> {
                           labelText: 'Telefono',
                           inputType: TextInputType.phone,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         Row(
                           children: [
                             BathField(
                               controller: _cityController,
                               labelText: 'Località',
                             ),
-                            SizedBox(width: 20.0),
+                            const SizedBox(width: 20.0),
                             BathField(
                               controller: _provinceController,
                               labelText: 'Provincia',
                             ),
                           ],
                         ),
-                        SizedBox(height: 20.0),
+                        const SizedBox(height: 20.0),
                         SimpleButton(
                           title: 'Aggiungi',
                           onPressed: () async {

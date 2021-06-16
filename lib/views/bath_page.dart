@@ -44,7 +44,7 @@ class BathPage extends StatelessWidget {
             body: Column(
               children: [
                 BathTitle(title: _bath.name),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 BathSubTitle(),
                 Row(
                   children: [
@@ -69,7 +69,7 @@ class BathPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 (_auth.currentUser?.uid != _bath.uid)
                     ? SimpleButton(
                         title: 'Chiama',
@@ -89,7 +89,7 @@ class BathPage extends StatelessWidget {
                                 );
                             },
                           ),
-                          SizedBox(width: 20.0),
+                          const SizedBox(width: 20.0),
                           UmbrellasIconButton(
                             icon: Icons.add,
                             onPressed: () async {

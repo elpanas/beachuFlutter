@@ -1,11 +1,13 @@
+import 'package:beachu/constants.dart';
 import 'package:flutter/material.dart';
 
 class BathCard extends StatelessWidget {
-  const BathCard(
-      {required this.title,
-      required this.availableUmbrella,
-      required this.onTap,
-      required this.onLongPress});
+  const BathCard({
+    required this.title,
+    required this.availableUmbrella,
+    required this.onTap,
+    required this.onLongPress,
+  });
   final String title;
   final int availableUmbrella;
   final VoidCallback onTap;
@@ -13,27 +15,21 @@ class BathCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(
-        horizontal: 10.0,
-        vertical: 4.0,
-      ),
+      margin: kBathCardMargin,
       elevation: 4,
       child: ListTile(
         title: Text(
           title,
-          style: TextStyle(fontSize: 18.0),
+          style: const TextStyle(fontSize: 18.0),
         ),
         subtitle: Row(
           children: [
-            Icon(
-              Icons.beach_access,
-              color: Colors.green,
-            ),
-            SizedBox(width: 3),
+            kBathCardLeadingIcon,
+            const SizedBox(width: 3),
             Text(availableUmbrella.toString()),
           ],
         ),
-        trailing: Icon(Icons.arrow_forward_ios),
+        trailing: const Icon(Icons.arrow_forward_ios),
         onTap: onTap,
         onLongPress: onLongPress,
       ),

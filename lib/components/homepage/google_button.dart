@@ -10,10 +10,8 @@ class GoogleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: OutlinedButton(
-        child: Icon(FontAwesomeIcons.google),
-        style: kButtonStyle.copyWith(
-          foregroundColor: MaterialStateProperty.all(Colors.red),
-        ),
+        child: const Icon(FontAwesomeIcons.google),
+        style: kGoogleButtonStyle,
         onPressed: onPressed,
       ),
     );
