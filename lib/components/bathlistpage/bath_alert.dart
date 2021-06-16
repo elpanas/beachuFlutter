@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class DeleteAlert extends StatelessWidget {
   DeleteAlert({required this.onPressed});
@@ -6,15 +7,15 @@ class DeleteAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('WARNING'),
-      content: const Text('Do you want to delete?'),
+      title: const Text('alert_title').tr(),
+      content: const Text('alert_content').tr(),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: const Text('alert_cancel').tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
         TextButton(
-          child: const Text('OK'),
+          child: const Text('alert_confirm').tr(),
           onPressed: onPressed,
         ),
       ],

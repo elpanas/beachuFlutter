@@ -15,7 +15,11 @@ class SimpleButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         child: Text(title),
-        style: kSimpleButtonStyle,
+        style: kButtonStyle.copyWith(
+          backgroundColor: MaterialStateProperty.all(Colors.orange),
+          foregroundColor: MaterialStateProperty.all(Colors.black87),
+          fixedSize: MaterialStateProperty.all(Size.fromWidth(300.0)),
+        ),
       ),
     );
   }

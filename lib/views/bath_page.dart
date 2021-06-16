@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BathPage extends StatelessWidget {
   static final String id = 'bath_screen';
@@ -39,6 +40,14 @@ class BathPage extends StatelessWidget {
                       );
                     },
                   ),
+                ActionIconButton(
+                  icon: (_bath.fav) ? Icons.favorite : Icons.favorite_outline,
+                  onPressed: () {
+                    (_bath.fav)
+                        ? data.addFav(args.index)
+                        : data.delFav(args.index);
+                  },
+                ),
               ],
             ),
             body: Column(
@@ -50,7 +59,7 @@ class BathPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: BathContainer(
-                        title: 'DISPONIBILI',
+                        title: 'bath_available'.tr(),
                         icon: Icons.beach_access,
                         colour: Colors.green,
                         info: data.bath[args.index].avUmbrellas.toString(),
@@ -60,10 +69,10 @@ class BathPage extends StatelessWidget {
                       child: TextButton(
                         onPressed: () => _bath.openMap(args.index),
                         child: BathContainer(
-                          title: 'POSIZIONE',
+                          title: 'bath_position'.tr(),
                           icon: Icons.location_on,
                           colour: Colors.blue,
-                          info: 'Vai',
+                          info: 'bath_openmap'.tr(),
                         ),
                       ),
                     ),
@@ -72,7 +81,7 @@ class BathPage extends StatelessWidget {
                 const SizedBox(height: 25),
                 (_auth.currentUser?.uid != _bath.uid)
                     ? SimpleButton(
-                        title: 'Chiama',
+                        title: 'bath_call'.tr(),
                         onPressed: () => _bath.callNumber(),
                       )
                     : Row(
@@ -85,7 +94,7 @@ class BathPage extends StatelessWidget {
                                   await data.decreaseUmbrellas(args.index);
                               if (!_result)
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  snackBarBuilder(title: 'Minimo raggiunto'),
+                                  snackBarBuilder(title: 'bath_min'.tr()),
                                 );
                             },
                           ),
@@ -97,7 +106,7 @@ class BathPage extends StatelessWidget {
                                   await data.increaseUmbrellas(args.index);
                               if (!_result)
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  snackBarBuilder(title: 'Massimo raggiunto'),
+                                  snackBarBuilder(title: 'bath_max'.tr()),
                                 );
                             },
                           ),

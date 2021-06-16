@@ -4,21 +4,25 @@ import 'dart:io';
 import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/models/bath_model.dart';
+import 'package:beachu/models/hive_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart';
 
 class BathProvider extends ChangeNotifier {
   List<Bath> _bath = [];
   bool _loading = false;
   bool _result = false;
-  String _message = 'Loading...';
+  String _message = 'loading'.tr();
   String _uid = '';
+  var _box = Hive.box('favourites');
 
   // HANDLERS
   void getHandler(url) async {
     loading = true;
-    message = 'Loading...';
+    message = 'loading'.tr();
     try {
       http.Response res =
           await http.get(Uri.parse(url)).timeout(Duration(seconds: 2));
@@ -31,9 +35,9 @@ class BathProvider extends ChangeNotifier {
         _bath = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
         _result = true;
       } else
-        message = 'No Baths';
+        message = 'no_baths'.tr();
     } on TimeoutException catch (_) {
-      message = 'No Baths';
+      message = 'no_baths'.tr();
     } finally {
       loading = false;
     }
@@ -69,6 +73,12 @@ class BathProvider extends ChangeNotifier {
     getHandler('${url}disp/coord/${pos.latitude}/${pos.longitude}');
   }
 
+  // GET SINGLE BATH
+  // TODO
+  void loadBath(String id) async {
+    getHandler('${url}disp/$id');
+  }
+
   // GET MANAGER BATH LIST
   void loadManagerBaths() {
     print(_uid);
@@ -95,6 +105,7 @@ class BathProvider extends ChangeNotifier {
       longitude: position.longitude,
       city: city,
       province: province,
+      fav: false,
     );
   }
 
@@ -223,12 +234,28 @@ class BathProvider extends ChangeNotifier {
 
   void removeBathItem(index) {
     _bath.removeAt(index);
-    if (_bath.length == 0) _message = 'No Baths';
+    if (_bath.length == 0) _message = 'no_baths'.tr();
     notifyListeners();
   }
 
   void setUmbrellas(value, index) {
     _bath[index].avUmbrellas = value;
+    notifyListeners();
+  }
+
+  // DB SETTERS
+  void addFav(int index) {
+    LocalBath singleBath = LocalBath()
+      ..index = index
+      ..name = _bath[index].name;
+    _box.putAt(index, singleBath);
+    _bath[index].fav = true;
+    notifyListeners();
+  }
+
+  void delFav(int index) {
+    _box.deleteAt(index);
+    _bath[index].fav = false;
     notifyListeners();
   }
 }

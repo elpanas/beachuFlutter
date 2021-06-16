@@ -3,11 +3,12 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
 class Bath extends ChangeNotifier {
-  final String? bid;
-  final String uid;
+  String? bid;
+  String uid;
   String name, phone, city, province;
   int avUmbrellas, totUmbrellas;
   double latitude, longitude;
+  bool fav;
 
   Bath({
     this.bid,
@@ -20,6 +21,7 @@ class Bath extends ChangeNotifier {
     required this.longitude,
     required this.city,
     required this.province,
+    required this.fav,
   });
 
   factory Bath.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class Bath extends ChangeNotifier {
       longitude: json['location']['coordinates'][1],
       city: json['city'],
       province: json['province'],
+      fav: false,
     );
   }
 

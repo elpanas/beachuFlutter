@@ -7,6 +7,7 @@ import 'package:beachu/providers/bath_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditBath extends StatefulWidget {
   static final String id = 'edit_bath_screen';
@@ -31,7 +32,7 @@ class _EditBathState extends State<EditBath> {
         Bath _bath = data.bath[args.index];
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Modifica Stabilimento'),
+            title: const Text('bath_title').tr(),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
@@ -49,7 +50,7 @@ class _EditBathState extends State<EditBath> {
                         BathField(
                           controller: _nameController,
                           initialValue: _bath.name,
-                          labelText: 'Nome',
+                          labelText: 'bath_name'.tr(),
                         ),
                         const SizedBox(height: 10.0),
                         Row(
@@ -58,14 +59,14 @@ class _EditBathState extends State<EditBath> {
                               controller: _avUmbrellasController,
                               inputType: TextInputType.number,
                               initialValue: _bath.avUmbrellas.toString(),
-                              labelText: 'Disponibili',
+                              labelText: 'bath_av_input'.tr(),
                             ),
                             const SizedBox(width: 20.0),
                             BathField(
                               controller: _totUmbrellasController,
                               inputType: TextInputType.number,
                               initialValue: _bath.totUmbrellas.toString(),
-                              labelText: 'Totali',
+                              labelText: 'bath_tot'.tr(),
                             ),
                           ],
                         ),
@@ -73,7 +74,7 @@ class _EditBathState extends State<EditBath> {
                           controller: _phoneController,
                           inputType: TextInputType.phone,
                           initialValue: _bath.phone,
-                          labelText: 'Telefono',
+                          labelText: 'bath_phone'.tr(),
                         ),
                         const SizedBox(height: 10.0),
                         Row(
@@ -81,19 +82,19 @@ class _EditBathState extends State<EditBath> {
                             BathField(
                               controller: _cityController,
                               initialValue: _bath.city,
-                              labelText: 'City',
+                              labelText: 'bath_city'.tr(),
                             ),
                             const SizedBox(width: 20.0),
                             BathField(
                               controller: _provinceController,
                               initialValue: _bath.province,
-                              labelText: 'Province',
+                              labelText: 'bath_province'.tr(),
                             ),
                           ],
                         ),
                         const SizedBox(height: 20.0),
                         SimpleButton(
-                          title: 'Update',
+                          title: 'edit_button'.tr(),
                           onPressed: () async {
                             bool _validate = _formKey.currentState!.validate(),
                                 _result = false;
@@ -112,8 +113,7 @@ class _EditBathState extends State<EditBath> {
 
                             if (!_validate || !_result)
                               ScaffoldMessenger.of(context).showSnackBar(
-                                snackBarBuilder(
-                                    title: 'Qualcosa è andato storto'),
+                                snackBarBuilder(title: 'snack_msg'.tr()),
                               );
                           },
                         ),

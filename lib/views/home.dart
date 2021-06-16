@@ -9,6 +9,7 @@ import 'package:beachu/views/bath_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomePage extends StatefulWidget {
   static final String id = 'home_screen';
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                   Image.asset('assets/images/logo.png', height: 200.0),
                   const SizedBox(height: 50.0),
                   SimpleButton(
-                      title: 'Cerca...',
+                      title: 'search_button'.tr(),
                       onPressed: () async {
                         data.loadBaths();
                         Navigator.pushNamed(context, BathListPage.id);
@@ -57,8 +58,7 @@ class _HomePageState extends State<HomePage> {
                                   Navigator.pushNamed(context, BathListPage.id);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    snackBarBuilder(
-                                        title: 'Qualcosa è andato storto'),
+                                    snackBarBuilder(title: 'snack_msg'.tr()),
                                   );
                                 }
                               },

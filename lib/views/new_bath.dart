@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NewBath extends StatefulWidget {
   static final String id = 'new_bath_screen';
@@ -31,7 +32,7 @@ class _NewBathState extends State<NewBath> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Nuovo Stabilimento'),
+            title: const Text('new_title').tr(),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
@@ -47,17 +48,17 @@ class _NewBathState extends State<NewBath> {
                       children: [
                         BathField(
                           controller: _nameController,
-                          labelText: 'Nome',
+                          labelText: 'bath_name'.tr(),
                         ),
                         const SizedBox(width: 10.0),
                         BathField(
                           controller: _totUmbrellasController,
-                          labelText: 'Tot. Ombrelloni',
+                          labelText: 'bath_tot'.tr(),
                           inputType: TextInputType.number,
                         ),
                         BathField(
                           controller: _phoneController,
-                          labelText: 'Telefono',
+                          labelText: 'bath_phone'.tr(),
                           inputType: TextInputType.phone,
                         ),
                         const SizedBox(height: 10.0),
@@ -65,18 +66,18 @@ class _NewBathState extends State<NewBath> {
                           children: [
                             BathField(
                               controller: _cityController,
-                              labelText: 'Località',
+                              labelText: 'bath_city'.tr(),
                             ),
                             const SizedBox(width: 20.0),
                             BathField(
                               controller: _provinceController,
-                              labelText: 'Provincia',
+                              labelText: 'bath_province'.tr(),
                             ),
                           ],
                         ),
                         const SizedBox(height: 20.0),
                         SimpleButton(
-                          title: 'Aggiungi',
+                          title: 'new_button'.tr(),
                           onPressed: () async {
                             bool _validate = _formKey.currentState!.validate(),
                                 _result = false;
@@ -96,8 +97,7 @@ class _NewBathState extends State<NewBath> {
 
                             if (!_validate || !_result)
                               ScaffoldMessenger.of(context).showSnackBar(
-                                snackBarBuilder(
-                                    title: 'Qualcosa è andato storto'),
+                                snackBarBuilder(title: 'snack_msg'.tr()),
                               );
                           },
                         ),

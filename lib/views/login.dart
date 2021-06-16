@@ -7,6 +7,7 @@ import 'package:beachu/views/bath_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LoginPage extends StatefulWidget {
   static final String id = 'login_screen';
@@ -36,14 +37,20 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextField(
                   controller: _mailController,
-                  decoration: kDecorationMail,
+                  decoration: InputDecoration(
+                    labelText: 'decoration_mail'.tr(),
+                    labelStyle: kBathOpacTextStyle,
+                  ),
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 20.0),
                 TextField(
                   controller: _pswController,
-                  decoration: kDecorationPassword,
+                  decoration: InputDecoration(
+                    labelText: 'decoration_psw'.tr(),
+                    labelStyle: kBathOpacTextStyle,
+                  ),
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                 ),
@@ -61,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushReplacementNamed(context, BathListPage.id);
                     } else
                       ScaffoldMessenger.of(context).showSnackBar(
-                          snackBarBuilder(title: 'Qualcosa è andato storto'));
+                          snackBarBuilder(title: 'snack_msg'.tr()));
                   },
                 ),
               ],

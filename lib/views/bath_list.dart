@@ -10,6 +10,7 @@ import 'package:beachu/views/bath_page.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BathListPage extends StatefulWidget {
   static final String id = 'bath_list_screen';
@@ -24,7 +25,7 @@ class _BathListPageState extends State<BathListPage> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Stabilimenti Disponibili'),
+            title: const Text('bath_list_title').tr(),
             actions: [
               if (data.userId != '')
                 ActionIconButton(
@@ -75,8 +76,7 @@ class _BathListPageState extends State<BathListPage> {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               snackBarBuilder(
-                                                  title:
-                                                      'Stabilimento eliminato'),
+                                                  title: 'bath_deleted'.tr()),
                                             );
                                           }
                                         },
