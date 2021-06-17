@@ -3,7 +3,6 @@ import 'package:beachu/components/bathlistpage/bath_card.dart';
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
-import 'package:beachu/models/hive_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:flutter/material.dart';
