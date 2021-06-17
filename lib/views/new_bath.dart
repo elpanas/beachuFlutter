@@ -79,9 +79,9 @@ class _NewBathState extends State<NewBath> {
                         SimpleButton(
                           title: 'new_button'.tr(),
                           onPressed: () async {
-                            bool _validate = _formKey.currentState!.validate(),
-                                _result = false;
-                            if (_validate) {
+                            bool validate = _formKey.currentState!.validate(),
+                                result = false;
+                            if (validate) {
                               Bath bath = await data.makeRequest(
                                 _auth.currentUser!.uid,
                                 _nameController.text,
@@ -91,11 +91,11 @@ class _NewBathState extends State<NewBath> {
                                 _cityController.text,
                                 _provinceController.text,
                               );
-                              _result = await data.postBath(bath);
-                              if (_result) Navigator.pop(context);
+                              result = await data.postBath(bath);
+                              if (result) Navigator.pop(context);
                             }
 
-                            if (!_validate || !_result)
+                            if (!validate || !result)
                               ScaffoldMessenger.of(context).showSnackBar(
                                 snackBarBuilder(title: 'snack_msg'.tr()),
                               );

@@ -1,4 +1,8 @@
 class BathIndex {
   final int index;
-  BathIndex(this.index);
+  final int? favIndex;
+  BathIndex({
+    required this.index,
+    this.favIndex,
+  });
 }

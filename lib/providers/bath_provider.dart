@@ -12,27 +12,31 @@ import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
 
 class BathProvider extends ChangeNotifier {
-  List<Bath> _bath = [];
+  List<Bath> _bathList = [];
   bool _loading = false;
   bool _result = false;
-  String _message = 'loading'.tr();
+  String _message = 'no_baths'.tr();
   String _uid = '';
-  var _box = Hive.box('favourites');
+  var _favList = Hive.box('favourites');
 
   // HANDLERS
   void getHandler(url) async {
     loading = true;
     message = 'loading'.tr();
     try {
-      http.Response res =
-          await http.get(Uri.parse(url)).timeout(Duration(seconds: 2));
+      http.Response res = await http
+          .get(
+            Uri.parse(url),
+          )
+          .timeout(
+            Duration(seconds: 2),
+          );
 
       loading = false;
 
       if (res.statusCode == 200) {
         var resJson = jsonDecode(res.body);
-        print(resJson);
-        _bath = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
+        _bathList = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
         _result = true;
       } else
         message = 'no_baths'.tr();
@@ -40,6 +44,7 @@ class BathProvider extends ChangeNotifier {
       message = 'no_baths'.tr();
     } finally {
       loading = false;
+      notifyListeners();
     }
   }
 
@@ -53,7 +58,7 @@ class BathProvider extends ChangeNotifier {
         HttpHeaders.authorizationHeader: hashAuth,
       },
       body: jsonEncode(<String, dynamic>{
-        'bid': _bath[index].bid!,
+        'bid': _bathList[index].bid!,
         'av_umbrellas': newValue,
       }),
     );
@@ -68,22 +73,19 @@ class BathProvider extends ChangeNotifier {
   }
 
   // GET BATH LIST
-  void loadBaths() async {
+  loadBaths() async {
     Position pos = await getPosition();
     getHandler('${url}disp/coord/${pos.latitude}/${pos.longitude}');
   }
 
   // GET SINGLE BATH
-  // TODO
-  void loadBath(String id) async {
-    getHandler('${url}disp/$id');
+  bool loadBath(String bid) {
+    getHandler('${url}bath/$bid');
+    return _result;
   }
 
   // GET MANAGER BATH LIST
-  void loadManagerBaths() {
-    print(_uid);
-    getHandler('${url}gest/$_uid');
-  }
+  loadManagerBaths() => getHandler('${url}gest/$_uid');
 
   Future<Bath> makeRequest(
     String uid,
@@ -138,7 +140,7 @@ class BathProvider extends ChangeNotifier {
 
     if (value.avUmbrellas <= value.totUmbrellas) {
       http.Response res = await http.put(
-        Uri.parse('$url/${_bath[index].bid}'),
+        Uri.parse('$url/${_bathList[index].bid}'),
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: hashAuth,
@@ -159,15 +161,15 @@ class BathProvider extends ChangeNotifier {
 
   // IN/DECREASE NR OF UMBRELLAS
   Future<bool> increaseUmbrellas(int index) async {
-    if (_bath[index].avUmbrellas < _bath[index].totUmbrellas)
-      return await putHandler(index, _bath[index].avUmbrellas + 1);
+    if (_bathList[index].avUmbrellas < _bathList[index].totUmbrellas)
+      return await putHandler(index, _bathList[index].avUmbrellas + 1);
     else
       return false;
   }
 
   Future<bool> decreaseUmbrellas(int index) async {
-    if (_bath[index].avUmbrellas > 0)
-      return await putHandler(index, _bath[index].avUmbrellas - 1);
+    if (_bathList[index].avUmbrellas > 0)
+      return await putHandler(index, _bathList[index].avUmbrellas - 1);
     else
       return false;
   }
@@ -175,7 +177,7 @@ class BathProvider extends ChangeNotifier {
   // DELETE A BATH
   Future<bool> deleteBath(int index) async {
     loading = true;
-    String? bid = _bath[index].bid;
+    String? bid = _bathList[index].bid;
     http.Response res = await http.delete(
       Uri.parse('$url/$bid'),
       headers: {
@@ -197,8 +199,8 @@ class BathProvider extends ChangeNotifier {
   get userId => _uid;
   get loading => _loading;
   get message => _message;
-  get bathCount => _bath.length;
-  get bath => _bath;
+  get bathCount => _bathList.length;
+  get bath => _bathList;
 
   // VARS SETTERS
   set userId(userId) {
@@ -217,45 +219,49 @@ class BathProvider extends ChangeNotifier {
   }
 
   set bath(value) {
-    _bath = value;
+    _bathList = value;
     notifyListeners();
   }
 
   // LIST SETTERS
   void addBathItem(value) {
-    _bath.add(value);
+    _bathList.add(value);
     notifyListeners();
   }
 
   void editBathItem(value, index) {
-    _bath[index] = value;
+    _bathList[index] = value;
     notifyListeners();
   }
 
   void removeBathItem(index) {
-    _bath.removeAt(index);
-    if (_bath.length == 0) _message = 'no_baths'.tr();
+    _bathList.removeAt(index);
+    if (_bathList.length == 0) _message = 'no_baths'.tr();
     notifyListeners();
   }
 
   void setUmbrellas(value, index) {
-    _bath[index].avUmbrellas = value;
+    _bathList[index].avUmbrellas = value;
     notifyListeners();
   }
 
-  // DB SETTERS
+  // DB FUNCTIONS
+  get loadFavList => _favList.values.toList();
+
   void addFav(int index) {
-    LocalBath singleBath = LocalBath()
-      ..index = index
-      ..name = _bath[index].name;
-    _box.putAt(index, singleBath);
-    _bath[index].fav = true;
+    LocalBath singleBath = LocalBath(
+      bid: _bathList[index].bid!,
+      name: _bathList[index].name,
+      city: _bathList[index].city,
+    );
+    _favList.add(singleBath);
+    _bathList[index].fav = true;
     notifyListeners();
   }
 
   void delFav(int index) {
-    _box.deleteAt(index);
-    _bath[index].fav = false;
+    _favList.deleteAt(index);
+    _bathList[index].fav = false;
     notifyListeners();
   }
 }

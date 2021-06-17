@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class BathCard extends StatelessWidget {
   const BathCard({
     required this.title,
-    required this.availableUmbrella,
+    this.availableUmbrella,
+    this.city,
     required this.onTap,
     required this.onLongPress,
   });
   final String title;
-  final int availableUmbrella;
+  final int? availableUmbrella;
+  final String? city;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
   @override

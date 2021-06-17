@@ -1,7 +1,9 @@
+import 'package:beachu/models/hive_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:beachu/views/edit_bath.dart';
+import 'package:beachu/views/fav_list.dart';
 import 'package:beachu/views/home.dart';
 import 'package:beachu/views/login.dart';
 import 'package:beachu/views/new_bath.dart';
@@ -17,9 +19,11 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await DotEnv.load(fileName: ".env");
-  await Hive.initFlutter();
   await Firebase.initializeApp();
+  await Hive.initFlutter();
+  Hive.registerAdapter(LocalBathAdapter());
   await Hive.openBox('favourites');
+  //await Hive.deleteBoxFromDisk('favourites');
   runApp(
     EasyLocalization(
         supportedLocales: [
@@ -57,6 +61,7 @@ class MyApp extends StatelessWidget {
           LoginPage.id: (context) => LoginPage(),
           NewBath.id: (context) => NewBath(),
           EditBath.id: (context) => EditBath(),
+          FavListPage.id: (context) => FavListPage(),
         },
       ),
     );

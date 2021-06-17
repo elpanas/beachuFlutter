@@ -59,30 +59,31 @@ class _BathListPageState extends State<BathListPage> {
                                   Navigator.pushNamed(
                                     context,
                                     BathPage.id,
-                                    arguments: BathIndex(index),
+                                    arguments: BathIndex(index: index),
                                   );
                                 },
                                 onLongPress: () {
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) {
-                                      return DeleteAlert(
-                                        onPressed: () async {
-                                          bool result =
-                                              await data.deleteBath(index);
-                                          if (result) {
-                                            Navigator.pop(context);
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              snackBarBuilder(
-                                                  title: 'bath_deleted'.tr()),
-                                            );
-                                          }
-                                        },
-                                      );
-                                    },
-                                  );
+                                  if (data.userId != '')
+                                    showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return DeleteAlert(
+                                          onPressed: () async {
+                                            bool result =
+                                                await data.deleteBath(index);
+                                            if (result) {
+                                              Navigator.pop(context);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                snackBarBuilder(
+                                                    title: 'bath_deleted'.tr()),
+                                              );
+                                            }
+                                          },
+                                        );
+                                      },
+                                    );
                                 },
                               );
                             },

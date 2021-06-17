@@ -1,10 +1,20 @@
 import 'package:hive/hive.dart';
+part 'hive_model.g.dart';
 
 @HiveType(typeId: 0)
-class LocalBath extends HiveObject {
+class LocalBath {
   @HiveField(0)
-  int? index;
+  final String bid;
 
   @HiveField(1)
-  String? name;
+  final String name;
+
+  @HiveField(2)
+  final String city;
+
+  LocalBath({
+    required this.bid,
+    required this.name,
+    required this.city,
+  });
 }

@@ -6,6 +6,7 @@ import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
+import 'package:beachu/views/fav_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,12 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () async {
                         data.loadBaths();
                         Navigator.pushNamed(context, BathListPage.id);
+                      }),
+                  const SizedBox(height: 10.0),
+                  SimpleButton(
+                      title: 'fav_list_title'.tr(),
+                      onPressed: () {
+                        Navigator.pushNamed(context, FavListPage.id);
                       }),
                   const SizedBox(height: 10.0),
                   (data.userId == '')

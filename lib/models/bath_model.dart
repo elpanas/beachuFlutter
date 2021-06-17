@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:hive/hive.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
 class Bath extends ChangeNotifier {
@@ -25,6 +26,10 @@ class Bath extends ChangeNotifier {
   });
 
   factory Bath.fromJson(Map<String, dynamic> json) {
+    var _favList = Hive.box('favourites');
+    bool fav = (_favList.values.where(
+      (element) => element.bid == json['_id'],
+    )).isNotEmpty;
     return Bath(
       bid: json['_id'],
       uid: json['uid'],
@@ -36,7 +41,7 @@ class Bath extends ChangeNotifier {
       longitude: json['location']['coordinates'][1],
       city: json['city'],
       province: json['province'],
-      fav: false,
+      fav: fav,
     );
   }
 

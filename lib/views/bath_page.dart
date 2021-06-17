@@ -29,6 +29,14 @@ class BathPage extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               actions: [
+                ActionIconButton(
+                  icon: (_bath.fav) ? Icons.favorite : Icons.favorite_outline,
+                  onPressed: () {
+                    (_bath.fav)
+                        ? data.delFav(args.favIndex!)
+                        : data.addFav(args.index);
+                  },
+                ),
                 if (data.userId == _bath.uid)
                   ActionIconButton(
                     icon: Icons.edit,
@@ -36,18 +44,10 @@ class BathPage extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         EditBath.id,
-                        arguments: BathIndex(args.index),
+                        arguments: BathIndex(index: args.index),
                       );
                     },
                   ),
-                ActionIconButton(
-                  icon: (_bath.fav) ? Icons.favorite : Icons.favorite_outline,
-                  onPressed: () {
-                    (_bath.fav)
-                        ? data.addFav(args.index)
-                        : data.delFav(args.index);
-                  },
-                ),
               ],
             ),
             body: Column(
