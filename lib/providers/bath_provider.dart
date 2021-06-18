@@ -259,8 +259,11 @@ class BathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // TODO it works only in fav page
   void delFav(int index) {
-    _favList.deleteAt(index);
+    _favList.values
+        .firstWhere((element) => element.bid == _bathList[index].bid)
+        .delete();
     _bathList[index].fav = false;
     notifyListeners();
   }

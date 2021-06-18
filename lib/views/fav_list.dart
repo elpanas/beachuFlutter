@@ -1,5 +1,5 @@
 import 'package:beachu/components/bathlistpage/bath_alert.dart';
-import 'package:beachu/components/bathlistpage/bath_card.dart';
+import 'package:beachu/components/favlistpage/fav_card.dart';
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
@@ -37,7 +37,7 @@ class _FavListPageState extends State<FavListPage> {
                           child: ListView.builder(
                             itemCount: favBaths.length,
                             itemBuilder: (context, index) {
-                              return BathCard(
+                              return FavCard(
                                 title: favBaths[index].name,
                                 city: favBaths[index].city,
                                 onTap: () {

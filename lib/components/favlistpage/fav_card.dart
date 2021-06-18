@@ -1,15 +1,16 @@
 import 'package:beachu/constants.dart';
 import 'package:flutter/material.dart';
 
-class BathCard extends StatelessWidget {
-  const BathCard({
+class FavCard extends StatelessWidget {
+  const FavCard({
     required this.title,
-    required this.availableUmbrella,
+    required this.city,
     required this.onTap,
     required this.onLongPress,
   });
   final String title;
-  final int availableUmbrella;
+
+  final String city;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
   @override
@@ -24,9 +25,9 @@ class BathCard extends StatelessWidget {
         ),
         subtitle: Row(
           children: [
-            kBathCardLeadingIcon,
+            const Icon(Icons.location_city),
             const SizedBox(width: 3),
-            Text(availableUmbrella.toString()),
+            Text(city),
           ],
         ),
         trailing: const Icon(Icons.arrow_forward_ios),

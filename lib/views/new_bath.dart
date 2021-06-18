@@ -12,7 +12,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 class NewBath extends StatefulWidget {
   static final String id = 'new_bath_screen';
-
   @override
   _NewBathState createState() => _NewBathState();
 }
