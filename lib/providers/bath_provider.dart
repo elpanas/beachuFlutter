@@ -17,30 +17,29 @@ class BathProvider extends ChangeNotifier {
   bool _result = false;
   String _message = 'no_baths'.tr();
   String _uid = '';
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader: hashAuth,
+  };
   var _favList = Hive.box('favourites');
 
   // HANDLERS
   void getHandler(url) async {
     loading = true;
     message = 'loading'.tr();
+    _result = false;
     try {
-      http.Response res = await http
-          .get(
-            Uri.parse(url),
-          )
-          .timeout(
-            Duration(seconds: 2),
-          );
+      http.Response res = await http.get(Uri.parse(url));
 
       loading = false;
 
       if (res.statusCode == 200) {
-        var resJson = jsonDecode(res.body);
+        final resJson = jsonDecode(res.body);
         _bathList = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
         _result = true;
       } else
         message = 'no_baths'.tr();
-    } on TimeoutException catch (_) {
+    } catch (e) {
       message = 'no_baths'.tr();
     } finally {
       loading = false;
@@ -48,25 +47,30 @@ class BathProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> putHandler(int index, int newValue) async {
+  Future<bool> patchHandler(int index, int newValue) async {
     loading = true;
+    _result = false;
+    final body = jsonEncode(<String, dynamic>{
+      'bid': _bathList[index].bid!,
+      'av_umbrellas': newValue,
+    });
 
-    http.Response res = await http.put(
-      Uri.parse('$url/disp/'),
-      headers: {
-        'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: hashAuth,
-      },
-      body: jsonEncode(<String, dynamic>{
-        'bid': _bathList[index].bid!,
-        'av_umbrellas': newValue,
-      }),
-    );
-    loading = false;
+    try {
+      http.Response res = await http.patch(
+        Uri.parse('$url/disp/'),
+        headers: headers,
+        body: body,
+      );
 
-    if (res.statusCode == 200) {
-      setUmbrellas(newValue, index);
-      _result = true;
+      if (res.statusCode == 200) {
+        setUmbrellas(newValue, index);
+        _result = true;
+      }
+    } catch (e) {
+      // ...
+    } finally {
+      loading = false;
+      notifyListeners();
     }
 
     return _result;
@@ -114,22 +118,26 @@ class BathProvider extends ChangeNotifier {
   // POST A NEW BATH TO THE WEB SERVICE
   Future<bool> postBath(Bath value) async {
     loading = true;
-    http.Response res = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: hashAuth,
-      },
-      body: jsonEncode(value),
-    );
-    loading = false;
+    _result = false;
 
-    if (res.statusCode == 200) {
-      addBathItem(value);
-      loadManagerBaths();
-      _result = true;
-    } else
-      print(res.body);
+    try {
+      http.Response res = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(value),
+      );
+
+      if (res.statusCode == 201) {
+        addBathItem(value);
+        loadManagerBaths();
+        _result = true;
+      }
+    } catch (e) {
+      // ...
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
 
     return _result;
   }
@@ -137,24 +145,28 @@ class BathProvider extends ChangeNotifier {
   // UPDATE A BATH TO THE WEB SERVICE
   Future<bool> putBath(Bath value, int index) async {
     loading = true;
+    _result = false;
 
-    if (value.avUmbrellas <= value.totUmbrellas) {
-      http.Response res = await http.put(
-        Uri.parse('$url/${_bathList[index].bid}'),
-        headers: {
-          'Content-Type': 'application/json',
-          HttpHeaders.authorizationHeader: hashAuth,
-        },
-        body: jsonEncode(value),
-      );
+    try {
+      if (value.avUmbrellas <= value.totUmbrellas) {
+        http.Response res = await http.put(
+          Uri.parse('$url/${_bathList[index].bid}'),
+          headers: headers,
+          body: jsonEncode(value),
+        );
+
+        if (res.statusCode == 200) {
+          editBathItem(value, index);
+          _result = true;
+        }
+      } else
+        _result = false;
+    } catch (e) {
+      // ...
+    } finally {
       loading = false;
-
-      if (res.statusCode == 200) {
-        editBathItem(value, index);
-        _result = true;
-      }
-    } else
-      _result = false;
+      notifyListeners();
+    }
 
     return _result;
   }
@@ -162,14 +174,14 @@ class BathProvider extends ChangeNotifier {
   // IN/DECREASE NR OF UMBRELLAS
   Future<bool> increaseUmbrellas(int index) async {
     if (_bathList[index].avUmbrellas < _bathList[index].totUmbrellas)
-      return await putHandler(index, _bathList[index].avUmbrellas + 1);
+      return await patchHandler(index, _bathList[index].avUmbrellas + 1);
     else
       return false;
   }
 
   Future<bool> decreaseUmbrellas(int index) async {
     if (_bathList[index].avUmbrellas > 0)
-      return await putHandler(index, _bathList[index].avUmbrellas - 1);
+      return await patchHandler(index, _bathList[index].avUmbrellas - 1);
     else
       return false;
   }
@@ -177,20 +189,24 @@ class BathProvider extends ChangeNotifier {
   // DELETE A BATH
   Future<bool> deleteBath(int index) async {
     loading = true;
-    String? bid = _bathList[index].bid;
-    http.Response res = await http.delete(
-      Uri.parse('$url/$bid'),
-      headers: {
-        HttpHeaders.authorizationHeader: hashAuth,
-      },
-    );
-    loading = false;
+    _result = false;
+    final bid = _bathList[index].bid;
+    try {
+      http.Response res = await http.delete(
+        Uri.parse('$url/$bid'),
+        headers: {HttpHeaders.authorizationHeader: hashAuth},
+      );
 
-    if (res.statusCode == 200) {
-      removeBathItem(index);
-      _result = true;
-    } else
-      _result = false;
+      if (res.statusCode == 200) {
+        removeBathItem(index);
+        _result = true;
+      }
+    } catch (e) {
+      // ...
+    } finally {
+      loading = false;
+      notifyListeners();
+    }
 
     return _result;
   }
