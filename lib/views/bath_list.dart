@@ -7,6 +7,7 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_page.dart';
+import 'package:beachu/views/fav_list.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,12 @@ class _BathListPageState extends State<BathListPage> {
                   icon: Icons.admin_panel_settings,
                   onPressed: () => data.loadManagerBaths(),
                 ),
+              ActionIconButton(
+                  icon: Icons.list,
+                  onPressed: () {
+                    data.loadFavList();
+                    Navigator.pushNamed(context, FavListPage.id);
+                  }),
             ],
           ),
           floatingActionButton: (data.userId != '') ? FloatingAdd() : null,

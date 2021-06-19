@@ -20,8 +20,8 @@ Future<void> main() async {
   await EasyLocalization.ensureInitialized();
   await DotEnv.load(fileName: ".env");
   await Firebase.initializeApp();
-  await Hive.initFlutter();
   Hive.registerAdapter(LocalBathAdapter());
+  await Hive.initFlutter();
   await Hive.openBox('favourites');
   //await Hive.deleteBoxFromDisk('favourites');
   runApp(

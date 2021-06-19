@@ -43,12 +43,6 @@ class _HomePageState extends State<HomePage> {
                         Navigator.pushNamed(context, BathListPage.id);
                       }),
                   const SizedBox(height: 10.0),
-                  SimpleButton(
-                      title: 'fav_list_title'.tr(),
-                      onPressed: () {
-                        Navigator.pushNamed(context, FavListPage.id);
-                      }),
-                  const SizedBox(height: 10.0),
                   (data.userId == '')
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.start,

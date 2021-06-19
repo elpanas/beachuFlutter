@@ -17,19 +17,18 @@ class FavListPage extends StatefulWidget {
 }
 
 class _FavListPageState extends State<FavListPage> {
-  List<dynamic> favBaths = [];
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
       builder: (context, data, child) {
-        favBaths = data.loadFavList;
+        var favBaths = data.favList;
         return Scaffold(
           appBar: AppBar(title: const Text('fav_list_title').tr()),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
             child: Container(
               width: double.infinity,
-              child: (data.bathCount > 0)
+              child: (favBaths.length > 0)
                   ? Column(
                       children: [
                         const SizedBox(height: 15),
@@ -41,23 +40,15 @@ class _FavListPageState extends State<FavListPage> {
                                 title: favBaths[index].name,
                                 city: favBaths[index].city,
                                 onTap: () {
-                                  bool result =
-                                      data.loadBath(favBaths[index].bid);
-                                  (result)
-                                      ? Navigator.pushNamed(
-                                          context,
-                                          BathPage.id,
-                                          arguments: BathIndex(
-                                            index: 0,
-                                            favIndex: index,
-                                          ),
-                                        )
-                                      : ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                          snackBarBuilder(
-                                            title: 'snack_msg'.tr(),
-                                          ),
-                                        );
+                                  data.loadBath(favBaths[index].bid);
+                                  Navigator.pushNamed(
+                                    context,
+                                    BathPage.id,
+                                    arguments: BathIndex(
+                                      index: 0,
+                                      favIndex: index,
+                                    ),
+                                  );
                                 },
                                 onLongPress: () {
                                   showDialog<void>(

@@ -13,6 +13,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 class BathProvider extends ChangeNotifier {
   List<Bath> _bathList = [];
+  var _favList = [];
   bool _loading = false;
   bool _result = false;
   String _message = 'no_baths'.tr();
@@ -21,7 +22,6 @@ class BathProvider extends ChangeNotifier {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: hashAuth,
   };
-  var _favList = Hive.box('favourites');
 
   // HANDLERS
   void getHandler(url) async {
@@ -30,8 +30,6 @@ class BathProvider extends ChangeNotifier {
     _result = false;
     try {
       http.Response res = await http.get(Uri.parse(url));
-
-      loading = false;
 
       if (res.statusCode == 200) {
         final resJson = jsonDecode(res.body);
@@ -83,9 +81,8 @@ class BathProvider extends ChangeNotifier {
   }
 
   // GET SINGLE BATH
-  bool loadBath(String bid) {
+  void loadBath(String bid) {
     getHandler('${url}bath/$bid');
-    return _result;
   }
 
   // GET MANAGER BATH LIST
@@ -262,24 +259,35 @@ class BathProvider extends ChangeNotifier {
   }
 
   // DB FUNCTIONS
-  get loadFavList => _favList.values.toList();
+  void loadFavList() {
+    var box = Hive.box('favourites');
+    _favList = box.values.toList();
+    if (_favList.length == 0) message = 'no_baths'.tr();
+    notifyListeners();
+  }
 
   void addFav(int index) {
+    var box = Hive.box('favourites');
     LocalBath singleBath = LocalBath(
       bid: _bathList[index].bid!,
       name: _bathList[index].name,
       city: _bathList[index].city,
     );
-    _favList.add(singleBath);
+    box.add(singleBath);
     _bathList[index].fav = true;
+    _favList = box.values.toList();
     notifyListeners();
   }
 
   void delFav(int index) {
-    _favList.values
+    var box = Hive.box('favourites');
+    box.values
         .firstWhere((element) => element.bid == _bathList[index].bid)
         .delete();
     _bathList[index].fav = false;
+    _favList = box.values.toList();
     notifyListeners();
   }
+
+  get favList => _favList;
 }

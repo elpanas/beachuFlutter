@@ -26,8 +26,8 @@ class Bath extends ChangeNotifier {
   });
 
   factory Bath.fromJson(Map<String, dynamic> json) {
-    var _favList = Hive.box('favourites');
-    bool fav = (_favList.values.where(
+    var favList = Hive.box('favourites');
+    bool fav = (favList.values.where(
       (element) => element.bid == json['_id'],
     )).isNotEmpty;
     return Bath(
