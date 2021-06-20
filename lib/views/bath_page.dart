@@ -67,7 +67,7 @@ class BathPage extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextButton(
-                        onPressed: () => _bath.openMap(args.index),
+                        onPressed: () => data.openMap(args.index),
                         child: BathContainer(
                           title: 'bath_position'.tr(),
                           icon: Icons.location_on,
@@ -82,7 +82,7 @@ class BathPage extends StatelessWidget {
                 (_auth.currentUser?.uid != _bath.uid)
                     ? SimpleButton(
                         title: 'bath_call'.tr(),
-                        onPressed: () => _bath.callNumber(),
+                        onPressed: () => data.callNumber(args.index),
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.center,

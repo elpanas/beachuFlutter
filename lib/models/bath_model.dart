@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:hive/hive.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'bath_model.g.dart';
 
 class Bath extends ChangeNotifier {
   String? bid;
@@ -11,6 +12,7 @@ class Bath extends ChangeNotifier {
   double latitude, longitude;
   bool fav;
 
+  @JsonSerializable()
   Bath({
     this.bid,
     required this.uid,
@@ -25,49 +27,6 @@ class Bath extends ChangeNotifier {
     required this.fav,
   });
 
-  factory Bath.fromJson(Map<String, dynamic> json) {
-    var favList = Hive.box('favourites');
-    bool fav = (favList.values.where(
-      (element) => element.bid == json['_id'],
-    )).isNotEmpty;
-    return Bath(
-      bid: json['_id'],
-      uid: json['uid'],
-      name: json['name'],
-      avUmbrellas: json['av_umbrellas'],
-      totUmbrellas: json['tot_umbrellas'],
-      phone: json['phone'],
-      latitude: json['location']['coordinates'][0],
-      longitude: json['location']['coordinates'][1],
-      city: json['city'],
-      province: json['province'],
-      fav: fav,
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'uid': uid,
-        'name': name,
-        'av_umbrellas': avUmbrellas,
-        'tot_umbrellas': totUmbrellas,
-        'phone': phone,
-        'location': {
-          'type': "Point",
-          'coordinates': [longitude, latitude]
-        },
-        'city': city,
-        'province': province
-      };
-
-  void callNumber() async {
-    await FlutterPhoneDirectCaller.callNumber(phone);
-  }
-
-  void openMap(index) {
-    MapsLauncher.launchCoordinates(
-      latitude,
-      longitude,
-      name,
-    );
-  }
+  factory Bath.fromJson(Map<String, dynamic> json) => _$BathFromJson(json);
+  Map<String, dynamic> toJson() => _$BathToJson(this);
 }

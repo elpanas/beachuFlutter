@@ -10,6 +10,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BathProvider extends ChangeNotifier {
   List<Bath> _bathList = [];
@@ -256,6 +258,20 @@ class BathProvider extends ChangeNotifier {
   void setUmbrellas(value, index) {
     _bathList[index].avUmbrellas = value;
     notifyListeners();
+  }
+
+  void callNumber(index) async {
+    await canLaunch('tel:${_bathList[index].phone}')
+        ? launch('tel:${_bathList[index].phone}')
+        : throw 'Could not launch';
+  }
+
+  void openMap(index) {
+    MapsLauncher.launchCoordinates(
+      _bathList[index].latitude,
+      _bathList[index].longitude,
+      _bathList[index].name,
+    );
   }
 
   // DB FUNCTIONS
