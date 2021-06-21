@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final String url = env['URI']!;
-final String hashAuth = env['HASH_AUTH']!;
+final String url = dotenv.env['URI']!;
+final String hashAuth = dotenv.env['HASH_AUTH']!;
 
 final kButtonStyle = ButtonStyle(
   padding: MaterialStateProperty.all(
