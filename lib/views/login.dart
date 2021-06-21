@@ -11,7 +11,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 class LoginPage extends StatefulWidget {
   static final String id = 'login_screen';
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }

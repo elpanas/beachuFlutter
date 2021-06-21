@@ -3,8 +3,7 @@ import 'package:hive/hive.dart';
 
 class Bath extends ChangeNotifier {
   String? bid;
-  String uid;
-  String name, phone, city, province;
+  String uid, name, phone, city, province;
   int avUmbrellas, totUmbrellas;
   double latitude, longitude;
   bool fav;

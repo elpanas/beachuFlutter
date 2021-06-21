@@ -10,8 +10,7 @@ class BathContainer extends StatelessWidget {
   });
 
   final Color colour;
-  final String title;
-  final String info;
+  final String title, info;
   final IconData icon;
 
   @override

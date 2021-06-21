@@ -16,10 +16,8 @@ import 'package:url_launcher/url_launcher.dart';
 class BathProvider extends ChangeNotifier {
   List<Bath> _bathList = [];
   var _favList = [];
-  bool _loading = false;
-  bool _result = false;
-  String _message = 'no_baths'.tr();
-  String _uid = '';
+  bool _loading = false, _result = false;
+  String _message = 'no_baths'.tr(), _uid = '';
   final headers = {
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: hashAuth,

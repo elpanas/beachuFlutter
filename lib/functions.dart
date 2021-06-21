@@ -49,7 +49,7 @@ Future<bool> signInWithEmail(email, password) async {
     else
       return false;
   } catch (e) {
-    print(e);
+    // print(e);
     return false;
   }
 }

@@ -10,8 +10,7 @@ class BathCard extends StatelessWidget {
   });
   final String title;
   final int availableUmbrella;
-  final VoidCallback onTap;
-  final VoidCallback onLongPress;
+  final VoidCallback onTap, onLongPress;
   @override
   Widget build(BuildContext context) {
     return Card(

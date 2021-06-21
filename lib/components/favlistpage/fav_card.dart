@@ -8,11 +8,8 @@ class FavCard extends StatelessWidget {
     required this.onTap,
     required this.onLongPress,
   });
-  final String title;
-
-  final String city;
-  final VoidCallback onTap;
-  final VoidCallback onLongPress;
+  final String title, city;
+  final VoidCallback onTap, onLongPress;
   @override
   Widget build(BuildContext context) {
     return Card(

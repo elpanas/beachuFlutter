@@ -29,25 +29,27 @@ class BathPage extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               actions: [
-                ActionIconButton(
-                  icon: (_bath.fav) ? Icons.favorite : Icons.favorite_outline,
-                  onPressed: () {
-                    (_bath.fav)
-                        ? data.delFav(args.index)
-                        : data.addFav(args.index);
-                  },
-                ),
-                if (data.userId == _bath.uid)
-                  ActionIconButton(
-                    icon: Icons.edit,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        EditBath.id,
-                        arguments: BathIndex(index: args.index),
-                      );
-                    },
-                  ),
+                (data.userId != _bath.uid)
+                    ? ActionIconButton(
+                        icon: (_bath.fav)
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        onPressed: () {
+                          (_bath.fav)
+                              ? data.delFav(args.index)
+                              : data.addFav(args.index);
+                        },
+                      )
+                    : ActionIconButton(
+                        icon: Icons.edit,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            EditBath.id,
+                            arguments: BathIndex(index: args.index),
+                          );
+                        },
+                      ),
               ],
             ),
             body: Column(
