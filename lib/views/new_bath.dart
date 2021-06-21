@@ -38,7 +38,7 @@ class _NewBathState extends State<NewBath> {
             child: Form(
               key: _formKey,
               child: Padding(
-                padding: kNewBathPadding,
+                padding: kH20Padding,
                 child: Center(
                   child: SingleChildScrollView(
                     child: Column(

@@ -18,7 +18,7 @@ class BathContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: kBathMargin,
-      padding: kBathPadding,
+      padding: kV30Padding,
       decoration: kBathTitleDecoration,
       alignment: Alignment.center,
       child: Column(

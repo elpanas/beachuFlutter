@@ -3,6 +3,7 @@ import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
 import 'package:beachu/components/logout_button.dart';
 import 'package:beachu/components/simple_button.dart';
+import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
@@ -28,7 +29,7 @@ class _HomePageState extends State<HomePage> {
           body: Container(
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: kH30Padding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -22,52 +22,45 @@ final kButtonStyle = ButtonStyle(
 );
 
 // BATH PAGE
+
 // Bath Container - Bath Title - Bath Subtitle - Bath Field
 const kBathTextStyle = TextStyle(
   color: Colors.white60,
   fontWeight: FontWeight.bold,
 );
-
 const kBathMargin = EdgeInsets.symmetric(
   horizontal: 10.0,
   vertical: 10.0,
 );
-
 const kBathTitlePadding = EdgeInsets.symmetric(vertical: 50.0);
-
 final kBathTitleDecoration = BoxDecoration(
   color: const Color(0xFF232329),
   boxShadow: [const BoxShadow(blurRadius: 3.0)],
   borderRadius: BorderRadius.circular(10.0),
 );
-
 const kBathOpacTextStyle = TextStyle(
   color: Colors.white54,
   fontSize: 16,
 );
-
-const kBathPadding = EdgeInsets.symmetric(vertical: 30.0);
+const kV30Padding = EdgeInsets.symmetric(vertical: 30.0);
 // ----------------------------------------------------
 
-// NEW BATH PAGE
-const kNewBathPadding = EdgeInsets.symmetric(horizontal: 20.0);
+// NEW/EDIT BATH PAGE
+const kH20Padding = EdgeInsets.symmetric(horizontal: 20.0);
 
 // BATH LIST PAGE
 const kTitleListStyle = TextStyle(
   fontSize: 20.0,
   fontWeight: FontWeight.bold,
 );
-
 const kBathCardLeadingIcon = Icon(
   Icons.beach_access,
   color: Colors.green,
 );
-
 const kBathCardMargin = EdgeInsets.symmetric(
   horizontal: 10.0,
   vertical: 4.0,
 );
-
 const kMessageStyle = TextStyle(
   color: Colors.white70,
   fontSize: 18.0,
@@ -75,17 +68,18 @@ const kMessageStyle = TextStyle(
 // ----------------------------------------------------
 
 // HOME PAGE
+
 // Login Button
 final kLogInOutButtonStyle = kButtonStyle.copyWith(
   foregroundColor: MaterialStateProperty.all(Colors.white60),
 );
+const kH30Padding = EdgeInsets.symmetric(horizontal: 30.0);
 
 // SnackBar
 const kSnackBarTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
 );
-
 const kSnackbarPadding = EdgeInsets.symmetric(
   vertical: 3.0,
   horizontal: 10.0,

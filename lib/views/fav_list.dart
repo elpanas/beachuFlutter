@@ -51,7 +51,7 @@ class _FavListPageState extends State<FavListPage> {
                                   );
                                 },
                                 onLongPress: () {
-                                  showDialog<void>(
+                                  showDialog(
                                     context: context,
                                     barrierDismissible: false,
                                     builder: (BuildContext context) {
