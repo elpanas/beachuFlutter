@@ -41,7 +41,6 @@ class BathProvider extends ChangeNotifier {
       message = 'no_baths'.tr();
     } finally {
       loading = false;
-      notifyListeners();
     }
   }
 

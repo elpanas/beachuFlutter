@@ -17,13 +17,23 @@ class EditBath extends StatefulWidget {
 }
 
 class _EditBathState extends State<EditBath> {
-  TextEditingController _nameController = TextEditingController(),
+  final _nameController = TextEditingController(),
       _avUmbrellasController = TextEditingController(),
       _totUmbrellasController = TextEditingController(),
       _phoneController = TextEditingController(),
       _cityController = TextEditingController(),
       _provinceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _totUmbrellasController.dispose();
+    _phoneController.dispose();
+    _cityController.dispose();
+    _provinceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

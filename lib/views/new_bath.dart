@@ -17,13 +17,23 @@ class NewBath extends StatefulWidget {
 }
 
 class _NewBathState extends State<NewBath> {
-  TextEditingController _nameController = TextEditingController(),
+  final _nameController = TextEditingController(),
       _totUmbrellasController = TextEditingController(),
       _phoneController = TextEditingController(),
       _cityController = TextEditingController(),
       _provinceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _totUmbrellasController.dispose();
+    _phoneController.dispose();
+    _cityController.dispose();
+    _provinceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

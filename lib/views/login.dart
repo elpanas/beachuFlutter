@@ -16,10 +16,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _mailController = TextEditingController(),
+  final _mailController = TextEditingController(),
       _pswController = TextEditingController();
-
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void dispose() {
+    _mailController.dispose();
+    _pswController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
