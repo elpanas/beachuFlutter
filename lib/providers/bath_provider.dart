@@ -80,9 +80,7 @@ class BathProvider extends ChangeNotifier {
   }
 
   // GET SINGLE BATH
-  void loadBath(String bid) {
-    getHandler('${url}bath/$bid');
-  }
+  void loadBath(String bid) => getHandler('${url}bath/$bid');
 
   // GET MANAGER BATH LIST
   loadManagerBaths() => getHandler('${url}gest/$_uid');
@@ -132,7 +130,6 @@ class BathProvider extends ChangeNotifier {
       // ...
     } finally {
       loading = false;
-      notifyListeners();
     }
 
     return _result;
@@ -161,7 +158,6 @@ class BathProvider extends ChangeNotifier {
       // ...
     } finally {
       loading = false;
-      notifyListeners();
     }
 
     return _result;
@@ -201,7 +197,6 @@ class BathProvider extends ChangeNotifier {
       // ...
     } finally {
       loading = false;
-      notifyListeners();
     }
 
     return _result;

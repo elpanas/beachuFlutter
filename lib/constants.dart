@@ -87,7 +87,15 @@ const kSnackbarPadding = EdgeInsets.symmetric(
 // ----------------------------------------------------
 
 // MAIN PAGE
+
+// Font Family
 final kFontFamily = ThemeData.dark().textTheme.apply(
       fontFamily: 'ComicNeue',
     );
+
+// AppBar Theme
+const kAppBarTheme = AppBarTheme(
+  backgroundColor: Color(0xFF232329),
+  foregroundColor: Colors.white60,
+);
 // ----------------------------------------------------

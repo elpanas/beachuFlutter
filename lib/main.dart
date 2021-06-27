@@ -53,10 +53,7 @@ class MyApp extends StatelessWidget {
           primaryTextTheme: kFontFamily,
           accentTextTheme: kFontFamily,
           primaryColor: Colors.orange,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFF232329),
-            foregroundColor: Colors.white60,
-          ),
+          appBarTheme: kAppBarTheme,
         ),
         initialRoute: HomePage.id,
         routes: {
