@@ -1,3 +1,4 @@
+import 'package:beachu/constants.dart';
 import 'package:beachu/models/hive_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/bath_list.dart';
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         title: 'BeachU',
         theme: ThemeData.dark().copyWith(
+          textTheme: kFontFamily,
+          primaryTextTheme: kFontFamily,
+          accentTextTheme: kFontFamily,
           primaryColor: Colors.orange,
           appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xFF232329),

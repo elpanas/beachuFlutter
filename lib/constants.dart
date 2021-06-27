@@ -85,3 +85,9 @@ const kSnackbarPadding = EdgeInsets.symmetric(
   horizontal: 10.0,
 );
 // ----------------------------------------------------
+
+// MAIN PAGE
+final kFontFamily = ThemeData.dark().textTheme.apply(
+      fontFamily: 'ComicNeue',
+    );
+// ----------------------------------------------------
