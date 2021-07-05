@@ -19,12 +19,13 @@ class BathProvider extends ChangeNotifier {
   bool _loading = false, _result = false;
   String _message = 'no_baths'.tr(), _uid = '';
   final headers = {
+    HttpHeaders.contentEncodingHeader: 'gzip',
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: hashAuth,
   };
 
   // HANDLERS
-  void getHandler(url) async {
+  getHandler(url) async {
     loading = true;
     message = 'loading'.tr();
     _result = false;
@@ -48,15 +49,16 @@ class BathProvider extends ChangeNotifier {
     loading = true;
     _result = false;
     final body = jsonEncode(<String, dynamic>{
-      'bid': _bathList[index].bid!,
-      'av_umbrellas': newValue,
-    });
+          'bid': _bathList[index].bid!,
+          'av_umbrellas': newValue,
+        }),
+        compressedBody = GZipCodec().encode(body.codeUnits);
 
     try {
       http.Response res = await http.patch(
         Uri.parse('$url/disp/'),
         headers: headers,
-        body: body,
+        body: compressedBody,
       );
 
       if (res.statusCode == 200) {
@@ -80,7 +82,7 @@ class BathProvider extends ChangeNotifier {
   }
 
   // GET SINGLE BATH
-  void loadBath(String bid) => getHandler('${url}bath/$bid');
+  loadBath(String bid) => getHandler('${url}bath/$bid');
 
   // GET MANAGER BATH LIST
   loadManagerBaths() => getHandler('${url}gest/$_uid');
@@ -113,12 +115,12 @@ class BathProvider extends ChangeNotifier {
   Future<bool> postBath(Bath value) async {
     loading = true;
     _result = false;
-
     try {
+      final compressedBody = GZipCodec().encode(jsonEncode(bath).codeUnits);
       http.Response res = await http.post(
         Uri.parse(url),
         headers: headers,
-        body: jsonEncode(value),
+        body: compressedBody,
       );
 
       if (res.statusCode == 201) {
@@ -140,12 +142,14 @@ class BathProvider extends ChangeNotifier {
     loading = true;
     _result = false;
 
+    final compressedBody = GZipCodec().encode(jsonEncode(bath).codeUnits);
+
     try {
       if (value.avUmbrellas <= value.totUmbrellas) {
         http.Response res = await http.put(
           Uri.parse('$url/${_bathList[index].bid}'),
           headers: headers,
-          body: jsonEncode(value),
+          body: compressedBody,
         );
 
         if (res.statusCode == 200) {
@@ -231,34 +235,34 @@ class BathProvider extends ChangeNotifier {
   }
 
   // LIST SETTERS
-  void addBathItem(value) {
+  addBathItem(value) {
     _bathList.add(value);
     notifyListeners();
   }
 
-  void editBathItem(value, index) {
+  editBathItem(value, index) {
     _bathList[index] = value;
     notifyListeners();
   }
 
-  void removeBathItem(index) {
+  removeBathItem(index) {
     _bathList.removeAt(index);
     if (_bathList.length == 0) _message = 'no_baths'.tr();
     notifyListeners();
   }
 
-  void setUmbrellas(value, index) {
+  setUmbrellas(value, index) {
     _bathList[index].avUmbrellas = value;
     notifyListeners();
   }
 
-  void callNumber(index) async {
+  callNumber(index) async {
     await canLaunch('tel:${_bathList[index].phone}')
         ? launch('tel:${_bathList[index].phone}')
         : throw 'Could not launch';
   }
 
-  void openMap(index) {
+  openMap(index) {
     MapsLauncher.launchCoordinates(
       _bathList[index].latitude,
       _bathList[index].longitude,
@@ -267,14 +271,14 @@ class BathProvider extends ChangeNotifier {
   }
 
   // DB FUNCTIONS
-  void loadFavList() {
+  loadFavList() {
     var box = Hive.box('favourites');
     _favList = box.values.toList();
     if (_favList.length == 0) message = 'no_baths'.tr();
     notifyListeners();
   }
 
-  void addFav(int index) {
+  addFav(int index) {
     var box = Hive.box('favourites');
     LocalBath singleBath = LocalBath(
       bid: _bathList[index].bid!,
@@ -287,7 +291,7 @@ class BathProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void delFav(int index) {
+  delFav(int index) {
     var box = Hive.box('favourites');
     box.values
         .firstWhere((element) => element.bid == _bathList[index].bid)

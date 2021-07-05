@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 20.0),
                 SimpleButton(
-                  title: 'Entra',
+                  title: 'login_button'.tr(),
                   onPressed: () async {
                     bool result = await signInWithEmail(
                       _mailController.text,
