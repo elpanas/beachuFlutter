@@ -30,7 +30,10 @@ class BathProvider extends ChangeNotifier {
     message = 'loading'.tr();
     _result = false;
     try {
-      http.Response res = await http.get(Uri.parse(url));
+      http.Response res = await http.get(
+        Uri.parse(url),
+        headers: {HttpHeaders.authorizationHeader: hashAuth},
+      );
 
       if (res.statusCode == 200) {
         final resJson = jsonDecode(res.body);
@@ -69,23 +72,10 @@ class BathProvider extends ChangeNotifier {
       // ...
     } finally {
       loading = false;
-      notifyListeners();
     }
 
     return _result;
   }
-
-  // GET BATH LIST
-  loadBaths() async {
-    Position pos = await getPosition();
-    getHandler('${url}disp/coord/${pos.latitude}/${pos.longitude}');
-  }
-
-  // GET SINGLE BATH
-  loadBath(String bid) => getHandler('${url}bath/$bid');
-
-  // GET MANAGER BATH LIST
-  loadManagerBaths() => getHandler('${url}gest/$_uid');
 
   Future<Bath> makeRequest(
     String uid,
@@ -110,8 +100,20 @@ class BathProvider extends ChangeNotifier {
       fav: false,
     );
   }
+  // ---------------------------------------------------------
 
-  // POST A NEW BATH TO THE WEB SERVICE
+  // GET
+  loadBaths() async {
+    Position pos = await getPosition();
+    getHandler('${url}disp/coord/${pos.latitude}/${pos.longitude}');
+  }
+
+  loadBath(String bid) => getHandler('${url}bath/$bid');
+
+  loadManagerBaths() => getHandler('${url}gest/$_uid');
+  // ---------------------------------------------------------
+
+  // CREATE
   Future<bool> postBath(Bath value) async {
     loading = true;
     _result = false;
@@ -136,8 +138,9 @@ class BathProvider extends ChangeNotifier {
 
     return _result;
   }
+  // ---------------------------------------------------------
 
-  // UPDATE A BATH TO THE WEB SERVICE
+  // UPDATE
   Future<bool> putBath(Bath value, int index) async {
     loading = true;
     _result = false;
@@ -167,7 +170,6 @@ class BathProvider extends ChangeNotifier {
     return _result;
   }
 
-  // IN/DECREASE NR OF UMBRELLAS
   Future<bool> increaseUmbrellas(int index) async {
     if (_bathList[index].avUmbrellas < _bathList[index].totUmbrellas)
       return await patchHandler(index, _bathList[index].avUmbrellas + 1);
@@ -181,8 +183,9 @@ class BathProvider extends ChangeNotifier {
     else
       return false;
   }
+  // ---------------------------------------------------------
 
-  // DELETE A BATH
+  // DELETE
   Future<bool> deleteBath(int index) async {
     loading = true;
     _result = false;
@@ -206,12 +209,15 @@ class BathProvider extends ChangeNotifier {
     return _result;
   }
 
+  // ---------------------------------------------------------
   // VARS GETTERS
   get userId => _uid;
   get loading => _loading;
   get message => _message;
   get bathCount => _bathList.length;
   get bath => _bathList;
+  get favList => _favList;
+  // ---------------------------------------------------------
 
   // VARS SETTERS
   set userId(userId) {
@@ -233,6 +239,7 @@ class BathProvider extends ChangeNotifier {
     _bathList = value;
     notifyListeners();
   }
+  // ---------------------------------------------------------
 
   // LIST SETTERS
   addBathItem(value) {
@@ -269,6 +276,7 @@ class BathProvider extends ChangeNotifier {
       _bathList[index].name,
     );
   }
+  // ---------------------------------------------------------
 
   // DB FUNCTIONS
   loadFavList() {
@@ -300,6 +308,5 @@ class BathProvider extends ChangeNotifier {
     _favList = box.values.toList();
     notifyListeners();
   }
-
-  get favList => _favList;
+  // ---------------------------------------------------------
 }

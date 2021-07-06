@@ -2,7 +2,7 @@ import 'package:beachu/components/action_button.dart';
 import 'package:beachu/components/bathlistpage/bath_alert.dart';
 import 'package:beachu/components/bathlistpage/bath_card.dart';
 import 'package:beachu/components/snackbar.dart';
-import 'package:beachu/components/floatingadd_button.dart';
+import 'package:beachu/components/add_button.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';

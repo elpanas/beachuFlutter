@@ -15,8 +15,9 @@ final kButtonStyle = ButtonStyle(
   ),
   textStyle: MaterialStateProperty.all(
     const TextStyle(
-      fontSize: 20.0,
+      fontSize: 22.0,
       fontWeight: FontWeight.bold,
+      fontFamily: 'ComicNeue',
     ),
   ),
 );
