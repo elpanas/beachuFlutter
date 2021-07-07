@@ -20,8 +20,14 @@ final kButtonStyle = ButtonStyle(
       fontFamily: 'ComicNeue',
     ),
   ),
+  minimumSize: MaterialStateProperty.all(
+    const Size(300.0, 20.0),
+  ),
 );
-
+final kSimpleButtonStyle = kButtonStyle.copyWith(
+  backgroundColor: MaterialStateProperty.all(Colors.orange),
+  foregroundColor: MaterialStateProperty.all(Colors.black87),
+);
 // BATH PAGE
 
 // Bath Container - Bath Title - Bath Subtitle - Bath Field
@@ -75,6 +81,16 @@ final kLogInOutButtonStyle = kButtonStyle.copyWith(
   foregroundColor: MaterialStateProperty.all(Colors.white60),
 );
 const kH30Padding = EdgeInsets.symmetric(horizontal: 30.0);
+
+// Google Button
+final kGoogleButtonStyle = kButtonStyle.copyWith(
+  foregroundColor: MaterialStateProperty.all(Colors.red),
+);
+
+// Facebook Button
+final kFacebookButtonStyle = kButtonStyle.copyWith(
+  foregroundColor: MaterialStateProperty.all(Colors.blue),
+);
 
 // SnackBar
 const kSnackBarTextStyle = TextStyle(

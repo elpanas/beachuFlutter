@@ -18,9 +18,12 @@ class BathProvider extends ChangeNotifier {
   var _favList = [];
   bool _loading = false, _result = false;
   String _message = 'no_baths'.tr(), _uid = '';
-  final headers = {
+  final headersZip = {
     HttpHeaders.contentEncodingHeader: 'gzip',
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader: hashAuth,
+  };
+  final header = {
     HttpHeaders.authorizationHeader: hashAuth,
   };
 
@@ -32,7 +35,7 @@ class BathProvider extends ChangeNotifier {
     try {
       http.Response res = await http.get(
         Uri.parse(url),
-        headers: {HttpHeaders.authorizationHeader: hashAuth},
+        headers: header,
       );
 
       if (res.statusCode == 200) {
@@ -60,7 +63,7 @@ class BathProvider extends ChangeNotifier {
     try {
       http.Response res = await http.patch(
         Uri.parse('$url/disp/'),
-        headers: headers,
+        headers: headersZip,
         body: compressedBody,
       );
 
@@ -121,7 +124,7 @@ class BathProvider extends ChangeNotifier {
       final compressedBody = GZipCodec().encode(jsonEncode(bath).codeUnits);
       http.Response res = await http.post(
         Uri.parse(url),
-        headers: headers,
+        headers: headersZip,
         body: compressedBody,
       );
 
@@ -151,7 +154,7 @@ class BathProvider extends ChangeNotifier {
       if (value.avUmbrellas <= value.totUmbrellas) {
         http.Response res = await http.put(
           Uri.parse('$url/${_bathList[index].bid}'),
-          headers: headers,
+          headers: headersZip,
           body: compressedBody,
         );
 

@@ -19,13 +19,16 @@ class BathCard extends StatelessWidget {
       child: ListTile(
         title: Text(
           title,
-          style: const TextStyle(fontSize: 18.0),
+          style: const TextStyle(fontSize: 21.0),
         ),
         subtitle: Row(
           children: [
             kBathCardLeadingIcon,
             const SizedBox(width: 3),
-            Text(availableUmbrella.toString()),
+            Text(
+              availableUmbrella.toString(),
+              style: const TextStyle(fontSize: 18.0),
+            ),
           ],
         ),
         trailing: const Icon(Icons.arrow_forward_ios),

@@ -11,9 +11,7 @@ class FacebookButton extends StatelessWidget {
     return Expanded(
       child: OutlinedButton(
         child: const Icon(FontAwesomeIcons.facebook),
-        style: kButtonStyle.copyWith(
-          foregroundColor: MaterialStateProperty.all(Colors.blue),
-        ),
+        style: kFacebookButtonStyle,
         onPressed: () {},
       ),
     );
