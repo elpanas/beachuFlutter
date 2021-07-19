@@ -14,13 +14,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class BathListPage extends StatefulWidget {
+class BathListPage extends StatelessWidget {
   static final String id = 'bath_list_screen';
-  @override
-  _BathListPageState createState() => _BathListPageState();
-}
-
-class _BathListPageState extends State<BathListPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(

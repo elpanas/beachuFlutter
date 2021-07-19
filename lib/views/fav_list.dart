@@ -11,13 +11,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class FavListPage extends StatefulWidget {
+class FavListPage extends StatelessWidget {
   static final String id = 'fav_list_screen';
-  @override
-  _FavListPageState createState() => _FavListPageState();
-}
-
-class _FavListPageState extends State<FavListPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
