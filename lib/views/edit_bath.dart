@@ -43,7 +43,10 @@ class _EditBathState extends State<EditBath> {
         Bath _bath = data.bath[args.index];
         return Scaffold(
           appBar: AppBar(
-            title: const Text('bath_title').tr(),
+            title: Text(
+              'bath_title',
+              style: kAppBarTextStyle,
+            ).tr(),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,

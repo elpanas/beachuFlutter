@@ -1,5 +1,6 @@
 import 'package:beachu/components/bathlistpage/bath_alert.dart';
 import 'package:beachu/components/favlistpage/fav_card.dart';
+import 'package:beachu/components/message.dart';
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
@@ -23,7 +24,11 @@ class _FavListPageState extends State<FavListPage> {
       builder: (context, data, child) {
         var favBaths = data.favList;
         return Scaffold(
-          appBar: AppBar(title: const Text('fav_list_title').tr()),
+          appBar: AppBar(
+              title: Text(
+            'fav_list_title',
+            style: kAppBarTextStyle,
+          ).tr()),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
             child: Container(
@@ -75,12 +80,7 @@ class _FavListPageState extends State<FavListPage> {
                         ),
                       ],
                     )
-                  : Center(
-                      child: Text(
-                        data.message,
-                        style: kMessageStyle,
-                      ),
-                    ),
+                  : Message(message: data.message),
             ),
           ),
         );

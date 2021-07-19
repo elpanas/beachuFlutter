@@ -1,6 +1,7 @@
 import 'package:beachu/components/action_button.dart';
 import 'package:beachu/components/bathlistpage/bath_alert.dart';
 import 'package:beachu/components/bathlistpage/bath_card.dart';
+import 'package:beachu/components/message.dart';
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/add_button.dart';
 import 'package:beachu/constants.dart';
@@ -26,7 +27,10 @@ class _BathListPageState extends State<BathListPage> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('bath_list_title').tr(),
+            title: Text(
+              'bath_list_title',
+              style: kAppBarTextStyle,
+            ).tr(),
             actions: [
               if (data.userId != '')
                 ActionIconButton(
@@ -34,11 +38,12 @@ class _BathListPageState extends State<BathListPage> {
                   onPressed: () => data.loadManagerBaths(),
                 ),
               ActionIconButton(
-                  icon: Icons.list,
-                  onPressed: () {
-                    data.loadFavList();
-                    Navigator.pushNamed(context, FavListPage.id);
-                  }),
+                icon: Icons.list,
+                onPressed: () {
+                  data.loadFavList();
+                  Navigator.pushNamed(context, FavListPage.id);
+                },
+              ),
             ],
           ),
           floatingActionButton: (data.userId != '') ? FloatingAdd() : null,
@@ -84,7 +89,8 @@ class _BathListPageState extends State<BathListPage> {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 snackBarBuilder(
-                                                    title: 'bath_deleted'.tr()),
+                                                  title: 'bath_deleted'.tr(),
+                                                ),
                                               );
                                             }
                                           },
@@ -98,12 +104,7 @@ class _BathListPageState extends State<BathListPage> {
                         ),
                       ],
                     )
-                  : Center(
-                      child: Text(
-                        data.message,
-                        style: kMessageStyle,
-                      ),
-                    ),
+                  : Message(message: data.message),
             ),
           ),
         );

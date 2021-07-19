@@ -41,7 +41,10 @@ class _NewBathState extends State<NewBath> {
       builder: (context, data, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('new_title').tr(),
+            title: Text(
+              'new_title',
+              style: kAppBarTextStyle,
+            ).tr(),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,

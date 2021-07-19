@@ -52,69 +52,65 @@ class BathPage extends StatelessWidget {
                       ),
               ],
             ),
-            body: Column(
-              children: [
-                BathTitle(title: _bath.name),
-                const SizedBox(height: 5.0),
-                BathSubTitle(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: BathContainer(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  BathTitle(title: _bath.name),
+                  const SizedBox(height: 5.0),
+                  BathSubTitle(),
+                  Row(
+                    children: [
+                      BathContainer(
                         title: 'bath_available'.tr(),
                         icon: Icons.beach_access,
                         colour: Colors.green,
                         info: data.bath[args.index].avUmbrellas.toString(),
                       ),
-                    ),
-                    Expanded(
-                      child: TextButton(
+                      BathContainer(
                         onPressed: () => data.openMap(args.index),
-                        child: BathContainer(
-                          title: 'bath_position'.tr(),
-                          icon: Icons.location_on,
-                          colour: Colors.blue,
-                          info: 'bath_openmap'.tr(),
-                        ),
+                        title: 'bath_position'.tr(),
+                        icon: Icons.location_on,
+                        colour: Colors.blue,
+                        info: 'bath_openmap'.tr(),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 25),
-                (_auth.currentUser?.uid != _bath.uid)
-                    ? SimpleButton(
-                        title: 'bath_call'.tr(),
-                        onPressed: () => data.callNumber(args.index),
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          UmbrellasIconButton(
-                            icon: Icons.remove,
-                            onPressed: () async {
-                              bool _result =
-                                  await data.decreaseUmbrellas(args.index);
-                              if (!_result)
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  snackBarBuilder(title: 'bath_min'.tr()),
-                                );
-                            },
-                          ),
-                          const SizedBox(width: 20.0),
-                          UmbrellasIconButton(
-                            icon: Icons.add,
-                            onPressed: () async {
-                              bool _result =
-                                  await data.increaseUmbrellas(args.index);
-                              if (!_result)
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  snackBarBuilder(title: 'bath_max'.tr()),
-                                );
-                            },
-                          ),
-                        ],
-                      )
-              ],
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  (_auth.currentUser?.uid != _bath.uid)
+                      ? SimpleButton(
+                          title: 'bath_call'.tr(),
+                          onPressed: () => data.callNumber(args.index),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            UmbrellasIconButton(
+                              icon: Icons.remove,
+                              onPressed: () async {
+                                bool _result =
+                                    await data.decreaseUmbrellas(args.index);
+                                if (!_result)
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBarBuilder(title: 'bath_min'.tr()),
+                                  );
+                              },
+                            ),
+                            const SizedBox(width: 20.0),
+                            UmbrellasIconButton(
+                              icon: Icons.add,
+                              onPressed: () async {
+                                bool _result =
+                                    await data.increaseUmbrellas(args.index);
+                                if (!_result)
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBarBuilder(title: 'bath_max'.tr()),
+                                  );
+                              },
+                            ),
+                          ],
+                        )
+                ],
+              ),
             ),
           ),
         );

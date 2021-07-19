@@ -7,37 +7,44 @@ class BathContainer extends StatelessWidget {
     required this.colour,
     required this.info,
     required this.icon,
+    this.onPressed,
   });
 
   final Color colour;
   final String title, info;
   final IconData icon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: kBathMargin,
-      padding: kV30Padding,
-      decoration: kBathTitleDecoration,
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          Icon(
-            icon,
-            color: colour,
-            size: 30.0,
+    return Expanded(
+      child: TextButton(
+        onPressed: onPressed,
+        child: Container(
+          margin: kBathMargin,
+          padding: kV30Padding,
+          decoration: kBathTitleDecoration,
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Icon(
+                icon,
+                color: colour,
+                size: 30.0,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                title,
+                style: kBathOpacTextStyle,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                info,
+                style: kBathTextStyle.copyWith(fontSize: 21),
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
-          Text(
-            title,
-            style: kBathOpacTextStyle,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            info,
-            style: kBathTextStyle.copyWith(fontSize: 21),
-          ),
-        ],
+        ),
       ),
     );
   }

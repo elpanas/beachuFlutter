@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sizer/sizer.dart';
 
 final String url = dotenv.env['URI']!;
 final String hashAuth = dotenv.env['HASH_AUTH']!;
 
+// APPBAR
+final kAppBarTextStyle = TextStyle(
+  fontSize: 18.sp,
+);
+
+// BUTTON
 final kButtonStyle = ButtonStyle(
   padding: MaterialStateProperty.all(
     const EdgeInsets.symmetric(vertical: 12.0),
@@ -14,14 +21,14 @@ final kButtonStyle = ButtonStyle(
     ),
   ),
   textStyle: MaterialStateProperty.all(
-    const TextStyle(
-      fontSize: 22.0,
+    TextStyle(
+      fontSize: 22.sp,
       fontWeight: FontWeight.bold,
       fontFamily: 'ComicNeue',
     ),
   ),
-  minimumSize: MaterialStateProperty.all(
-    const Size(300.0, 20.0),
+  fixedSize: MaterialStateProperty.all(
+    Size(70.w, 9.h),
   ),
 );
 final kSimpleButtonStyle = kButtonStyle.copyWith(
@@ -45,9 +52,9 @@ final kBathTitleDecoration = BoxDecoration(
   boxShadow: [const BoxShadow(blurRadius: 3.0)],
   borderRadius: BorderRadius.circular(10.0),
 );
-const kBathOpacTextStyle = TextStyle(
+final kBathOpacTextStyle = TextStyle(
   color: Colors.white54,
-  fontSize: 16,
+  fontSize: 16.sp,
 );
 const kV30Padding = EdgeInsets.symmetric(vertical: 30.0);
 // ----------------------------------------------------
@@ -56,8 +63,8 @@ const kV30Padding = EdgeInsets.symmetric(vertical: 30.0);
 const kH20Padding = EdgeInsets.symmetric(horizontal: 20.0);
 
 // BATH LIST PAGE
-const kTitleListStyle = TextStyle(
-  fontSize: 20.0,
+final kTitleListStyle = TextStyle(
+  fontSize: 20.sp,
   fontWeight: FontWeight.bold,
 );
 const kBathCardLeadingIcon = Icon(
@@ -68,9 +75,9 @@ const kBathCardMargin = EdgeInsets.symmetric(
   horizontal: 10.0,
   vertical: 4.0,
 );
-const kMessageStyle = TextStyle(
+final kMessageStyle = TextStyle(
   color: Colors.white70,
-  fontSize: 18.0,
+  fontSize: 18.sp,
 );
 // ----------------------------------------------------
 

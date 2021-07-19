@@ -15,6 +15,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sizer/sizer.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,27 +44,31 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => BathProvider(),
-      child: MaterialApp(
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        title: 'BeachU',
-        theme: ThemeData.dark().copyWith(
-          textTheme: kFontFamily,
-          primaryTextTheme: kFontFamily,
-          accentTextTheme: kFontFamily,
-          primaryColor: Colors.orange,
-          appBarTheme: kAppBarTheme,
-        ),
-        initialRoute: HomePage.id,
-        routes: {
-          HomePage.id: (context) => HomePage(),
-          BathListPage.id: (context) => BathListPage(),
-          BathPage.id: (context) => BathPage(),
-          LoginPage.id: (context) => LoginPage(),
-          NewBath.id: (context) => NewBath(),
-          EditBath.id: (context) => EditBath(),
-          FavListPage.id: (context) => FavListPage(),
+      child: Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            title: 'BeachU',
+            theme: ThemeData.dark().copyWith(
+              textTheme: kFontFamily,
+              primaryTextTheme: kFontFamily,
+              accentTextTheme: kFontFamily,
+              primaryColor: Colors.orange,
+              appBarTheme: kAppBarTheme,
+            ),
+            initialRoute: HomePage.id,
+            routes: {
+              HomePage.id: (context) => HomePage(),
+              BathListPage.id: (context) => BathListPage(),
+              BathPage.id: (context) => BathPage(),
+              LoginPage.id: (context) => LoginPage(),
+              NewBath.id: (context) => NewBath(),
+              EditBath.id: (context) => EditBath(),
+              FavListPage.id: (context) => FavListPage(),
+            },
+          );
         },
       ),
     );
