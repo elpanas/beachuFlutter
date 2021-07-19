@@ -112,6 +112,13 @@ const kSnackbarPadding = EdgeInsets.symmetric(
 
 // MAIN PAGE
 
+// Locales
+const kListLocales = [
+  Locale('en', 'US'),
+  Locale('it', 'IT'),
+];
+const kDefaultLocale = Locale('en', 'US');
+
 // Font Family
 final kFontFamily = ThemeData.dark().textTheme.apply(
       fontFamily: 'ComicNeue',
@@ -121,5 +128,14 @@ final kFontFamily = ThemeData.dark().textTheme.apply(
 const kAppBarTheme = AppBarTheme(
   backgroundColor: Color(0xFF232329),
   foregroundColor: Colors.white60,
+);
+
+// Dark Theme
+final kDarkTheme = ThemeData.dark().copyWith(
+  textTheme: kFontFamily,
+  primaryTextTheme: kFontFamily,
+  accentTextTheme: kFontFamily,
+  primaryColor: Colors.orange,
+  appBarTheme: kAppBarTheme,
 );
 // ----------------------------------------------------

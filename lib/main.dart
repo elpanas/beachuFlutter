@@ -28,12 +28,9 @@ Future main() async {
   //await Hive.deleteBoxFromDisk('favourites');
   runApp(
     EasyLocalization(
-      supportedLocales: [
-        Locale('en', 'US'),
-        Locale('it', 'IT'),
-      ],
+      supportedLocales: kListLocales,
       path: 'assets/translations',
-      fallbackLocale: Locale('en', 'US'),
+      fallbackLocale: kDefaultLocale,
       child: MyApp(),
     ),
   );
@@ -51,13 +48,7 @@ class MyApp extends StatelessWidget {
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             title: 'BeachU',
-            theme: ThemeData.dark().copyWith(
-              textTheme: kFontFamily,
-              primaryTextTheme: kFontFamily,
-              accentTextTheme: kFontFamily,
-              primaryColor: Colors.orange,
-              appBarTheme: kAppBarTheme,
-            ),
+            theme: kDarkTheme,
             initialRoute: HomePage.id,
             routes: {
               HomePage.id: (context) => HomePage(),
