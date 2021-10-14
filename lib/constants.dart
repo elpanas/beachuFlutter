@@ -134,7 +134,6 @@ const kAppBarTheme = AppBarTheme(
 final kDarkTheme = ThemeData.dark().copyWith(
   textTheme: kFontFamily,
   primaryTextTheme: kFontFamily,
-  accentTextTheme: kFontFamily,
   primaryColor: Colors.orange,
   appBarTheme: kAppBarTheme,
 );
