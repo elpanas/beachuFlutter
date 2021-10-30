@@ -36,6 +36,24 @@ String? validatorCallback(value) {
   return null;
 }
 
+Future<bool> registerWithEmail(email, password) async {
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    if (userCredential.user != null)
+      return true;
+    else
+      return false;
+  } catch (e) {
+    // print(e);
+    return false;
+  }
+}
+
 Future<bool> signInWithEmail(email, password) async {
   try {
     UserCredential userCredential =

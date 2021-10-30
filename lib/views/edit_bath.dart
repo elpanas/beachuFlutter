@@ -114,13 +114,14 @@ class _EditBathState extends State<EditBath> {
                                 _result = false;
                             if (_formKey.currentState!.validate()) {
                               Bath bath = await data.makeRequest(
-                                  data.userId,
-                                  _nameController.text,
-                                  int.parse(_avUmbrellasController.text),
-                                  int.parse(_totUmbrellasController.text),
-                                  _phoneController.text,
-                                  _cityController.text,
-                                  _provinceController.text);
+                                data.userId,
+                                _nameController.text,
+                                int.parse(_avUmbrellasController.text),
+                                int.parse(_totUmbrellasController.text),
+                                _phoneController.text,
+                                _cityController.text,
+                                _provinceController.text,
+                              );
                               _result = await data.putBath(bath, args.index);
                               if (_result) Navigator.pop(context);
                             }

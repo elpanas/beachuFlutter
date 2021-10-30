@@ -26,6 +26,7 @@
   "new_title": "New Bath",
   "new_button": "Add",
   "login_button": "Login",
+  "register_button": "Sign Up",
   "decoration_mail": "Type your email",
   "decoration_psw": "Type your password",
   "loading": "Loading...",

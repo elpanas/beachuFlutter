@@ -8,6 +8,7 @@ import 'package:beachu/views/fav_list.dart';
 import 'package:beachu/views/home.dart';
 import 'package:beachu/views/login.dart';
 import 'package:beachu/views/new_bath.dart';
+import 'package:beachu/views/registration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
               HomePage.id: (context) => HomePage(),
               BathListPage.id: (context) => BathListPage(),
               BathPage.id: (context) => BathPage(),
+              RegistrationPage.id: (context) => RegistrationPage(),
               LoginPage.id: (context) => LoginPage(),
               NewBath.id: (context) => NewBath(),
               EditBath.id: (context) => EditBath(),

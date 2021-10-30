@@ -1,3 +1,4 @@
+import 'package:beachu/components/homepage/registration_button.dart';
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/homepage/google_button.dart';
 import 'package:beachu/components/homepage/login_button.dart';
@@ -44,6 +45,7 @@ class HomePage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                RegistrationButton(),
                                 LoginButton(),
                                 const SizedBox(width: 5.0),
                                 GoogleButton(
