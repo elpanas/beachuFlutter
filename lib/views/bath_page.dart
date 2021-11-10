@@ -21,6 +21,7 @@ class BathPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as BathIndex;
+    print(args.index);
     return Consumer<BathProvider>(
       builder: (context, data, child) {
         Bath _bath = data.bath[args.index];

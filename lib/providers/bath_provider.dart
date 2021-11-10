@@ -55,14 +55,13 @@ class BathProvider extends ChangeNotifier {
     loading = true;
     _result = false;
     final body = jsonEncode(<String, dynamic>{
-          'bid': _bathList[index].bid!,
           'av_umbrellas': newValue,
         }),
         compressedBody = GZipCodec().encode(body.codeUnits);
 
     try {
       http.Response res = await http.patch(
-        Uri.parse('$url/disp/'),
+        Uri.parse('$url/${_bathList[index].bid!}'),
         headers: headersZip,
         body: compressedBody,
       );
@@ -120,8 +119,9 @@ class BathProvider extends ChangeNotifier {
   Future<bool> postBath(Bath value) async {
     loading = true;
     _result = false;
+
     try {
-      final compressedBody = GZipCodec().encode(jsonEncode(bath).codeUnits);
+      var compressedBody = GZipCodec().encode(jsonEncode(value).codeUnits);
       http.Response res = await http.post(
         Uri.parse(url),
         headers: headersZip,
@@ -134,6 +134,7 @@ class BathProvider extends ChangeNotifier {
         _result = true;
       }
     } catch (e) {
+      print(e);
       // ...
     } finally {
       loading = false;

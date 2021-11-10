@@ -59,6 +59,7 @@ class BathListPage extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: data.bathCount,
                             itemBuilder: (context, index) {
+                              print(index);
                               return BathCard(
                                 title: data.bath[index].name,
                                 availableUmbrella: data.bath[index].avUmbrellas,
