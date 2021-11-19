@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: use_key_in_widget_constructors
 class NewBath extends StatefulWidget {
   static const String id = 'new_bath_screen';
   @override

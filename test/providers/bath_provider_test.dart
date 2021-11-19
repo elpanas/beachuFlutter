@@ -46,7 +46,7 @@ void main() async {
     province: 'Foggia',
     fav: false,
   );
-  String jsonBath =
+  const String jsonBath =
       '''[{
     "_id": "1",
     "uid": "1",
@@ -130,26 +130,26 @@ void main() async {
 
   group('List methods', () {
     test('number of elements should be 0', () {
-      expect(provider.bathCount, equals(0));
+      expect(provider.bathCount, 0);
     });
 
     test('item should be added', () {
       provider.addBathItem(bath);
-      expect(provider.bathCount, equals(1));
+      expect(provider.bathCount, 1);
     });
 
     test('umbrellas number should be 148', () {
-      expect(provider.bath[0].avUmbrellas, equals(148));
+      expect(provider.bath[0].avUmbrellas, 148);
     });
 
     test('umbrellas number should be decreased of 1', () {
       provider.setUmbrellas(149, 0);
-      expect(provider.bath[0].avUmbrellas, equals(149));
+      expect(provider.bath[0].avUmbrellas, 149);
     });
 
     test('item should be removed', () {
       provider.removeBathItem(0);
-      expect(provider.bathCount, equals(0));
+      expect(provider.bathCount, 0);
     });
   });
 
@@ -168,14 +168,14 @@ void main() async {
 
     test('should remove fav from the list', () {
       provider.delFav(0);
-      expect(provider.favList.length, 0);
+      expect(provider.favList.isEmpty, true);
     });
   });
 
   group('Setters & Getters', () {
     test('should set the uid', () {
       provider.userId = '1';
-      expect(provider.userId, equals('1'));
+      expect(provider.userId, '1');
       expect(provider.userId = '1', isNot(throwsException));
     });
 

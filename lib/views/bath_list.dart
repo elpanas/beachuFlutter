@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: use_key_in_widget_constructors
 class BathListPage extends StatelessWidget {
   static const String id = 'bath_list_screen';
   @override
@@ -30,10 +31,12 @@ class BathListPage extends StatelessWidget {
             actions: [
               if (data.userId != '')
                 ActionIconButton(
+                  key: UniqueKey(),
                   icon: Icons.admin_panel_settings,
                   onPressed: () => data.loadManagerBaths(),
                 ),
               ActionIconButton(
+                key: UniqueKey(),
                 icon: Icons.list,
                 onPressed: () {
                   data.loadFavList();
@@ -61,6 +64,7 @@ class BathListPage extends StatelessWidget {
                             itemCount: data.bathCount,
                             itemBuilder: (context, index) {
                               return BathCard(
+                                key: UniqueKey(),
                                 title: data.bath[index].name,
                                 availableUmbrella: data.bath[index].avUmbrellas,
                                 onTap: () {

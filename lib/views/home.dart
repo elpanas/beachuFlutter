@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+// ignore: use_key_in_widget_constructors
 class HomePage extends StatelessWidget {
   static const String id = 'home_screen';
   final FirebaseAuth _auth = FirebaseAuth.instance;

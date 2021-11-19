@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class UmbrellasIconButton extends StatelessWidget {
   const UmbrellasIconButton({
+    required Key key,
     required this.icon,
     required this.onPressed,
-  });
+  }) : super(key: key);
 
   final IconData icon;
   final VoidCallback onPressed;

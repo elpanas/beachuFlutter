@@ -15,6 +15,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+// ignore: use_key_in_widget_constructors
 class BathPage extends StatelessWidget {
   static const String id = 'bath_screen';
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -31,6 +32,7 @@ class BathPage extends StatelessWidget {
               actions: [
                 (data.userId != _bath.uid)
                     ? ActionIconButton(
+                        key: UniqueKey(),
                         icon: (_bath.fav)
                             ? Icons.favorite
                             : Icons.favorite_outline,
@@ -41,6 +43,7 @@ class BathPage extends StatelessWidget {
                         },
                       )
                     : ActionIconButton(
+                        key: UniqueKey(),
                         icon: Icons.edit,
                         onPressed: () {
                           Navigator.pushNamed(
@@ -85,6 +88,7 @@ class BathPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             UmbrellasIconButton(
+                              key: UniqueKey(),
                               icon: Icons.remove,
                               onPressed: () async {
                                 bool _result =
@@ -98,6 +102,7 @@ class BathPage extends StatelessWidget {
                             ),
                             const SizedBox(width: 20.0),
                             UmbrellasIconButton(
+                              key: UniqueKey(),
                               icon: Icons.add,
                               onPressed: () async {
                                 bool _result =

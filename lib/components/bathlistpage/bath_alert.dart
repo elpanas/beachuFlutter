@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class DeleteAlert extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const DeleteAlert({required this.onPressed});
   final VoidCallback onPressed;
   @override

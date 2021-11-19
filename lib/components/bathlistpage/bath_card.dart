@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class BathCard extends StatelessWidget {
   const BathCard({
+    required UniqueKey key,
     required this.title,
     required this.availableUmbrella,
     required this.onTap,
     required this.onLongPress,
-  });
+  }) : super(key: key);
   final String title;
   final int availableUmbrella;
   final VoidCallback onTap, onLongPress;

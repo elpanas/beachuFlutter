@@ -2,6 +2,7 @@ import 'package:beachu/constants.dart';
 import 'package:flutter/material.dart';
 
 class BathContainer extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const BathContainer({
     required this.title,
     required this.colour,

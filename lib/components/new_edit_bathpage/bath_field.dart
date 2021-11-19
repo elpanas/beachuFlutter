@@ -3,6 +3,7 @@ import 'package:beachu/functions.dart';
 import 'package:flutter/material.dart';
 
 class BathField extends StatelessWidget {
+  // ignore: use_key_in_widget_constructors
   const BathField({
     required this.controller,
     this.inputType,

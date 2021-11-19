@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 class FavCard extends StatelessWidget {
   const FavCard({
+    required UniqueKey key,
     required this.title,
     required this.city,
     required this.onTap,
     required this.onLongPress,
-  });
+  }) : super(key: key);
   final String title, city;
   final VoidCallback onTap, onLongPress;
   @override

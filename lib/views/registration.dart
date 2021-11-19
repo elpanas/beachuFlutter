@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+// ignore: use_key_in_widget_constructors
 class RegistrationPage extends StatefulWidget {
   static const String id = 'registration_screen';
   @override
