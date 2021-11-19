@@ -49,7 +49,7 @@ const kBathMargin = EdgeInsets.symmetric(
 const kBathTitlePadding = EdgeInsets.symmetric(vertical: 50.0);
 final kBathTitleDecoration = BoxDecoration(
   color: const Color(0xFF232329),
-  boxShadow: [const BoxShadow(blurRadius: 3.0)],
+  boxShadow: const [BoxShadow(blurRadius: 3.0)],
   borderRadius: BorderRadius.circular(10.0),
 );
 final kBathOpacTextStyle = TextStyle(

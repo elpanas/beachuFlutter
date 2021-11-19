@@ -11,12 +11,10 @@ class SimpleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(title),
-        style: kSimpleButtonStyle,
-      ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(title),
+      style: kSimpleButtonStyle,
     );
   }
 }

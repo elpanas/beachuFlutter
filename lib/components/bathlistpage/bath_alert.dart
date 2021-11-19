@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class DeleteAlert extends StatelessWidget {
-  DeleteAlert({required this.onPressed});
+  const DeleteAlert({required this.onPressed});
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {

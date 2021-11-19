@@ -18,51 +18,48 @@ class BathProvider extends ChangeNotifier {
   var _favList = [];
   bool _loading = false, _result = false;
   String _message = 'no_baths'.tr(), _uid = '';
-  final headersZip = {
+  final _headersZip = {
     HttpHeaders.contentEncodingHeader: 'gzip',
     HttpHeaders.contentTypeHeader: 'application/json',
     HttpHeaders.authorizationHeader: hashAuth,
   };
-  final header = {
-    HttpHeaders.authorizationHeader: hashAuth,
-  };
 
   // HANDLERS
-  getHandler(url) async {
+  Future<bool> getHandler(http.Client client, String url) async {
     loading = true;
     message = 'loading'.tr();
     _result = false;
     try {
-      http.Response res = await http.get(
-        Uri.parse(url),
-        headers: header,
-      );
+      final res = await client.get(Uri.parse(url));
 
       if (res.statusCode == 200) {
         final resJson = jsonDecode(res.body);
         _bathList = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
         _result = true;
-      } else
+      } else {
         message = 'no_baths'.tr();
+      }
     } catch (e) {
       message = 'no_baths'.tr();
+      throw Exception(e);
     } finally {
       loading = false;
     }
+    return _result;
   }
 
-  Future<bool> patchHandler(int index, int newValue) async {
+  Future<bool> patchHandler(http.Client client, int index, int newValue) async {
     loading = true;
     _result = false;
     final body = jsonEncode(<String, dynamic>{
-          'av_umbrellas': newValue,
-        }),
-        compressedBody = GZipCodec().encode(body.codeUnits);
+      'av_umbrellas': newValue,
+    });
+    final compressedBody = GZipCodec().encode(body.codeUnits);
 
     try {
-      http.Response res = await http.patch(
-        Uri.parse('$url/${_bathList[index].bid!}'),
-        headers: headersZip,
+      final res = await client.patch(
+        Uri.parse('$url${_bathList[index].bid!}'),
+        headers: _headersZip,
         body: compressedBody,
       );
 
@@ -71,7 +68,7 @@ class BathProvider extends ChangeNotifier {
         _result = true;
       }
     } catch (e) {
-      // ...
+      throw Exception(e);
     } finally {
       loading = false;
     }
@@ -105,37 +102,42 @@ class BathProvider extends ChangeNotifier {
   // ---------------------------------------------------------
 
   // GET
-  loadBaths() async {
+  Future<bool> loadBaths() async {
     Position pos = await getPosition();
-    getHandler('${url}disp/coord/${pos.latitude}/${pos.longitude}');
+    return await getHandler(
+        http.Client(), '${url}disp/coord/${pos.latitude}/${pos.longitude}');
   }
 
-  loadBath(String bid) => getHandler('${url}bath/$bid');
+  Future<bool> loadBath(String bid) {
+    return getHandler(http.Client(), '${url}bath/$bid');
+  }
 
-  loadManagerBaths() => getHandler('${url}gest/$_uid');
+  Future<bool> loadManagerBaths() {
+    return getHandler(http.Client(), '${url}gest/$_uid');
+  }
   // ---------------------------------------------------------
 
   // CREATE
-  Future<bool> postBath(Bath value) async {
+  Future<bool> postBath(http.Client client, Bath value) async {
     loading = true;
     _result = false;
 
     try {
       var compressedBody = GZipCodec().encode(jsonEncode(value).codeUnits);
-      http.Response res = await http.post(
+      final res = await client.post(
         Uri.parse(url),
-        headers: headersZip,
+        headers: _headersZip,
         body: compressedBody,
       );
 
       if (res.statusCode == 201) {
-        addBathItem(value);
-        loadManagerBaths();
+        final resJson = jsonDecode(res.body);
+        final bath = Bath.fromJson(resJson[0]); // contiene solo 1 elemento
+        addBathItem(bath);
         _result = true;
       }
     } catch (e) {
-      print(e);
-      // ...
+      throw Exception(e);
     } finally {
       loading = false;
     }
@@ -145,7 +147,7 @@ class BathProvider extends ChangeNotifier {
   // ---------------------------------------------------------
 
   // UPDATE
-  Future<bool> putBath(Bath value, int index) async {
+  Future<bool> putBath(http.Client client, Bath value, int index) async {
     loading = true;
     _result = false;
 
@@ -153,9 +155,9 @@ class BathProvider extends ChangeNotifier {
 
     try {
       if (value.avUmbrellas <= value.totUmbrellas) {
-        http.Response res = await http.put(
-          Uri.parse('$url/${_bathList[index].bid}'),
-          headers: headersZip,
+        final res = await client.put(
+          Uri.parse('$url${_bathList[index].bid}'),
+          headers: _headersZip,
           body: compressedBody,
         );
 
@@ -163,10 +165,9 @@ class BathProvider extends ChangeNotifier {
           editBathItem(value, index);
           _result = true;
         }
-      } else
-        _result = false;
+      }
     } catch (e) {
-      // ...
+      throw Exception(e);
     } finally {
       loading = false;
     }
@@ -175,28 +176,32 @@ class BathProvider extends ChangeNotifier {
   }
 
   Future<bool> increaseUmbrellas(int index) async {
-    if (_bathList[index].avUmbrellas < _bathList[index].totUmbrellas)
-      return await patchHandler(index, _bathList[index].avUmbrellas + 1);
-    else
+    if (_bathList[index].avUmbrellas < _bathList[index].totUmbrellas) {
+      return await patchHandler(
+          http.Client(), index, _bathList[index].avUmbrellas + 1);
+    } else {
       return false;
+    }
   }
 
   Future<bool> decreaseUmbrellas(int index) async {
-    if (_bathList[index].avUmbrellas > 0)
-      return await patchHandler(index, _bathList[index].avUmbrellas - 1);
-    else
+    if (_bathList[index].avUmbrellas > 0) {
+      return await patchHandler(
+          http.Client(), index, _bathList[index].avUmbrellas - 1);
+    } else {
       return false;
+    }
   }
   // ---------------------------------------------------------
 
   // DELETE
-  Future<bool> deleteBath(int index) async {
+  Future<bool> deleteBath(http.Client client, int index) async {
     loading = true;
     _result = false;
     final bid = _bathList[index].bid;
     try {
-      http.Response res = await http.delete(
-        Uri.parse('$url/$bid'),
+      final res = await client.delete(
+        Uri.parse('$url$bid'),
         headers: {HttpHeaders.authorizationHeader: hashAuth},
       );
 
@@ -258,7 +263,7 @@ class BathProvider extends ChangeNotifier {
 
   removeBathItem(index) {
     _bathList.removeAt(index);
-    if (_bathList.length == 0) _message = 'no_baths'.tr();
+    if (_bathList.isEmpty) _message = 'no_baths'.tr();
     notifyListeners();
   }
 
@@ -286,7 +291,7 @@ class BathProvider extends ChangeNotifier {
   loadFavList() {
     var box = Hive.box('favourites');
     _favList = box.values.toList();
-    if (_favList.length == 0) message = 'no_baths'.tr();
+    if (_favList.isEmpty) message = 'no_baths'.tr();
     notifyListeners();
   }
 

@@ -13,9 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:http/http.dart' as http;
 
 class BathListPage extends StatelessWidget {
-  static final String id = 'bath_list_screen';
+  static const String id = 'bath_list_screen';
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
@@ -44,7 +45,7 @@ class BathListPage extends StatelessWidget {
           floatingActionButton: (data.userId != '') ? FloatingAdd() : null,
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               child: (data.bathCount > 0)
                   ? Column(
@@ -59,7 +60,6 @@ class BathListPage extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: data.bathCount,
                             itemBuilder: (context, index) {
-                              print(index);
                               return BathCard(
                                 title: data.bath[index].name,
                                 availableUmbrella: data.bath[index].avUmbrellas,
@@ -71,15 +71,15 @@ class BathListPage extends StatelessWidget {
                                   );
                                 },
                                 onLongPress: () {
-                                  if (data.userId != '')
+                                  if (data.userId != '') {
                                     showDialog<void>(
                                       context: context,
                                       barrierDismissible: false,
                                       builder: (BuildContext context) {
                                         return DeleteAlert(
                                           onPressed: () async {
-                                            bool result =
-                                                await data.deleteBath(index);
+                                            bool result = await data.deleteBath(
+                                                http.Client(), index);
                                             if (result) {
                                               Navigator.pop(context);
                                               ScaffoldMessenger.of(context)
@@ -93,6 +93,7 @@ class BathListPage extends StatelessWidget {
                                         );
                                       },
                                     );
+                                  }
                                 },
                               );
                             },

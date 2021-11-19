@@ -12,9 +12,9 @@ class UmbrellasIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Ink(
-      decoration: ShapeDecoration(
+      decoration: const ShapeDecoration(
         color: Colors.orange,
-        shape: const CircleBorder(),
+        shape: CircleBorder(),
       ),
       child: IconButton(
         icon: Icon(icon),

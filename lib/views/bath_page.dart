@@ -16,12 +16,11 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class BathPage extends StatelessWidget {
-  static final String id = 'bath_screen';
+  static const String id = 'bath_screen';
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as BathIndex;
-    print(args.index);
     return Consumer<BathProvider>(
       builder: (context, data, child) {
         Bath _bath = data.bath[args.index];
@@ -90,10 +89,11 @@ class BathPage extends StatelessWidget {
                               onPressed: () async {
                                 bool _result =
                                     await data.decreaseUmbrellas(args.index);
-                                if (!_result)
+                                if (!_result) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     snackBarBuilder(title: 'bath_min'.tr()),
                                   );
+                                }
                               },
                             ),
                             const SizedBox(width: 20.0),
@@ -102,10 +102,11 @@ class BathPage extends StatelessWidget {
                               onPressed: () async {
                                 bool _result =
                                     await data.increaseUmbrellas(args.index);
-                                if (!_result)
+                                if (!_result) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     snackBarBuilder(title: 'bath_max'.tr()),
                                   );
+                                }
                               },
                             ),
                           ],

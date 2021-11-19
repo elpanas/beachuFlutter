@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class FavListPage extends StatelessWidget {
-  static final String id = 'fav_list_screen';
+  static const String id = 'fav_list_screen';
   @override
   Widget build(BuildContext context) {
     return Consumer<BathProvider>(
@@ -26,7 +26,7 @@ class FavListPage extends StatelessWidget {
           ).tr()),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
-            child: Container(
+            child: SizedBox(
               width: double.infinity,
               child: (favBaths.length > 0)
                   ? Column(

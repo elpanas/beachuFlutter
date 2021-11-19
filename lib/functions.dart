@@ -13,26 +13,31 @@ Future<Position> getPosition() async {
   permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied)
+    if (permission == LocationPermission.denied) {
       return Future.error('Location permissions are denied');
+    }
   }
 
-  if (permission == LocationPermission.deniedForever)
+  if (permission == LocationPermission.deniedForever) {
     return Future.error(
         'Location permissions are permanently denied, we cannot request permissions.');
+  }
 
   final loc = await Geolocator.getLastKnownPosition();
 
-  if (loc == null)
+  if (loc == null) {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium);
-  else
+  } else {
     return loc;
+  }
 }
 
 // TEXTFIELD VALIDATION
 String? validatorCallback(value) {
-  if (value == null || value.isEmpty) return 'Please enter some text';
+  if (value == null || value.isEmpty) {
+    return 'Please enter some text';
+  }
   return null;
 }
 
@@ -44,10 +49,11 @@ Future<bool> registerWithEmail(email, password) async {
       password: password,
     );
 
-    if (userCredential.user != null)
+    if (userCredential.user != null) {
       return true;
-    else
+    } else {
       return false;
+    }
   } catch (e) {
     // print(e);
     return false;
@@ -62,10 +68,11 @@ Future<bool> signInWithEmail(email, password) async {
       password: password,
     );
 
-    if (userCredential.user != null)
+    if (userCredential.user != null) {
       return true;
-    else
+    } else {
       return false;
+    }
   } catch (e) {
     // print(e);
     return false;
@@ -90,10 +97,11 @@ Future<String> signInWithGoogle() async {
   final UserCredential userCredential =
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-  if (userCredential.user != null)
+  if (userCredential.user != null) {
     return userCredential.user!.uid;
-  else
+  } else {
     return '';
+  }
 }
 
 /* Future<String> signInWithFacebook() async {

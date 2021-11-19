@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:http/http.dart' as http;
 
 class EditBath extends StatefulWidget {
-  static final String id = 'edit_bath_screen';
+  static const String id = 'edit_bath_screen';
   @override
   _EditBathState createState() => _EditBathState();
 }
@@ -122,14 +123,16 @@ class _EditBathState extends State<EditBath> {
                                 _cityController.text,
                                 _provinceController.text,
                               );
-                              _result = await data.putBath(bath, args.index);
+                              _result = await data.putBath(
+                                  http.Client(), bath, args.index);
                               if (_result) Navigator.pop(context);
                             }
 
-                            if (!_validate || !_result)
+                            if (!_validate || !_result) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 snackBarBuilder(title: 'snack_msg'.tr()),
                               );
+                            }
                           },
                         ),
                       ],

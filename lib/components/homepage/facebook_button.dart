@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FacebookButton extends StatelessWidget {
-  FacebookButton({required this.onPressed});
+  const FacebookButton({required this.onPressed});
 
   final VoidCallback onPressed;
   @override

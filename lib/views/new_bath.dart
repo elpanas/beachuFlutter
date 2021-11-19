@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:http/http.dart' as http;
 
 class NewBath extends StatefulWidget {
-  static final String id = 'new_bath_screen';
+  static const String id = 'new_bath_screen';
   @override
   _NewBathState createState() => _NewBathState();
 }
@@ -23,7 +24,7 @@ class _NewBathState extends State<NewBath> {
       _cityController = TextEditingController(),
       _provinceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -103,14 +104,15 @@ class _NewBathState extends State<NewBath> {
                                 _cityController.text,
                                 _provinceController.text,
                               );
-                              result = await data.postBath(bath);
+                              result = await data.postBath(http.Client(), bath);
                               if (result) Navigator.pop(context);
                             }
 
-                            if (!validate || !result)
+                            if (!validate || !result) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 snackBarBuilder(title: 'snack_msg'.tr()),
                               );
+                            }
                           },
                         ),
                       ],

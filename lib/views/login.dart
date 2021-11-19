@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class LoginPage extends StatefulWidget {
-  static final String id = 'login_screen';
+  static const String id = 'login_screen';
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -18,7 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _mailController = TextEditingController(),
       _pswController = TextEditingController();
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -74,9 +74,10 @@ class _LoginPageState extends State<LoginPage> {
                           data.loadManagerBaths();
                           Navigator.pushReplacementNamed(
                               context, BathListPage.id);
-                        } else
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                               snackBarBuilder(title: 'snack_msg'.tr()));
+                        }
                       },
                     ),
                   ],
