@@ -102,6 +102,7 @@ class BathProvider extends ChangeNotifier {
   // ---------------------------------------------------------
 
   // GET
+  // coverage:ignore-start
   Future<bool> loadBaths() async {
     Position pos = await getPosition();
     return await getHandler(
@@ -115,6 +116,7 @@ class BathProvider extends ChangeNotifier {
   Future<bool> loadManagerBaths() {
     return getHandler(http.Client(), '${url}gest/$_uid');
   }
+  // coverage:ignore-end
   // ---------------------------------------------------------
 
   // CREATE
@@ -147,6 +149,7 @@ class BathProvider extends ChangeNotifier {
   // ---------------------------------------------------------
 
   // UPDATE
+
   Future<bool> putBath(http.Client client, Bath value, int index) async {
     loading = true;
     _result = false;
@@ -251,40 +254,42 @@ class BathProvider extends ChangeNotifier {
   // ---------------------------------------------------------
 
   // LIST SETTERS
-  addBathItem(value) {
+  addBathItem(Bath value) {
     _bathList.add(value);
     notifyListeners();
   }
 
-  editBathItem(value, index) {
+  editBathItem(Bath value, int index) {
     _bathList[index] = value;
     notifyListeners();
   }
 
-  removeBathItem(index) {
+  removeBathItem(int index) {
     _bathList.removeAt(index);
     if (_bathList.isEmpty) _message = 'no_baths'.tr();
     notifyListeners();
   }
 
-  setUmbrellas(value, index) {
+  setUmbrellas(int value, int index) {
     _bathList[index].avUmbrellas = value;
     notifyListeners();
   }
 
-  callNumber(index) async {
+  // coverage:ignore-start
+  callNumber(int index) async {
     await canLaunch('tel:${_bathList[index].phone}')
         ? launch('tel:${_bathList[index].phone}')
         : throw 'Could not launch';
   }
 
-  openMap(index) {
+  openMap(int index) {
     MapsLauncher.launchCoordinates(
       _bathList[index].latitude,
       _bathList[index].longitude,
       _bathList[index].name,
     );
   }
+  // coverage:ignore-end
   // ---------------------------------------------------------
 
   // DB FUNCTIONS

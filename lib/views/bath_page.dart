@@ -82,7 +82,8 @@ class BathPage extends StatelessWidget {
                   (_auth.currentUser?.uid != _bath.uid)
                       ? SimpleButton(
                           title: 'bath_call'.tr(),
-                          onPressed: () => data.callNumber(args.index),
+                          onPressed: () async =>
+                              await data.callNumber(args.index),
                         )
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,

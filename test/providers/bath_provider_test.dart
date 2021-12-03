@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:beachu/constants.dart';
-// import 'package:beachu/functions.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/models/hive_model.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,10 +18,6 @@ import 'package:http/http.dart' as http;
 
 @GenerateMocks([http.Client])
 void main() async {
-  /* setUpAll(() {
-    // required to avoid HTTP error 400 mocked returns
-    HttpOverrides.global = null;
-  });*/
   TestWidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: "../../.env");
@@ -90,20 +85,6 @@ void main() async {
           isTrue);
     });
 
-    test('PATCH request', () async {
-      final body = jsonEncode(<String, dynamic>{
-        'av_umbrellas': 148,
-      });
-      final compressedBody = GZipCodec().encode(body.codeUnits);
-
-      when(client.patch(
-        Uri.parse('${url}1'),
-        headers: headersZip,
-        body: compressedBody,
-      )).thenAnswer((_) async => http.Response('{}', 200));
-
-      expect(await provider.patchHandler(client, 0, 148), isTrue);
-    });
     /*
     test('PUT request', () async {
       final body = jsonEncode(bath);
@@ -118,6 +99,21 @@ void main() async {
       expect(await provider.putBath(client, bath, 0), isTrue);
     });
     */
+    test('PATCH request', () async {
+      final body = jsonEncode(<String, dynamic>{
+        'av_umbrellas': 148,
+      });
+      final compressedBody = GZipCodec().encode(body.codeUnits);
+
+      when(client.patch(
+        Uri.parse('${url}1'),
+        headers: headersZip,
+        body: compressedBody,
+      )).thenAnswer((_) async => http.Response('{}', 200));
+
+      expect(await provider.patchHandler(client, 0, 148), isTrue);
+    });
+
     test('DELETE request', () async {
       when(client.delete(
         Uri.parse('${url}1'),
@@ -147,9 +143,14 @@ void main() async {
       expect(provider.bath[0].avUmbrellas, 149);
     });
 
+    test('item should be edited', () {
+      provider.editBathItem(bath, 0);
+      expect(provider.bath[0].totUmbrellas, 148);
+    });
+
     test('item should be removed', () {
       provider.removeBathItem(0);
-      expect(provider.bathCount, 0);
+      expect(provider.bath, isEmpty);
     });
   });
 

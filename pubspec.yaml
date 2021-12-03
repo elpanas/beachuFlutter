@@ -24,6 +24,7 @@ dependencies:
   flutter_native_splash: ^1.2.0
   sizer: ^2.0.13
   cupertino_icons: ^1.0.2
+  # dcdg: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +34,7 @@ dev_dependencies:
   hive_generator: ^1.1.0
   build_runner: ^2.1.4
   flutter_lints: ^1.0.4
+  test_cov_console: ^0.1.5
 
 flutter_icons:
   android: true

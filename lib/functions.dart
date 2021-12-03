@@ -2,6 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+// TEXTFIELD VALIDATION
+String? validatorCallback(value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter some text';
+  }
+  return null;
+}
+
+// coverage:ignore-start
 // GEOLOCATOR
 Future<Position> getPosition() async {
   bool serviceEnabled;
@@ -31,14 +40,6 @@ Future<Position> getPosition() async {
   } else {
     return loc;
   }
-}
-
-// TEXTFIELD VALIDATION
-String? validatorCallback(value) {
-  if (value == null || value.isEmpty) {
-    return 'Please enter some text';
-  }
-  return null;
 }
 
 Future<bool> registerWithEmail(email, password) async {
@@ -103,7 +104,7 @@ Future<String> signInWithGoogle() async {
     return '';
   }
 }
-
+// coverage:ignore-end
 /* Future<String> signInWithFacebook() async {
   // Trigger the sign-in flow
   final LoginResult result = await FacebookAuth.instance.login();
