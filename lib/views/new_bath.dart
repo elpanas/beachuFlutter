@@ -25,7 +25,6 @@ class _NewBathState extends State<NewBath> {
       _cityController = TextEditingController(),
       _provinceController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -97,7 +96,6 @@ class _NewBathState extends State<NewBath> {
                                 result = false;
                             if (validate) {
                               Bath bath = await data.makeRequest(
-                                _auth.currentUser!.uid,
                                 _nameController.text,
                                 int.parse(_totUmbrellasController.text),
                                 int.parse(_totUmbrellasController.text),

@@ -116,7 +116,6 @@ class _EditBathState extends State<EditBath> {
                                 _result = false;
                             if (_formKey.currentState!.validate()) {
                               Bath bath = await data.makeRequest(
-                                data.userId,
                                 _nameController.text,
                                 int.parse(_avUmbrellasController.text),
                                 int.parse(_totUmbrellasController.text),

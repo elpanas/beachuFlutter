@@ -81,7 +81,6 @@ class BathProvider extends ChangeNotifier {
   }
 
   Future<Bath> makeRequest(
-    String uid,
     String name,
     int avUmbrellas,
     int totUmbrellas,
@@ -91,7 +90,7 @@ class BathProvider extends ChangeNotifier {
   ) async {
     Position position = await getPosition();
     return Bath(
-      uid: uid,
+      uid: _uid,
       name: name,
       avUmbrellas: avUmbrellas,
       totUmbrellas: totUmbrellas,
