@@ -21,7 +21,10 @@ class BathProvider extends ChangeNotifier {
   final _headersZip = {
     HttpHeaders.contentEncodingHeader: 'gzip',
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: hashAuth,
+    HttpHeaders.authorizationHeader: 'Bearer $hashAuth',
+  };
+  final _header = {
+    HttpHeaders.authorizationHeader: 'Bearer $hashAuth',
   };
 
   // HANDLERS
@@ -30,8 +33,9 @@ class BathProvider extends ChangeNotifier {
     message = 'loading'.tr();
     _result = false;
     try {
-      final res = await client.get(Uri.parse(url));
-
+      final res = (_uid == '')
+          ? await client.get(Uri.parse(url))
+          : await client.get(Uri.parse(url), headers: _header);
       if (res.statusCode == 200) {
         final resJson = jsonDecode(res.body);
         _bathList = resJson.map<Bath>((data) => Bath.fromJson(data)).toList();
@@ -113,8 +117,8 @@ class BathProvider extends ChangeNotifier {
     return getHandler(http.Client(), '${url}bath/$bid');
   }
 
-  Future<bool> loadManagerBaths() {
-    return getHandler(http.Client(), '${url}gest/$_uid');
+  Future<bool> loadManagerBaths() async {
+    return await getHandler(http.Client(), '${url}gest/$_uid');
   }
   // coverage:ignore-end
   // ---------------------------------------------------------
@@ -134,7 +138,7 @@ class BathProvider extends ChangeNotifier {
 
       if (res.statusCode == 201) {
         final resJson = jsonDecode(res.body);
-        final bath = Bath.fromJson(resJson[0]); // contiene solo 1 elemento
+        final bath = Bath.fromJson(resJson); // contiene solo 1 elemento
         addBathItem(bath);
         _result = true;
       }
@@ -205,7 +209,7 @@ class BathProvider extends ChangeNotifier {
     try {
       final res = await client.delete(
         Uri.parse('$url$bid'),
-        headers: {HttpHeaders.authorizationHeader: hashAuth},
+        headers: _header,
       );
 
       if (res.statusCode == 200) {
@@ -220,8 +224,8 @@ class BathProvider extends ChangeNotifier {
 
     return _result;
   }
-
   // ---------------------------------------------------------
+
   // VARS GETTERS
   get userId => _uid;
   get loading => _loading;

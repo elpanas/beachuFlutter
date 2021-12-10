@@ -9,7 +9,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:beachu/providers/bath_provider.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -42,7 +41,7 @@ void main() async {
     fav: false,
   );
   const String jsonBath =
-      '''[{
+      '''{
     "_id": "1",
     "uid": "1",
     "name": "Bagno Prova",
@@ -55,12 +54,12 @@ void main() async {
     },
     "city": "Manfredonia",
     "province": "Foggia"
-  }]''';
+  }''';
 
   final headersZip = {
     HttpHeaders.contentEncodingHeader: 'gzip',
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: hashAuth,
+    HttpHeaders.authorizationHeader: 'Bearer $hashAuth',
   };
 
   group('HTTP methods', () {
@@ -78,7 +77,7 @@ void main() async {
 
     test('GET request', () async {
       when(client.get(Uri.parse('${url}disp/coord/41.222/15.333')))
-          .thenAnswer((_) async => http.Response(jsonBath, 200));
+          .thenAnswer((_) async => http.Response('[$jsonBath]', 200));
 
       expect(
           await provider.getHandler(client, '${url}disp/coord/41.222/15.333'),
@@ -117,7 +116,7 @@ void main() async {
     test('DELETE request', () async {
       when(client.delete(
         Uri.parse('${url}1'),
-        headers: {HttpHeaders.authorizationHeader: hashAuth},
+        headers: {HttpHeaders.authorizationHeader: 'Bearer $hashAuth'},
       )).thenAnswer((_) async => http.Response('{}', 200));
 
       expect(await provider.deleteBath(client, 0), isTrue);
