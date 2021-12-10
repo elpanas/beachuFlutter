@@ -9,7 +9,6 @@ import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/views/edit_bath.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ import 'package:easy_localization/easy_localization.dart';
 // ignore: use_key_in_widget_constructors
 class BathPage extends StatelessWidget {
   static const String id = 'bath_screen';
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as BathIndex;
