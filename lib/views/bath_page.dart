@@ -79,7 +79,7 @@ class BathPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 25),
-                  (_auth.currentUser?.uid != _bath.uid)
+                  (data.userId != _bath.uid)
                       ? SimpleButton(
                           title: 'bath_call'.tr(),
                           onPressed: () async =>
