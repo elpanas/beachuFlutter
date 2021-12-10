@@ -46,9 +46,9 @@ class _EditBathState extends State<EditBath> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'bath_title',
+              _bath.name,
               style: kAppBarTextStyle,
-            ).tr(),
+            ),
           ),
           body: ModalProgressHUD(
             inAsyncCall: data.loading,
