@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 // TEXTFIELD VALIDATION
 String? validatorCallback(value) {
@@ -42,86 +40,4 @@ Future<Position> getPosition() async {
   }
 }
 
-Future<bool> registerWithEmail(email, password) async {
-  try {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    if (userCredential.user != null) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (e) {
-    // print(e);
-    return false;
-  }
-}
-
-Future<bool> signInWithEmail(email, password) async {
-  try {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    if (userCredential.user != null) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (e) {
-    // print(e);
-    return false;
-  }
-}
-
-Future<String> signInWithGoogle() async {
-  // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication googleAuth =
-      await googleUser!.authentication;
-
-  // Create a new credential
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
-
-  // Once signed in, return the UserCredential
-  final UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
-
-  if (userCredential.user != null) {
-    return userCredential.user!.uid;
-  } else {
-    return '';
-  }
-}
 // coverage:ignore-end
-/* Future<String> signInWithFacebook() async {
-  // Trigger the sign-in flow
-  final LoginResult result = await FacebookAuth.instance.login();
-
-  // Create a credential from the access token
-  if (result.accessToken != null) {
-    final facebookAuthCredential =
-        FacebookAuthProvider.credential(result.accessToken!.token);
-
-    // Once signed in, return the UserCredential
-    final userCredential = await FirebaseAuth.instance
-        .signInWithCredential(facebookAuthCredential);
-
-    if (userCredential.user != null)
-      return userCredential.user!.uid;
-    else
-      return '';
-  } else
-    return '';
-}*/

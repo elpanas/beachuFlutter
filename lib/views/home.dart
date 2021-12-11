@@ -5,10 +5,9 @@ import 'package:beachu/components/homepage/login_button.dart';
 import 'package:beachu/components/logout_button.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
-import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:beachu/providers/fire_provider.dart';
 import 'package:beachu/views/bath_list.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,11 +15,10 @@ import 'package:easy_localization/easy_localization.dart';
 // ignore: use_key_in_widget_constructors
 class HomePage extends StatelessWidget {
   static const String id = 'home_screen';
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    return Consumer<BathProvider>(
-      builder: (context, data, child) {
+    return Consumer2<BathProvider, FireProvider>(
+      builder: (context, data, fire, child) {
         return Scaffold(
           body: Center(
             child: SingleChildScrollView(
@@ -51,9 +49,9 @@ class HomePage extends StatelessWidget {
                                 const SizedBox(width: 5.0),
                                 GoogleButton(
                                   onPressed: () async {
-                                    String userId = await signInWithGoogle();
-                                    if (userId != '') {
-                                      data.userId = userId;
+                                    bool result = await fire.signInWithGoogle();
+                                    if (result) {
+                                      data.userId = fire.userId;
                                       data.loadManagerBaths();
                                       Navigator.pushNamed(
                                           context, BathListPage.id);
@@ -70,7 +68,7 @@ class HomePage extends StatelessWidget {
                             )
                           : LogoutButton(
                               onPressed: () async {
-                                await _auth.signOut();
+                                await fire.signOut();
                                 data.userId = '';
                               },
                             )

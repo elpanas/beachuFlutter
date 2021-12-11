@@ -1,6 +1,7 @@
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/hive_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:beachu/providers/fire_provider.dart';
 import 'package:beachu/views/bath_list.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:beachu/views/edit_bath.dart';
@@ -16,7 +17,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sizer/sizer.dart';
-// import 'package:dcdg/dcdg.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,8 +41,11 @@ Future main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BathProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => BathProvider()),
+        ChangeNotifierProvider(create: (_) => FireProvider()),
+      ],
       child: Sizer(
         builder: (context, orientation, deviceType) {
           return MaterialApp(

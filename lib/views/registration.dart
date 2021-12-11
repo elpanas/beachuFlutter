@@ -1,10 +1,9 @@
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
-import 'package:beachu/functions.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:beachu/providers/fire_provider.dart';
 import 'package:beachu/views/bath_list.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,7 +18,6 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   final _mailController = TextEditingController(),
       _pswController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -30,8 +28,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BathProvider>(
-      builder: (context, data, child) {
+    return Consumer2<BathProvider, FireProvider>(
+      builder: (context, data, fire, child) {
         return Scaffold(
           body: Center(
             child: SingleChildScrollView(
@@ -66,12 +64,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     SimpleButton(
                       title: 'register_button'.tr(),
                       onPressed: () async {
-                        bool result = await registerWithEmail(
+                        bool result = await fire.registerWithEmail(
                           _mailController.text,
                           _pswController.text,
                         );
                         if (result) {
-                          data.userId = _auth.currentUser!.uid;
+                          data.userId = fire.userId;
                           data.loadManagerBaths();
                           Navigator.pushReplacementNamed(
                               context, BathListPage.id);
