@@ -14,9 +14,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final bathProvider = ChangeNotifierProvider((ref) => BathProvider());
+final fireProvider = ChangeNotifierProvider((ref) => FireProvider());
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +35,7 @@ Future main() async {
       supportedLocales: kListLocales,
       path: 'assets/translations',
       fallbackLocale: kDefaultLocale,
-      child: MyApp(),
+      child: ProviderScope(child: MyApp()),
     ),
   );
 }
@@ -41,33 +44,27 @@ Future main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => BathProvider()),
-        ChangeNotifierProvider(create: (_) => FireProvider()),
-      ],
-      child: Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            title: 'BeachU',
-            theme: kDarkTheme,
-            initialRoute: HomePage.id,
-            routes: {
-              HomePage.id: (context) => HomePage(),
-              BathListPage.id: (context) => BathListPage(),
-              BathPage.id: (context) => BathPage(),
-              RegistrationPage.id: (context) => RegistrationPage(),
-              LoginPage.id: (context) => LoginPage(),
-              NewBath.id: (context) => NewBath(),
-              EditBath.id: (context) => EditBath(),
-              FavListPage.id: (context) => FavListPage(),
-            },
-          );
-        },
-      ),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          title: 'BeachU',
+          theme: kDarkTheme,
+          initialRoute: HomePage.id,
+          routes: {
+            HomePage.id: (context) => HomePage(),
+            BathListPage.id: (context) => BathListPage(),
+            BathPage.id: (context) => BathPage(),
+            RegistrationPage.id: (context) => RegistrationPage(),
+            LoginPage.id: (context) => LoginPage(),
+            NewBath.id: (context) => NewBath(),
+            EditBath.id: (context) => EditBath(),
+            FavListPage.id: (context) => FavListPage(),
+          },
+        );
+      },
     );
   }
 }

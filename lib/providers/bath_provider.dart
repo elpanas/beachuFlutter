@@ -323,6 +323,7 @@ class BathProvider extends ChangeNotifier {
         .delete();
     _bathList[index].fav = false;
     _favList = box.values.toList();
+    if (_favList.isEmpty) message = 'no_baths'.tr();
     notifyListeners();
   }
   // ---------------------------------------------------------

@@ -9,6 +9,10 @@ class FireProvider extends ChangeNotifier {
 
   // Getters
   get userId => _uid;
+  set userId(value) {
+    _uid = value;
+    notifyListeners();
+  }
 
   // coverage:ignore-start
   Future<bool> registerWithEmail(email, password) async {
@@ -20,7 +24,7 @@ class FireProvider extends ChangeNotifier {
       );
 
       if (userCredential.user != null) {
-        _uid = userCredential.user!.uid;
+        userId = userCredential.user!.uid;
         return true;
       } else {
         return false;
@@ -39,7 +43,7 @@ class FireProvider extends ChangeNotifier {
       );
 
       if (userCredential.user != null) {
-        _uid = userCredential.user!.uid;
+        userId = userCredential.user!.uid;
         return true;
       } else {
         return false;
@@ -69,7 +73,7 @@ class FireProvider extends ChangeNotifier {
         await _auth.signInWithCredential(credential);
 
     if (userCredential.user != null) {
-      _uid = userCredential.user!.uid;
+      userId = userCredential.user!.uid;
       return true;
     } else {
       return false;
@@ -99,7 +103,7 @@ class FireProvider extends ChangeNotifier {
 
   Future signOut() async {
     await _auth.signOut();
-    _uid = '';
+    userId = '';
   }
   // coverage:ignore-end
 }
