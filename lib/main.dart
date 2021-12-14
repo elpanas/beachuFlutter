@@ -1,6 +1,7 @@
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/hive_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:beachu/providers/fav_provider.dart';
 import 'package:beachu/providers/fire_provider.dart';
 import 'package:beachu/views/bath_list.dart';
 import 'package:beachu/views/bath_page.dart';
@@ -44,7 +45,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => BathProvider()),
-        ChangeNotifierProvider(create: (_) => FireProvider()),
+        ChangeNotifierProxyProvider<BathProvider, FireProvider>(
+          create: (_) => FireProvider(null),
+          update: (_, bathP, __) => FireProvider(bathP),
+        ),
+        ChangeNotifierProxyProvider<BathProvider, FavProvider>(
+          create: (_) => FavProvider(null),
+          update: (_, bathP, __) => FavProvider(bathP),
+        ),
       ],
       child: Sizer(
         builder: (context, orientation, deviceType) {

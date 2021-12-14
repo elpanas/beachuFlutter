@@ -1,14 +1,13 @@
+import 'package:beachu/providers/bath_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FireProvider extends ChangeNotifier {
-  late String _uid;
+  FireProvider(this._bathP);
 
+  final BathProvider? _bathP;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // Getters
-  get userId => _uid;
 
   // coverage:ignore-start
   Future<bool> registerWithEmail(email, password) async {
@@ -20,7 +19,7 @@ class FireProvider extends ChangeNotifier {
       );
 
       if (userCredential.user != null) {
-        _uid = userCredential.user!.uid;
+        _bathP!.userId = userCredential.user!.uid;
         return true;
       } else {
         return false;
@@ -39,7 +38,7 @@ class FireProvider extends ChangeNotifier {
       );
 
       if (userCredential.user != null) {
-        _uid = userCredential.user!.uid;
+        _bathP!.userId = userCredential.user!.uid;
         return true;
       } else {
         return false;
@@ -69,7 +68,7 @@ class FireProvider extends ChangeNotifier {
         await _auth.signInWithCredential(credential);
 
     if (userCredential.user != null) {
-      _uid = userCredential.user!.uid;
+      _bathP!.userId = userCredential.user!.uid;
       return true;
     } else {
       return false;
@@ -99,7 +98,7 @@ class FireProvider extends ChangeNotifier {
 
   Future signOut() async {
     await _auth.signOut();
-    _uid = '';
+    _bathP!.userId = '';
   }
   // coverage:ignore-end
 }

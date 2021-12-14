@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/models/hive_model.dart';
+import 'package:beachu/providers/fav_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:beachu/providers/bath_provider.dart';
@@ -20,13 +19,12 @@ void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: "../../.env");
-  //await Firebase.initializeApp();
   Hive.registerAdapter(LocalBathAdapter());
   await Hive.initFlutter();
   await Hive.deleteBoxFromDisk('favourites');
   await Hive.openBox('favourites');
-  BathProvider provider = BathProvider();
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
+  BathProvider bathP = BathProvider();
+  FavProvider favP = FavProvider(bathP);
   final client = MockClient();
   Bath bath = Bath(
     uid: '1',
@@ -72,15 +70,14 @@ void main() async {
         body: compressedBody,
       )).thenAnswer((_) async => http.Response(jsonBath, 201));
 
-      expect(await provider.postBath(client, bath), isTrue);
+      expect(await bathP.postBath(client, bath), isTrue);
     });
 
     test('GET request', () async {
       when(client.get(Uri.parse('${url}disp/coord/41.222/15.333')))
           .thenAnswer((_) async => http.Response('[$jsonBath]', 200));
 
-      expect(
-          await provider.getHandler(client, '${url}disp/coord/41.222/15.333'),
+      expect(await bathP.getHandler(client, '${url}disp/coord/41.222/15.333'),
           isTrue);
     });
 
@@ -110,7 +107,7 @@ void main() async {
         body: compressedBody,
       )).thenAnswer((_) async => http.Response('{}', 200));
 
-      expect(await provider.patchHandler(client, 0, 148), isTrue);
+      expect(await bathP.patchHandler(client, 0, 148), isTrue);
     });
 
     test('DELETE request', () async {
@@ -119,100 +116,80 @@ void main() async {
         headers: {HttpHeaders.authorizationHeader: 'Bearer $hashAuth'},
       )).thenAnswer((_) async => http.Response('{}', 200));
 
-      expect(await provider.deleteBath(client, 0), isTrue);
+      expect(await bathP.deleteBath(client, 0), isTrue);
     });
   });
 
   group('List methods', () {
     test('number of elements should be 0', () {
-      expect(provider.bathCount, 0);
+      expect(bathP.bathCount, 0);
     });
 
     test('item should be added', () {
-      provider.addBathItem(bath);
-      expect(provider.bathCount, 1);
+      bathP.addBathItem(bath);
+      expect(bathP.bathCount, 1);
     });
 
     test('umbrellas number should be 148', () {
-      expect(provider.bath[0].avUmbrellas, 148);
+      expect(bathP.bath[0].avUmbrellas, 148);
     });
 
     test('umbrellas number should be decreased of 1', () {
-      provider.setUmbrellas(149, 0);
-      expect(provider.bath[0].avUmbrellas, 149);
+      bathP.setUmbrellas(149, 0);
+      expect(bathP.bath[0].avUmbrellas, 149);
     });
 
     test('item should be edited', () {
-      provider.editBathItem(bath, 0);
-      expect(provider.bath[0].totUmbrellas, 148);
+      bathP.editBathItem(bath, 0);
+      expect(bathP.bath[0].totUmbrellas, 148);
     });
 
     test('item should be removed', () {
-      provider.removeBathItem(0);
-      expect(provider.bath, isEmpty);
+      bathP.removeBathItem(0);
+      expect(bathP.bath, isEmpty);
     });
   });
 
   group('Fav methods', () {
     test('should add fav to the list', () {
       bath.bid = '1';
-      provider.addBathItem(bath);
-      provider.addFav(0);
-      expect(provider.favList.length, 1);
+      bathP.addBathItem(bath);
+      favP.addFav(0);
+      expect(favP.favList.length, 1);
     });
 
     test('should load favs', () {
-      provider.loadFavList();
-      expect(provider.favList.length, 1);
+      favP.loadFavList();
+      expect(favP.favList.length, 1);
     });
 
     test('should remove fav from the list', () {
-      provider.delFav(0);
-      expect(provider.favList.isEmpty, true);
+      favP.delFav(0);
+      expect(favP.favList.isEmpty, true);
     });
   });
 
   group('Setters & Getters', () {
     test('should set the uid', () {
-      provider.userId = '1';
-      expect(provider.userId, '1');
-      expect(provider.userId = '1', isNot(throwsException));
+      bathP.userId = '1';
+      expect(bathP.userId, '1');
+      expect(bathP.userId = '1', isNot(throwsException));
     });
 
     test('should set loading status', () {
-      provider.loading = true;
-      expect(provider.loading, true);
+      bathP.loading = true;
+      expect(bathP.loading, true);
     });
 
     test('should set message', () {
       const message = 'This is a trial message';
-      provider.message = message;
-      expect(provider.message, message);
-      expect(provider.message = message, isNot(throwsException));
+      bathP.message = message;
+      expect(bathP.message, message);
+      expect(bathP.message = message, isNot(throwsException));
     });
 
     test('should return a bath', () {
-      expect(provider.bath, isA<List<Bath>>());
+      expect(bathP.bath, isA<List<Bath>>());
     });
   });
-  /*
-  group('Firebase functions', () {
-    test('Sign In', () async {
-      final String email = 'luca.panariello@gmail.com';
-      final String password = '123456';
-      final result = await signInWithEmail(email, password);
-
-      if (result) provider.userId = _auth.currentUser!.uid;
-
-      expect(result, isTrue);
-      expect(provider.userId, isNotNull);
-    });
-
-    test('Sign out', () async {
-      await _auth.signOut();
-
-      expect(_auth.currentUser, isNull);
-    });
-  });
-  */
 }

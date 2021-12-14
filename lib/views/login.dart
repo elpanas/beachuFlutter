@@ -69,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                           _pswController.text,
                         );
                         if (result) {
-                          data.userId = fire.userId;
                           data.loadManagerBaths();
                           Navigator.pushReplacementNamed(
                               context, BathListPage.id);

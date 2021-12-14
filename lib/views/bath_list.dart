@@ -7,6 +7,7 @@ import 'package:beachu/components/add_button.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:beachu/providers/fav_provider.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:beachu/views/fav_list.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,8 @@ class BathListPage extends StatelessWidget {
   static const String id = 'bath_list_screen';
   @override
   Widget build(BuildContext context) {
-    return Consumer<BathProvider>(
-      builder: (context, data, child) {
+    return Consumer2<BathProvider, FavProvider>(
+      builder: (context, data, favP, child) {
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -39,7 +40,7 @@ class BathListPage extends StatelessWidget {
                 key: UniqueKey(),
                 icon: Icons.list,
                 onPressed: () {
-                  data.loadFavList();
+                  favP.loadFavList();
                   Navigator.pushNamed(context, FavListPage.id);
                 },
               ),

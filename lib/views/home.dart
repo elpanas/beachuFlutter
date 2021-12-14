@@ -51,7 +51,6 @@ class HomePage extends StatelessWidget {
                                   onPressed: () async {
                                     bool result = await fire.signInWithGoogle();
                                     if (result) {
-                                      data.userId = fire.userId;
                                       data.loadManagerBaths();
                                       Navigator.pushNamed(
                                           context, BathListPage.id);

@@ -4,10 +4,8 @@ import 'dart:io';
 import 'package:beachu/constants.dart';
 import 'package:beachu/functions.dart';
 import 'package:beachu/models/bath_model.dart';
-import 'package:beachu/models/hive_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:maps_launcher/maps_launcher.dart';
@@ -15,7 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class BathProvider extends ChangeNotifier {
   List<Bath> _bathList = [];
-  var _favList = [];
   bool _loading = false, _result = false;
   String _message = 'no_baths'.tr(), _uid = '';
   final _headersZip = {
@@ -231,7 +228,6 @@ class BathProvider extends ChangeNotifier {
   get message => _message;
   get bathCount => _bathList.length;
   get bath => _bathList;
-  get favList => _favList;
   // ---------------------------------------------------------
 
   // VARS SETTERS
@@ -295,35 +291,4 @@ class BathProvider extends ChangeNotifier {
   // coverage:ignore-end
   // ---------------------------------------------------------
 
-  // DB FUNCTIONS
-  loadFavList() {
-    var box = Hive.box('favourites');
-    _favList = box.values.toList();
-    if (_favList.isEmpty) message = 'no_baths'.tr();
-    notifyListeners();
-  }
-
-  addFav(int index) {
-    var box = Hive.box('favourites');
-    LocalBath singleBath = LocalBath(
-      bid: _bathList[index].bid!,
-      name: _bathList[index].name,
-      city: _bathList[index].city,
-    );
-    box.add(singleBath);
-    _bathList[index].fav = true;
-    _favList = box.values.toList();
-    notifyListeners();
-  }
-
-  delFav(int index) {
-    var box = Hive.box('favourites');
-    box.values
-        .firstWhere((element) => element.bid == _bathList[index].bid)
-        .delete();
-    _bathList[index].fav = false;
-    _favList = box.values.toList();
-    notifyListeners();
-  }
-  // ---------------------------------------------------------
 }
