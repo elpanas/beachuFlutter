@@ -44,7 +44,7 @@ void main() async {
     });
 
     test('should remove fav from the list', () {
-      favP.delFav(0);
+      favP.delFav('1');
       expect(favP.favList.isEmpty, true);
     });
   });

@@ -33,12 +33,13 @@ class FavProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  delFav(int index) {
+  delFav(String? bid) {
     var box = Hive.box('favourites');
-    box.values
-        .firstWhere((element) => element.bid == _bathP!.bath[index].bid)
-        .delete();
-    _bathP!.bath[index].fav = false;
+
+    box.values.firstWhere((element) => element.bid == bid).delete();
+    // _bathP!.bath[index].fav = false;
+
+    _bathP!.bath.firstWhere((element) => element.bid == bid).fav = false;
     _favList = box.values.toList();
     if (_favList.isEmpty) _bathP!.message = 'no_baths'.tr();
     notifyListeners();

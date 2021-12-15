@@ -43,7 +43,7 @@ class BathPage extends StatelessWidget {
                               : Icons.favorite_outline,
                           onPressed: () {
                             (_bath.fav)
-                                ? favP.delFav(args.index)
+                                ? favP.delFav(_bath.bid)
                                 : favP.addFav(args.index);
                           },
                         )

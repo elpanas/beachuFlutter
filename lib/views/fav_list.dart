@@ -68,7 +68,7 @@ class FavListPage extends StatelessWidget {
                                       builder: (BuildContext context) {
                                         return DeleteAlert(
                                           onPressed: () {
-                                            favP.delFav(index);
+                                            favP.delFav(favBaths[index].bid);
                                             Navigator.pop(context);
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
