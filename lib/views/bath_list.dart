@@ -8,6 +8,7 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/providers/fav_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:beachu/views/fav_list.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,8 @@ class BathListPage extends StatelessWidget {
   static const String id = 'bath_list_screen';
   @override
   Widget build(BuildContext context) {
-    return Consumer2<BathProvider, FavProvider>(
-      builder: (context, data, favP, child) {
+    return Consumer3<BathProvider, HttpProvider, FavProvider>(
+      builder: (context, data, httpP, favP, child) {
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -34,7 +35,7 @@ class BathListPage extends StatelessWidget {
                 ActionIconButton(
                   key: UniqueKey(),
                   icon: Icons.admin_panel_settings,
-                  onPressed: () => data.loadManagerBaths(),
+                  onPressed: () => httpP.loadManagerBaths(),
                 ),
               ActionIconButton(
                 key: UniqueKey(),
@@ -48,7 +49,7 @@ class BathListPage extends StatelessWidget {
           ),
           floatingActionButton: (data.userId != '') ? FloatingAdd() : null,
           body: ModalProgressHUD(
-            inAsyncCall: data.loading,
+            inAsyncCall: httpP.loading,
             child: SizedBox(
               width: double.infinity,
               child: (data.bathCount > 0)
@@ -83,8 +84,9 @@ class BathListPage extends StatelessWidget {
                                       builder: (BuildContext context) {
                                         return DeleteAlert(
                                           onPressed: () async {
-                                            bool result = await data.deleteBath(
-                                                http.Client(), index);
+                                            bool result =
+                                                await httpP.deleteBath(
+                                                    http.Client(), index);
                                             if (result) {
                                               Navigator.pop(context);
                                               ScaffoldMessenger.of(context)

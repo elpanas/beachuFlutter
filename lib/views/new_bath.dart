@@ -1,14 +1,15 @@
-import 'package:beachu/components/snackbar.dart';
-import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
-import 'package:beachu/components/simple_button.dart';
-import 'package:beachu/constants.dart';
-import 'package:beachu/models/bath_model.dart';
-import 'package:beachu/providers/bath_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:http/http.dart' as http;
+
+import 'package:beachu/components/new_edit_bathpage/bath_field.dart';
+import 'package:beachu/components/simple_button.dart';
+import 'package:beachu/components/snackbar.dart';
+import 'package:beachu/constants.dart';
+import 'package:beachu/models/bath_model.dart';
+import 'package:beachu/providers/http_provider.dart';
 
 // ignore: use_key_in_widget_constructors
 class NewBath extends StatefulWidget {
@@ -37,8 +38,8 @@ class _NewBathState extends State<NewBath> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BathProvider>(
-      builder: (context, data, child) {
+    return Consumer<HttpProvider>(
+      builder: (context, httpP, child) {
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -47,7 +48,7 @@ class _NewBathState extends State<NewBath> {
             ).tr(),
           ),
           body: ModalProgressHUD(
-            inAsyncCall: data.loading,
+            inAsyncCall: httpP.loading,
             child: Form(
               key: _formKey,
               child: Padding(
@@ -94,7 +95,7 @@ class _NewBathState extends State<NewBath> {
                             bool validate = _formKey.currentState!.validate(),
                                 result = false;
                             if (validate) {
-                              Bath bath = await data.makeRequest(
+                              Bath bath = await httpP.makeRequest(
                                 _nameController.text,
                                 int.parse(_totUmbrellasController.text),
                                 int.parse(_totUmbrellasController.text),
@@ -102,7 +103,8 @@ class _NewBathState extends State<NewBath> {
                                 _cityController.text,
                                 _provinceController.text,
                               );
-                              result = await data.postBath(http.Client(), bath);
+                              result =
+                                  await httpP.postBath(http.Client(), bath);
                               if (result) Navigator.pop(context);
                             }
 

@@ -6,6 +6,7 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/providers/fav_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -17,13 +18,13 @@ class FavListPage extends StatelessWidget {
   static const String id = 'fav_list_screen';
   @override
   Widget build(BuildContext context) {
-    return Consumer2<BathProvider, FavProvider>(
-      builder: (context, data, favP, child) {
+    return Consumer3<BathProvider, HttpProvider, FavProvider>(
+      builder: (context, data, httpP, favP, child) {
         var favBaths = favP.favList;
         return WillPopScope(
           onWillPop: () async {
             if (data.bathCount == 1) {
-              data.loadBaths();
+              httpP.loadBaths();
             }
             return true;
           },
@@ -34,7 +35,7 @@ class FavListPage extends StatelessWidget {
               style: kAppBarTextStyle,
             ).tr()),
             body: ModalProgressHUD(
-              inAsyncCall: data.loading,
+              inAsyncCall: httpP.loading,
               child: SizedBox(
                 width: double.infinity,
                 child: (!favP.favList.isEmpty)
@@ -50,7 +51,7 @@ class FavListPage extends StatelessWidget {
                                   title: favBaths[index].name,
                                   city: favBaths[index].city,
                                   onTap: () {
-                                    data.loadBath(favBaths[index].bid);
+                                    httpP.loadBath(favBaths[index].bid);
                                     Navigator.pushNamed(
                                       context,
                                       BathPage.id,

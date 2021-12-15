@@ -5,6 +5,7 @@ import 'package:beachu/constants.dart';
 import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -40,8 +41,8 @@ class _EditBathState extends State<EditBath> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as BathIndex;
-    return Consumer<BathProvider>(
-      builder: (context, data, child) {
+    return Consumer2<BathProvider, HttpProvider>(
+      builder: (context, data, httpP, child) {
         Bath _bath = data.bath[args.index];
         return Scaffold(
           appBar: AppBar(
@@ -51,7 +52,7 @@ class _EditBathState extends State<EditBath> {
             ),
           ),
           body: ModalProgressHUD(
-            inAsyncCall: data.loading,
+            inAsyncCall: httpP.loading,
             child: Center(
               child: SingleChildScrollView(
                 child: Form(
@@ -115,7 +116,7 @@ class _EditBathState extends State<EditBath> {
                             bool _validate = _formKey.currentState!.validate(),
                                 _result = false;
                             if (_formKey.currentState!.validate()) {
-                              Bath bath = await data.makeRequest(
+                              Bath bath = await httpP.makeRequest(
                                 _nameController.text,
                                 int.parse(_avUmbrellasController.text),
                                 int.parse(_totUmbrellasController.text),
@@ -123,7 +124,7 @@ class _EditBathState extends State<EditBath> {
                                 _cityController.text,
                                 _provinceController.text,
                               );
-                              _result = await data.putBath(
+                              _result = await httpP.putBath(
                                   http.Client(), bath, args.index);
                               if (_result) Navigator.pop(context);
                             }

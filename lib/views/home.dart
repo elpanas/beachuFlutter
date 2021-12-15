@@ -7,6 +7,7 @@ import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/providers/fire_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:beachu/views/bath_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +18,8 @@ class HomePage extends StatelessWidget {
   static const String id = 'home_screen';
   @override
   Widget build(BuildContext context) {
-    return Consumer2<BathProvider, FireProvider>(
-      builder: (context, data, fire, child) {
+    return Consumer3<BathProvider, HttpProvider, FireProvider>(
+      builder: (context, data, httpP, fire, child) {
         return Scaffold(
           body: Center(
             child: SingleChildScrollView(
@@ -35,7 +36,7 @@ class HomePage extends StatelessWidget {
                       SimpleButton(
                           title: 'search_button'.tr(),
                           onPressed: () async {
-                            data.loadBaths();
+                            httpP.loadBaths();
                             Navigator.pushNamed(context, BathListPage.id);
                           }),
                       const SizedBox(height: 10.0),
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
                                   onPressed: () async {
                                     bool result = await fire.signInWithGoogle();
                                     if (result) {
-                                      data.loadManagerBaths();
+                                      httpP.loadManagerBaths();
                                       Navigator.pushNamed(
                                           context, BathListPage.id);
                                     } else {
@@ -68,7 +69,6 @@ class HomePage extends StatelessWidget {
                           : LogoutButton(
                               onPressed: () async {
                                 await fire.signOut();
-                                data.userId = '';
                               },
                             )
                     ],

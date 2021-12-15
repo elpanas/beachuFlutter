@@ -1,8 +1,8 @@
 import 'package:beachu/components/snackbar.dart';
 import 'package:beachu/components/simple_button.dart';
 import 'package:beachu/constants.dart';
-import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/providers/fire_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:beachu/views/bath_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +28,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<BathProvider, FireProvider>(
-      builder: (context, data, fire, child) {
+    return Consumer2<HttpProvider, FireProvider>(
+      builder: (context, httpP, fire, child) {
         return Scaffold(
           body: Center(
             child: SingleChildScrollView(
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                           _pswController.text,
                         );
                         if (result) {
-                          data.loadManagerBaths();
+                          httpP.loadManagerBaths();
                           Navigator.pushReplacementNamed(
                               context, BathListPage.id);
                         } else {

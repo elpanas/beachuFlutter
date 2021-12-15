@@ -9,6 +9,7 @@ import 'package:beachu/models/bath_index.dart';
 import 'package:beachu/models/bath_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/providers/fav_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:beachu/views/edit_bath.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -21,8 +22,8 @@ class BathPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as BathIndex;
-    return Consumer2<BathProvider, FavProvider>(
-      builder: (context, data, favP, child) {
+    return Consumer3<BathProvider, HttpProvider, FavProvider>(
+      builder: (context, data, httpP, favP, child) {
         Bath _bath = data.bath[args.index];
         return WillPopScope(
           onWillPop: () async {
@@ -30,7 +31,7 @@ class BathPage extends StatelessWidget {
             return true;
           },
           child: ModalProgressHUD(
-            inAsyncCall: data.loading,
+            inAsyncCall: httpP.loading,
             child: Scaffold(
               appBar: AppBar(
                 actions: [
@@ -97,7 +98,7 @@ class BathPage extends StatelessWidget {
                                 icon: Icons.remove,
                                 onPressed: () async {
                                   bool _result =
-                                      await data.decreaseUmbrellas(args.index);
+                                      await httpP.decreaseUmbrellas(args.index);
                                   if (!_result) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       snackBarBuilder(title: 'bath_min'.tr()),
@@ -111,7 +112,7 @@ class BathPage extends StatelessWidget {
                                 icon: Icons.add,
                                 onPressed: () async {
                                   bool _result =
-                                      await data.increaseUmbrellas(args.index);
+                                      await httpP.increaseUmbrellas(args.index);
                                   if (!_result) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       snackBarBuilder(title: 'bath_max'.tr()),

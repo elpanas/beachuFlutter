@@ -3,6 +3,7 @@ import 'package:beachu/models/hive_model.dart';
 import 'package:beachu/providers/bath_provider.dart';
 import 'package:beachu/providers/fav_provider.dart';
 import 'package:beachu/providers/fire_provider.dart';
+import 'package:beachu/providers/http_provider.dart';
 import 'package:beachu/views/bath_list.dart';
 import 'package:beachu/views/bath_page.dart';
 import 'package:beachu/views/edit_bath.dart';
@@ -48,6 +49,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<BathProvider, FireProvider>(
           create: (_) => FireProvider(null),
           update: (_, bathP, __) => FireProvider(bathP),
+        ),
+        ChangeNotifierProxyProvider<BathProvider, HttpProvider>(
+          create: (_) => HttpProvider(null),
+          update: (_, bathP, __) => HttpProvider(bathP),
         ),
         ChangeNotifierProxyProvider<BathProvider, FavProvider>(
           create: (_) => FavProvider(null),
